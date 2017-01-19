@@ -47,4 +47,5 @@ Käyttäjä
 * muistin kirjoitus, yleiset tietotyypit
 * muistin luku, mielivaltainen määrä tavuja
 * muistin kirjoitus, mielivaltainen määrä tavuja
-*
+* alustan valinta (Windows/Linux) asetuksista
+* ...
