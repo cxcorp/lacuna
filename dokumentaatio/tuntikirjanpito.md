@@ -1,5 +1,6 @@
 ### Tuntikirjanpito
-P�iv� | Tunnit | Kuvaus
+Päivä | Tunnit | Kuvaus
 --------------- | ----- | ------
-17.1.2017 | 7h | Projektin alustus. Muistitestausty�kalun (TestTarget) luonti.
+17.1.2017 | 7h | Projektin alustus. Muistitestaustyökalun (TestTarget) luonti. Aihemäärittelyn aloitus.
+19.1.2017 | 2h | Aihemäärittelyn jatkoa. Dokumentaatioindeksin luonti. Trellon luonti.
 ... | ... | ...
