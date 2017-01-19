@@ -7,9 +7,9 @@ Toteutetaan kirjasto, jolla voidaan kirjoittaa ja lukea toisen, samalla
 tietokoneella pyörivän prosessin muistia. Kirjaston rinnalle toteutetaan
 graafinen käyttöliittymä. 
 
-Kirjaston tulee tukea Windows 10 ja Ubuntu 16.** -käyttöjärjestelmiä.
+Kirjaston tulee tukea Windows 10 ja Ubuntu 16.XX -käyttöjärjestelmiä.
 Ohjelman toimintaa ei määritellä muilla käyttöjärjestelmillä, eikä
-alustoilla, jotka eivät käytä little-endian -tavujärjestystä ja kahden
+alustoilla, jotka eivät käytä little-endian -tavujärjestystä tai kahden
 komplementtijärjestelmää.
 
 Kirjastolla tulee pystyä selaamaan tietokoneen prosessilistausta, sekä
@@ -34,6 +34,15 @@ Yleiset tietotyypit määritellään seuraavanlaisesti:
 Käyttöliittymän tulee tarjota käyttäjälle tapa lukea ja tallentaa omia
 "kirjanmerkki"-muistiosotteita, esimerkiksi XML- tai JSON-tiedostoon.
 
+Vahvistamattomia ideoita:
+* muistista haku, eri tietotyypit, patterns (e.g. 2f 5d ?? ?? 90 dd)
+* konekäskyjen luku ja kirjoitus
+* muistisegmenttien listaus
+* muistisektorien listaus
+* ladattujen moduulien listaus
+* ladattujen moduulien pohjaosoitteiden ja pituuksien listaus
+* moduulien imports/exports
+
 ## Käyttäjät
 Käyttäjä
 
@@ -48,4 +57,7 @@ Käyttäjä
 * muistin luku, mielivaltainen määrä tavuja
 * muistin kirjoitus, mielivaltainen määrä tavuja
 * alustan valinta (Windows/Linux) asetuksista
+* osoitekirjanmerkkien hallinta
+* osoitekirjanmerkkien vienti
+* osoitekirjanmerkkien tuonti
 * ...
