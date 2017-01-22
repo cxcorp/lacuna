@@ -1,18 +1,12 @@
 package cx.corp.lacuna.core.windows;
 
 import cx.corp.lacuna.core.NativeProcess;
-import cx.corp.lacuna.core.NativeProcessEnumerator;
 import cx.corp.lacuna.core.ProcessEnumerationException;
-import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.MockKernel32;
 import cx.corp.lacuna.core.windows.winapi.MockPsapi;
-import cx.corp.lacuna.core.windows.winapi.Psapi;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import java.lang.annotation.Native;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +27,15 @@ public class WindowsNativeProcessEnumeratorTests {
     }
 
     @Test
+    public void enumeratorReturnsEmptyListWhenNoProcessesFound() {
+        int[] pids = new int[0];
+        psapi.setPids(pids);
+
+        List<NativeProcess> processes = enumerator.getProcesses();
+        assertEquals("Expected enumerator to return zero processes!", pids.length, processes.size());
+    }
+
+    @Test
     public void enumeratorGetsCorrectAmountOfProcesses() {
         int[] pids = { 0, 1, 23, 502, 5992, 120, 235, 599, 4003 };
         psapi.setPids(pids);
@@ -47,12 +50,11 @@ public class WindowsNativeProcessEnumeratorTests {
         psapi.setPids(pids);
 
         List<NativeProcess> processes = enumerator.getProcesses();
-        for (int i = 0; i < pids.length; i++) {
-            final int pid = pids[i];
+        for (int pid : pids) {
             Optional<NativeProcess> matchingProc =
                     processes.stream().filter(p -> p.getPid() == pid).findAny();
             if (!matchingProc.isPresent()) {
-                fail("PID " + pids[i] + " was not found from the generated process list!");
+                fail("PID " + pid + " was not found from the generated process list!");
             }
         }
     }
