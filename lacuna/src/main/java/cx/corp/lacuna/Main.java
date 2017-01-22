@@ -1,4 +1,4 @@
-package cx.corp.lacuna.ui;
+package cx.corp.lacuna;
 
 import com.sun.jna.Native;
 import cx.corp.lacuna.core.NativeProcess;
@@ -6,6 +6,7 @@ import cx.corp.lacuna.core.NativeProcessEnumerator;
 import cx.corp.lacuna.core.windows.WindowsNativeProcessEnumerator;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.Psapi;
+import cx.corp.lacuna.ui.MainWindow;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
