@@ -16,14 +16,14 @@ public class MockPsapi implements Psapi {
     }
 
     @Override
-    public boolean EnumProcesses(int[] pids, int pidsLength, IntByReference bytesReturned) {
+    public boolean enumProcesses(int[] pids, int pidsLength, IntByReference bytesReturned) {
         int valuesCopied = copyTo(this.pids, pids, pidsLength);
         bytesReturned.setValue(valuesCopied * WinApiConstants.SIZEOF_INT);
         return enumProcessesReturnValue;
     }
 
     @Override
-    public int GetModuleFileNameExW(int hProcess, int hModule, char[] charBuf, int bufSize) {
+    public int getModuleFileNameExW(int hProcess, int hModule, char[] charBuf, int bufSize) {
         throw new UnsupportedOperationException("Not implemented");
     }
 

@@ -39,8 +39,8 @@ public class WindowsNativeProcessEnumerator implements NativeProcessEnumerator {
         int[] pids = new int[WinApiConstants.MAX_PROCESSES_SUPPORTED];
         IntByReference bytesReturned = new IntByReference(0);
 
-        if (!psapi.EnumProcesses(pids, pids.length, bytesReturned)) {
-            throw new ProcessEnumerationException("EnumProcesses failed!");
+        if (!psapi.enumProcesses(pids, pids.length, bytesReturned)) {
+            throw new ProcessEnumerationException("enumProcesses failed!");
         }
 
         int pidCount = bytesReturned.getValue() / WinApiConstants.SIZEOF_INT;
