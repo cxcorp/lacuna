@@ -36,6 +36,7 @@ Käyttöliittymän tulee tarjota käyttäjälle tapa lukea ja tallentaa omia
 
 Vahvistamattomia ideoita:
 * muistista haku, eri tietotyypit, patterns (e.g. 2f 5d ?? ?? 90 dd)
+* laajemman muistialueen esitys? reaaliaikainen (esim. pollaus joka 500ms) päivitys?
 * konekäskyjen luku ja kirjoitus
 * muistisegmenttien listaus
 * muistisektorien listaus
