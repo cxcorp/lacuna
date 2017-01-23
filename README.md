@@ -1,7 +1,19 @@
 # lacuna
 
 Program for reading and writing other programs' memory.
-Coursework for Javalabra-2017-3.
+Coursework for [Javalabra-2017-3](https://github.com/javaLabra/Javalabra2017-3).
+
+## Current state
+Lacuna can currently dump the active process list on both Windows and Linux.
+
+## Running
+### Maven
+1. Install [Apache Maven](https://maven.apache.org/install.html). Lacuna uses Maven to manage dependencies and manage lifecycle scripts.
+2. Clone or download this repository.
+3. Go to the project folder: `cd lacuna/lacuna`
+4. Compile and package the project: `mvn clean package`. This step generates the .jar file in the target/ directory.
+  - You may optionally choose to skip running unit tests: `mvn clean package -DskipTests`
+5. Run Lacuna: `java -jar target/lacuna-<VERSION>.jar`
 
 ## Links
 * [**Documentation**](https://github.com/cxcorp/lacuna/tree/master/dokumentaatio)
