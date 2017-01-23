@@ -26,4 +26,11 @@ public class NativeProcessTest {
         process.setDescription(desc);
         assertEquals(desc, process.getDescription());
     }
+
+    @Test
+    public void setOwnerIsCorrect() {
+        String owner = "root";
+        process.setOwner(owner);
+        assertEquals(owner, process.getOwner());
+    }
 }
