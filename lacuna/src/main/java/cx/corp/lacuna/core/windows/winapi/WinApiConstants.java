@@ -25,7 +25,7 @@ public final class WinApiConstants {
     public static final int NULLPTR = 0;
 
     /** When used as the {@code dwFlags} parameter of
-     * {@link Kernel32#queryFullProcessImageName(int, int, CharBuffer, IntByReference)},
+     * {@link Kernel32#queryFullProcessImageNameW(int, int, char[], IntByReference)},
      * depicts that the output name should use the Win32 path format instead of the
      * native system path format.
      */
