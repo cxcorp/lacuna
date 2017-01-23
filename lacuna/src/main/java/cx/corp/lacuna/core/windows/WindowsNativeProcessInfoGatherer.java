@@ -6,11 +6,7 @@ import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
-import java.nio.CharBuffer;
-
 public class WindowsNativeProcessInfoGatherer {
-
-    private final static String NAME_FOR_UNREADABLE_PROCESS = "";
 
     private final Kernel32 kernel;
 
@@ -48,7 +44,7 @@ public class WindowsNativeProcessInfoGatherer {
                         bufferSize);
 
         if (!success) {
-            return NAME_FOR_UNREADABLE_PROCESS;
+            return NativeProcess.UNKNOWN_DESCRIPTION;
         }
 
         // bufferSize gets updated with the amount of written characters

@@ -2,10 +2,14 @@ package cx.corp.lacuna.core;
 
 public class NativeProcess {
 
+    public static final String UNKNOWN_OWNER = "";
+    public static final String UNKNOWN_DESCRIPTION = "";
+
     private int pid;
     private String description;
 
     /** Gets the process identifier.
+     *
      * @return The PID.
      */
     public int getPid() {
