@@ -9,10 +9,7 @@ import cx.corp.lacuna.core.windows.WindowsNativeProcessEnumerator;
 import cx.corp.lacuna.core.windows.winapi.CamelToPascalCaseFunctionMapper;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.Psapi;
-import cx.corp.lacuna.ui.MainWindow;
 
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
