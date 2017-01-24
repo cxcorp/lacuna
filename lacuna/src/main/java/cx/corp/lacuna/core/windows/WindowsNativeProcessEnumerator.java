@@ -5,6 +5,7 @@ import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.NativeProcessEnumerator;
 import cx.corp.lacuna.core.NativeProcess;
 import cx.corp.lacuna.core.ProcessEnumerationException;
+import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.Psapi;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
@@ -15,12 +16,10 @@ import java.util.List;
 public class WindowsNativeProcessEnumerator implements NativeProcessEnumerator {
 
     private final WindowsNativeProcessInfoGatherer infoGatherer;
-    private final Kernel32 kernel;
     private final Psapi psapi;
 
-    public WindowsNativeProcessEnumerator(Kernel32 kernel, Psapi psapi) {
-        this.infoGatherer = new WindowsNativeProcessInfoGatherer(kernel); // todo: inject this some day
-        this.kernel = kernel;
+    public WindowsNativeProcessEnumerator(Kernel32 kernel, Psapi psapi, Advapi32 advapi) {
+        this.infoGatherer = new WindowsNativeProcessInfoGatherer(kernel, advapi); // todo: inject this some day
         this.psapi = psapi;
     }
 

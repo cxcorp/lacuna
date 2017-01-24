@@ -23,7 +23,7 @@ public class WindowsNativeProcessEnumeratorTest {
     public void setUp() {
         kernel = new MockKernel32();
         psapi = new MockPsapi();
-        enumerator = new WindowsNativeProcessEnumerator(kernel, psapi);
+        enumerator = new WindowsNativeProcessEnumerator(kernel, psapi, null);
     }
 
     @Test
