@@ -16,6 +16,10 @@ public final class WinApiConstants {
      */
     public static final int MAX_FILENAME_LENGTH = 260;
 
+    public static final int MAX_USERNAME_LENGTH = 256;
+
+    public static final int MAX_DOMAIN_NAME_LENGTH = 64;
+
     /** Size of an int on the supported platform.
      */
     public static final int SIZEOF_INT = 4;
@@ -30,4 +34,18 @@ public final class WinApiConstants {
      * native system path format.
      */
     public static final int QUERYFULLPROCESSIMAGENAME_PATHFORMAT_WIN32 = 0;
+
+    /** When used as the {@code desiredAccess} parameter of
+     * {@link Advapi32#openProcessToken(int, int, IntByReference)}, depicts that
+     * the callee is requesting rights to query an access token.
+     */
+    public static final int OPENPROCESSTOKEN_TOKEN_QUERY = 0x0008;
+
+    /** When used as the {@code TokenInformationClass} parameter of
+     * {@link Advapi32#getTokenInformation(int, int, Advapi32.TokenOwner[], IntByReference)},
+     * depicts that the callee is requesting a TokenOwner struct.
+     */
+    public static final int GETTOKENINFORMATION_TOKENUSER = 1;
+
+    public static final int ERROR_INSUFFICIENT_BUFFER = 122;
 }

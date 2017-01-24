@@ -1,31 +1,40 @@
 package cx.corp.lacuna.core.windows;
 
+import com.sun.jna.Memory;
+import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.NativeProcess;
+import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
 public class WindowsNativeProcessInfoGatherer {
 
+    private final Advapi32 advapi;
     private final Kernel32 kernel;
 
-    public WindowsNativeProcessInfoGatherer(Kernel32 kernel) {
+    public WindowsNativeProcessInfoGatherer(Kernel32 kernel, Advapi32 advapi) {
+        this.advapi = advapi;
         this.kernel = kernel;
     }
 
     public NativeProcess gather(int pid) {
-        NativeProcess proc = new NativeProcess();
-        proc.setPid(pid);
-        proc.setDescription(getProcessName(pid));
-        return proc;
-    }
+        NativeProcess process = new NativeProcess();
+        process.setPid(pid);
 
-    private String getProcessName(int pid) {
         int processHandle = openProcessForInformationReading(pid);
-        String name = queryProcessName(processHandle);
-        freeProcessHandle(processHandle);
-        return name;
+        if (processHandle == WinApiConstants.NULLPTR) {
+            process.setDescription(NativeProcess.UNKNOWN_DESCRIPTION);
+            process.setOwner(NativeProcess.UNKNOWN_OWNER);
+            return process;
+        }
+
+        process.setDescription(queryProcessName(processHandle));
+        process.setOwner(getProcessOwner(processHandle));
+        closeHandleIfNotNull(processHandle);
+        return process;
     }
 
     private int openProcessForInformationReading(int pid) {
@@ -52,7 +61,72 @@ public class WindowsNativeProcessInfoGatherer {
         return new String(nameBuf, 0, bufferSize.getValue());
     }
 
-    private void freeProcessHandle(int handle) {
+    private String getProcessOwner(int processHandle) {
+        // Get token for process
+        IntByReference token = new IntByReference(0);
+        boolean success =
+            advapi.openProcessToken(
+                processHandle,
+                WinApiConstants.OPENPROCESSTOKEN_TOKEN_QUERY,
+                token);
+        if (!success) {
+            return NativeProcess.UNKNOWN_OWNER;
+        }
+
+        // First find out how big of a buffer we need...
+        IntByReference bytesNeeded = new IntByReference(0);
+        success =
+            advapi.getTokenInformation(
+                token.getValue(),
+                WinApiConstants.GETTOKENINFORMATION_TOKENUSER,
+                null,
+                0,
+                bytesNeeded);
+        if (!success && Native.getLastError() != WinApiConstants.ERROR_INSUFFICIENT_BUFFER) {
+            return NativeProcess.UNKNOWN_OWNER;
+        }
+
+        // Then get the information with a properly sized buffer...
+        Memory memory = new Memory(bytesNeeded.getValue());
+        Pointer tokenUserPointer = memory.share(0);
+        success =
+            advapi.getTokenInformation(
+                token.getValue(),
+                WinApiConstants.GETTOKENINFORMATION_TOKENUSER,
+                tokenUserPointer,
+                (int) memory.size(),
+                bytesNeeded);
+
+        if (!success) {
+            return NativeProcess.UNKNOWN_DESCRIPTION;
+        }
+
+        Advapi32.TokenUser user = new Advapi32.TokenUser(tokenUserPointer);
+        // Look up name of Owner
+        char[] nameBuffer = new char[WinApiConstants.MAX_USERNAME_LENGTH];
+        IntByReference nameBufNeededLen = new IntByReference(nameBuffer.length);
+        char[] domainBuffer = new char[WinApiConstants.MAX_DOMAIN_NAME_LENGTH];
+        IntByReference domainBufNeededLen = new IntByReference(domainBuffer.length);
+
+        IntByReference ignored = new IntByReference(0);
+
+        success =
+            advapi.lookupAccountSidW(
+                WinApiConstants.NULLPTR,
+                user.user,
+                nameBuffer,
+                nameBufNeededLen,
+                domainBuffer,
+                domainBufNeededLen,
+                ignored);
+        if (!success) {
+            return NativeProcess.UNKNOWN_OWNER;
+        }
+
+        return new String(nameBuffer);
+    }
+
+    private void closeHandleIfNotNull(int handle) {
         if (handle != WinApiConstants.NULLPTR) {
             kernel.closeHandle(handle);
         }

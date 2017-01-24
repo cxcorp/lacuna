@@ -8,6 +8,7 @@ import cx.corp.lacuna.core.NativeProcess;
 import cx.corp.lacuna.core.NativeProcessEnumerator;
 import cx.corp.lacuna.core.linux.LinuxNativeProcessEnumerator;
 import cx.corp.lacuna.core.windows.WindowsNativeProcessEnumerator;
+import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.CamelToPascalCaseFunctionMapper;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.Psapi;
@@ -41,7 +42,8 @@ public class Main {
 
         Kernel32 kernel = Native.loadLibrary("Kernel32", Kernel32.class, options);
         Psapi psapi = Native.loadLibrary("Psapi", Psapi.class, options);
+        Advapi32 advapi = Native.loadLibrary("Advapi32", Advapi32.class, options);
 
-        return new WindowsNativeProcessEnumerator(kernel, psapi);
+        return new WindowsNativeProcessEnumerator(kernel, psapi, advapi);
     }
 }
