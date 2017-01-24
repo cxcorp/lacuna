@@ -6,6 +6,13 @@ Coursework for [Javalabra-2017-3](https://github.com/javaLabra/Javalabra2017-3).
 ## Current state
 Lacuna can currently dump the active process list on both Windows and Linux.
 
+### Sample output
+#### Linux
+![](http://i.imgur.com/mhiWzFU.png)
+
+#### Windows (owner fetching not implemented)
+![](http://i.imgur.com/IDLWhDn.png)
+
 ## Running
 ### Maven
 1. Install [Apache Maven](https://maven.apache.org/install.html). Lacuna uses Maven to manage dependencies and manage lifecycle scripts.
