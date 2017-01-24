@@ -6,5 +6,4 @@ Päivä | Tunnit | Kuvaus
 20.1.2017 | 6h | Javaprojektin aloitus. Alustavaa UI-säätöä, [JNA](https://github.com/java-native-access/jna):han tutustuminen. Windowsin prosessien listaus. Natiivikirjastojen mockauksen suunnittelu.
 22.1.2017 | 4h | Checkstylen ja testauksen bootstrappaus. Manifestien kanssa kamppailu.
 23.1.2016 | 8h | Prosessien nimien listaus Windowsilla.
-24.1.2016 | 4h | Prosessien listaus Linuxilla. Prosessin omistajan haku Windowsilla (aloitus).
-... | ... | ...
+24.1.2016 | 8h | Prosessien listaus Linuxilla. Prosessin omistajan haku Windowsilla.
