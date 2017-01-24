@@ -10,8 +10,8 @@ Lacuna can currently dump the active process list on both Windows and Linux.
 #### Linux
 ![](http://i.imgur.com/mhiWzFU.png)
 
-#### Windows (owner fetching not implemented)
-![](http://i.imgur.com/IDLWhDn.png)
+#### Windows
+![](http://i.imgur.com/IoEvW2d.png)
 
 ## Running
 ### Maven
