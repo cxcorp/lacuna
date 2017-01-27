@@ -62,3 +62,6 @@ Käyttäjä
 * osoitekirjanmerkkien vienti
 * osoitekirjanmerkkien tuonti
 * ...
+
+## Diagrammeja
+![](http://i.imgur.com/OBtz63v.png)
