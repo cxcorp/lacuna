@@ -1,6 +1,7 @@
 package cx.corp.lacuna.core.windows.winapi;
 
 import com.sun.jna.Memory;
+import com.sun.jna.Native;
 import com.sun.jna.ptr.IntByReference;
 
 import java.nio.CharBuffer;
@@ -9,6 +10,17 @@ import java.util.Set;
 
 public class MockKernel32 implements Kernel32 {
 
+    private int openProcessReturnValue;
+    private boolean readProcessMemoryReturnValue;
+
+    public void setOpenProcessReturnValue(int returnValue) {
+        openProcessReturnValue = returnValue;
+    }
+
+    public void setReadProcessMemoryReturnValue(boolean val) {
+        readProcessMemoryReturnValue = val;
+    }
+
     @Override
     public boolean closeHandle(int handle) {
         return true;
@@ -16,7 +28,7 @@ public class MockKernel32 implements Kernel32 {
 
     @Override
     public int openProcess(int processAccessFlags, boolean bInheritHandle, int processId) {
-        return 0;
+        return openProcessReturnValue;
     }
 
     @Override
@@ -25,7 +37,11 @@ public class MockKernel32 implements Kernel32 {
     }
 
     @Override
-    public boolean readProcessMemory(int processHandle, int baseAddress, Memory buffer, int bufferSize, IntByReference bytesRead) {
-        return false;
+    public boolean readProcessMemory(int processHandle,
+                                     int baseAddress,
+                                     Memory buffer,
+                                     int bufferSize,
+                                     IntByReference bytesRead) {
+        return readProcessMemoryReturnValue;
     }
 }

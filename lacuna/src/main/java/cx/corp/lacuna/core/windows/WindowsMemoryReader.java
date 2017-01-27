@@ -104,6 +104,12 @@ public class WindowsMemoryReader implements MemoryReader {
 
     private MemoryReadException createReadExceptionFromErrorCode(int nativeError) {
         SystemErrorCode error = SystemErrorCode.fromId(nativeError);
-        return new MemoryReadException(error.toString());
+        String message;
+        if (error == null) {
+            message = "System error " + Native.getLastError() + " occurred.";
+        } else {
+            message = error.toString();
+        }
+        return new MemoryReadException(message);
     }
 }
