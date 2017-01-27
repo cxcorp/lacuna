@@ -9,4 +9,4 @@ Päivä | Tunnit | Kuvaus
 24.1.2016 | 8h | Prosessien listaus Linuxilla. Prosessin omistajan haku Windowsilla.
 25.1.2016 | 6h | Muistin luku Windowsilla, alustava versio. WinAPI:n muistinlukufunktioiden käytön opettelu.
 26.1.2016 | 1h | ^
-27.1.2016 | 4h | Muistin luku Windowsilla, enkapsulointi.
+27.1.2016 | 5h | Muistin luku Windowsilla, enkapsulointi. Raporttien generointi.
