@@ -1,5 +1,6 @@
 package cx.corp.lacuna.core.windows.winapi;
 
+import com.sun.jna.Memory;
 import com.sun.jna.ptr.IntByReference;
 
 import java.nio.CharBuffer;
@@ -20,6 +21,11 @@ public class MockKernel32 implements Kernel32 {
 
     @Override
     public boolean queryFullProcessImageNameW(int hProcess, int dwFlags, char[] lpExeName, IntByReference lpdwSize) {
+        return false;
+    }
+
+    @Override
+    public boolean readProcessMemory(int processHandle, int baseAddress, Memory buffer, int bufferSize, IntByReference bytesRead) {
         return false;
     }
 }
