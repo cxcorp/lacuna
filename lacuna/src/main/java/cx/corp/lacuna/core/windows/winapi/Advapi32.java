@@ -39,10 +39,11 @@ public interface Advapi32 extends StdCallLibrary {
 
         @Override
         protected List<String> getFieldOrder() {
-            return new ArrayList<String>() {{
-                add("user");
-                add("attributes");
-            }};
+            return new ArrayList<String>() { {
+                    add("user");
+                    add("attributes");
+                }
+            };
         }
     }
 }
