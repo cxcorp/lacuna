@@ -35,6 +35,8 @@ public class NativeProcess {
     }
 
     /** Sets the process identifier.
+     *
+     * @param pid The process identifier.
      */
     public void setPid(int pid) {
         this.pid = pid;
@@ -42,12 +44,16 @@ public class NativeProcess {
 
     /** Sets the description of the process. The description may be an
      * image name or the command line used to start the process.
+     *
+     * @param description The process description.
      */
     public void setDescription(String description) {
         this.description = description;
     }
 
     /** Sets the name of the owner of the process.
+     *
+     * @param owner The owner of the process.
      */
     public void setOwner(String owner) {
         this.owner = owner;

@@ -1,5 +1,6 @@
 package cx.corp.lacuna.core.windows.winapi;
 
+import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 
 import java.nio.CharBuffer;
@@ -42,7 +43,7 @@ public final class WinApiConstants {
     public static final int OPENPROCESSTOKEN_TOKEN_QUERY = 0x0008;
 
     /** When used as the {@code TokenInformationClass} parameter of
-     * {@link Advapi32#getTokenInformation(int, int, Advapi32.TokenOwner[], IntByReference)},
+     * {@link Advapi32#getTokenInformation(int, int, Pointer, int, IntByReference)},
      * depicts that the callee is requesting a TokenOwner struct.
      */
     public static final int GETTOKENINFORMATION_TOKENUSER = 1;
