@@ -9,5 +9,5 @@
 
 ## Reports
 1. [checkstyle-report](https://github.com/cxcorp/lacuna/tree/master/dokumentaatio/checkstyle-raportti)
-2. [pit-report](https://github.com/cxcorp/lacuna/tree/master/dokumentaatio/pit-raportti/201701272157)
+2. [pit-report](https://github.com/cxcorp/lacuna/tree/master/dokumentaatio/pit-raportti)
 3. [cobertura-report](https://github.com/cxcorp/lacuna/tree/master/dokumentaatio/cobertura-raportti)
