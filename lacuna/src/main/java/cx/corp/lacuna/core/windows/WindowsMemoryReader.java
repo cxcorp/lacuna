@@ -94,6 +94,8 @@ public class WindowsMemoryReader implements MemoryReader {
             // e.g. "Invalid memory access" if reading outside memory bounds.
             // the Memory class does bounds checking but you can never be sure since
             // it ultimately calls the natively implemented Native.read method.
+            // This is a bit of a doomsday defensive programming scenario so not sure
+            // how to unit test this one.
             throw new MemoryReadException(
                     "An error occurred while reading memory. Use getCause() to get the cause.",
                     err);
