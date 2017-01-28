@@ -64,4 +64,4 @@ Käyttäjä
 * ...
 
 ## Diagrammeja
-![](http://i.imgur.com/OBtz63v.png)
+![](https://yuml.me/cf9898b8.png)
