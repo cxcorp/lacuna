@@ -5,6 +5,7 @@ import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.NativeProcessEnumerator;
 import cx.corp.lacuna.core.NativeProcess;
 import cx.corp.lacuna.core.ProcessEnumerationException;
+import cx.corp.lacuna.core.common.Utilities;
 import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.Psapi;
@@ -33,7 +34,7 @@ public class WindowsNativeProcessEnumerator implements NativeProcessEnumerator {
         int[] pidBuffer = createMaxSizePidBuffer();
         int pidCount = enumerateProcesses(pidBuffer);
         // Trim the unused array values. Well, copy them to a smaller array.
-        return copyToFittedArray(pidBuffer, pidCount);
+        return Utilities.copyToFittedArray(pidBuffer, pidCount);
     }
 
     private int[] createMaxSizePidBuffer() {
@@ -51,12 +52,6 @@ public class WindowsNativeProcessEnumerator implements NativeProcessEnumerator {
 
     private int byteCountToIntCount(int bytes) {
         return bytes / WinApiConstants.SIZEOF_INT;
-    }
-
-    private int[] copyToFittedArray(int[] array, int actualCount) {
-        int[] fittedArray = new int[actualCount];
-        System.arraycopy(array, 0, fittedArray, 0, actualCount);
-        return fittedArray;
     }
 
     private List<NativeProcess> constructProcessModels(int[] pids) {
