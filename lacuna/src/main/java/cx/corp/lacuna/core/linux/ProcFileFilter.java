@@ -8,6 +8,9 @@ class ProcFileFilter implements FileFilter {
     private final int pidMax;
 
     public ProcFileFilter(int pidMax) {
+        if (pidMax <= LinuxConstants.LOWEST_LEGAL_PID) {
+            throw new IllegalArgumentException("pidMax cannot be lower than or equal to 1!");
+        }
         this.pidMax = pidMax;
     }
 
@@ -17,12 +20,18 @@ class ProcFileFilter implements FileFilter {
             return false;
         }
 
-        if (!pathname.isDirectory()) {
+        return accept(pathname.isDirectory(), pathname.getName());
+    }
+
+    boolean accept(boolean isDirectory, String fileName) {
+        if (!isDirectory) {
             return false;
         }
 
-        Integer numericalPid = tryParseInt(pathname.getName());
-        return numericalPid != null && numericalPid >= 0 && numericalPid < pidMax;
+        Integer numericalPid = tryParseInt(fileName);
+        return numericalPid != null
+            && numericalPid >= LinuxConstants.LOWEST_LEGAL_PID
+            && numericalPid < pidMax;
     }
 
     private Integer tryParseInt(String value) {
