@@ -1,40 +1,39 @@
 package cx.corp.lacuna;
 
-import com.sun.jna.*;
-import com.sun.jna.ptr.IntByReference;
+import com.sun.jna.FunctionMapper;
+import com.sun.jna.Library;
+import com.sun.jna.Native;
+import com.sun.jna.Platform;
 import cx.corp.lacuna.core.MemoryReader;
 import cx.corp.lacuna.core.NativeProcess;
 import cx.corp.lacuna.core.NativeProcessEnumerator;
+import cx.corp.lacuna.core.linux.LinuxConstants;
+import cx.corp.lacuna.core.linux.LinuxMemoryReader;
 import cx.corp.lacuna.core.linux.LinuxNativeProcessEnumerator;
 import cx.corp.lacuna.core.windows.WindowsMemoryReader;
 import cx.corp.lacuna.core.windows.WindowsNativeProcessEnumerator;
 import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.CamelToPascalCaseFunctionMapper;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
-import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
 import cx.corp.lacuna.core.windows.winapi.Psapi;
 
-import java.util.*;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
-       /* NativeProcessEnumerator enumerator = Platform.isWindows()
-                ? bootstrapWindowsEnumerator()
-                : new LinuxNativeProcessEnumerator();
-*/
-        Map<String, Object> options = new HashMap<>();
-        // Use a mapper so that we can use Java-style function names in the interfaces
-        FunctionMapper nameMapper = new CamelToPascalCaseFunctionMapper();
-        options.put(Library.OPTION_FUNCTION_MAPPER, nameMapper);
+    private static NativeProcessEnumerator processEnumerator;
+    private static MemoryReader memoryReader;
 
-        Kernel32 kernel = Native.loadLibrary("Kernel32", Kernel32.class, options);
-        Psapi psapi = Native.loadLibrary("Psapi", Psapi.class, options);
-        Advapi32 advapi = Native.loadLibrary("Advapi32", Advapi32.class, options);
+    public static void main(String[] args) throws IOException {
+        setupPlatformSpecificStuff();
 
-        NativeProcessEnumerator enumerator = new WindowsNativeProcessEnumerator(kernel, psapi, advapi);
-
-        List<NativeProcess> processes = enumerator.getProcesses();
+        List<NativeProcess> processes = processEnumerator.getProcesses();
         for (NativeProcess proc : processes) {
             System.out.printf(
                     "%-5d    %-8s    %s%n",
@@ -43,17 +42,48 @@ public class Main {
                     proc.getDescription());
         }
 
-        MemoryReader reader = new WindowsMemoryReader(kernel);
-        NativeProcess process =
-            processes.stream()
-                .filter(proc -> proc.getDescription().contains("TestTarget"))
-                .findFirst()
-                .get();
-        byte[] bytes = reader.read(process, 0x8AAC38, 16);
-        System.out.println("Arrays.toString(bytes) = " + Arrays.toString(bytes));
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter target PID: ");
+        final int targetPid = scanner.nextInt();
+
+        Optional<NativeProcess> proc = processes
+                .stream()
+                .filter(p -> p.getPid() == targetPid)
+                .findFirst();
+
+        if (!proc.isPresent()) {
+            System.out.println("Process " + targetPid +  " not found!");
+            return;
+        }
+
+        System.out.print("Enter target offset: 0x");
+        int offset = scanner.nextInt(16);
+        System.out.print("How many bytes to read? 0x");
+        int count = scanner.nextInt(16);
+
+        byte[] bytes = memoryReader.read(
+                proc.get(),
+                offset,
+                count);
+
+        for (int i = 0; i < bytes.length; i++) {
+            if (i != 0 && (i+1) % 16 == 0) {
+                System.out.println();
+            }
+            System.out.printf("%02X ", bytes[i]);
+        }
+        System.out.println();
     }
 
-    private static NativeProcessEnumerator bootstrapWindowsEnumerator() {
+    private static void setupPlatformSpecificStuff() {
+        if (Platform.isWindows()) {
+            setupForWindows();
+        } else {
+            setupForLinux();
+        }
+    }
+
+    private static void setupForWindows() {
         Map<String, Object> options = new HashMap<>();
         // Use a mapper so that we can use Java-style function names in the interfaces
         FunctionMapper nameMapper = new CamelToPascalCaseFunctionMapper();
@@ -63,6 +93,13 @@ public class Main {
         Psapi psapi = Native.loadLibrary("Psapi", Psapi.class, options);
         Advapi32 advapi = Native.loadLibrary("Advapi32", Advapi32.class, options);
 
-        return new WindowsNativeProcessEnumerator(kernel, psapi, advapi);
+        processEnumerator = new WindowsNativeProcessEnumerator(kernel, psapi, advapi);
+        memoryReader = new WindowsMemoryReader(kernel);
+    }
+
+    private static void setupForLinux() {
+        Path procRoot = LinuxConstants.DEFAULT_PROC_ROOT;
+        processEnumerator = new LinuxNativeProcessEnumerator(procRoot);
+        memoryReader = new LinuxMemoryReader(procRoot);
     }
 }

@@ -18,6 +18,13 @@ import java.util.Scanner;
 
 public class LinuxNativeProcessEnumerator implements NativeProcessEnumerator {
 
+    private static final String PROC_CMDLINE_PATH = "cmdline";
+    private final Path procRoot;
+
+    public LinuxNativeProcessEnumerator(Path procRoot) {
+        this.procRoot = procRoot;
+    }
+
     @Override
     public List<NativeProcess> getProcesses() {
         ArrayList<NativeProcess> processes = new ArrayList<>();
@@ -33,7 +40,8 @@ public class LinuxNativeProcessEnumerator implements NativeProcessEnumerator {
 
     private int readPidMax() {
         try {
-            return new Scanner(LinuxConstants.PID_MAX_FILE).nextInt();
+            Path pidMaxPath = procRoot.resolve(LinuxConstants.PID_MAX_RELATIVE_PATH);
+            return new Scanner(pidMaxPath).nextInt();
         } catch (IOException | NoSuchElementException ex) {
             return LinuxConstants.FALLBACK_PID_MAX;
         }
@@ -56,15 +64,16 @@ public class LinuxNativeProcessEnumerator implements NativeProcessEnumerator {
     }
 
     private File[] readProcDirectories(FileFilter filter) {
-        File[] procFiles = new File("/proc").listFiles(filter);
+        File[] procFiles = procRoot.toFile().listFiles(filter);
         if (procFiles == null) {
-            throw new ProcessEnumerationException("Unable to list contents of /proc!");
+            throw new ProcessEnumerationException("Failed to list contents of proc root " + procRoot + "!");
         }
         return procFiles;
     }
 
     private Path constructCmndLinePath(String pid) {
-        return Paths.get("/proc", pid, "cmdline");
+        Path childPath = Paths.get(pid, PROC_CMDLINE_PATH);
+        return procRoot.resolve(childPath);
     }
 
     private String readCmdLine(String pidString) {
