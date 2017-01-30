@@ -3,14 +3,13 @@ package cx.corp.lacuna.core.linux;
 import cx.corp.lacuna.core.MemoryReadException;
 import cx.corp.lacuna.core.MemoryReader;
 import cx.corp.lacuna.core.NativeProcess;
-import cx.corp.lacuna.core.common.Utilities;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
+import java.util.Arrays;
 
 public class LinuxMemoryReader implements MemoryReader {
 
@@ -49,7 +48,7 @@ public class LinuxMemoryReader implements MemoryReader {
 
         if (actuallyRead < bytesToRead) {
             // managed to read fewer bytes than expecting, trim array
-            return Utilities.copyToFittedArray(bytes, actuallyRead);
+            return Arrays.copyOf(bytes, actuallyRead);
         }
 
         return bytes;
