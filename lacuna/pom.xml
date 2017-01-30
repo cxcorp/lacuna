@@ -55,13 +55,9 @@
                 <configuration>
                     <excludedClasses>
                         <excludedClass>cx.corp.lacuna.Main</excludedClass>
+                        <excludedClass>cx.corp.lacuna.ui.*</excludedClass>
                     </excludedClasses>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.7</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -94,5 +90,5 @@
                 </configuration>
             </plugin>
         </plugins>
-    </build>   
+    </build>
 </project>
