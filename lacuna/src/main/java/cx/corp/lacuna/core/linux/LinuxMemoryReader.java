@@ -56,7 +56,7 @@ public class LinuxMemoryReader implements MemoryReader {
     }
 
     private File getProcessMemFile(NativeProcess process) {
-        Path mem = procRoot.resolve(Paths.get(process.getPid()+"", PROC_MEM_FILENAME));
+        Path mem = procRoot.resolve(Paths.get(process.getPid() + "", PROC_MEM_FILENAME));
         return mem.toFile();
     }
 }

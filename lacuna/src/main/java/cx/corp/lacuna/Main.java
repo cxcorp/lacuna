@@ -67,7 +67,7 @@ public class Main {
                 count);
 
         for (int i = 0; i < bytes.length; i++) {
-            if (i != 0 && (i+1) % 16 == 0) {
+            if (i != 0 && (i + 1) % 16 == 0) {
                 System.out.println();
             }
             System.out.printf("%02X ", bytes[i]);
