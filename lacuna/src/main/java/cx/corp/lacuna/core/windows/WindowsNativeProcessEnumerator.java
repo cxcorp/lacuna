@@ -5,13 +5,13 @@ import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.NativeProcessEnumerator;
 import cx.corp.lacuna.core.NativeProcess;
 import cx.corp.lacuna.core.ProcessEnumerationException;
-import cx.corp.lacuna.core.common.Utilities;
 import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.Psapi;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class WindowsNativeProcessEnumerator implements NativeProcessEnumerator {
@@ -34,7 +34,7 @@ public class WindowsNativeProcessEnumerator implements NativeProcessEnumerator {
         int[] pidBuffer = createMaxSizePidBuffer();
         int pidCount = enumerateProcesses(pidBuffer);
         // Trim the unused array values. Well, copy them to a smaller array.
-        return Utilities.copyToFittedArray(pidBuffer, pidCount);
+        return Arrays.copyOf(pidBuffer, pidCount);
     }
 
     private int[] createMaxSizePidBuffer() {
