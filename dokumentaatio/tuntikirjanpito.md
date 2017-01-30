@@ -10,3 +10,5 @@ Päivä | Tunnit | Kuvaus
 25.1.2016 | 6h | Muistin luku Windowsilla, alustava versio. WinAPI:n muistinlukufunktioiden käytön opettelu.
 26.1.2016 | 1h | ^
 27.1.2016 | 5h | Muistin luku Windowsilla, enkapsulointi. Raporttien generointi.
+28.1.2016 | 4h | Alustava versio muistinlukemisesta Linuxilla.
+30.1.2016 | 7h | Linuxin muistinluku loppuun.
