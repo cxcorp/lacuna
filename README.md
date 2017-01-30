@@ -4,7 +4,7 @@ Program for reading and writing other programs' memory.
 Coursework for [Javalabra-2017-3](https://github.com/javaLabra/Javalabra2017-3).
 
 ## Current state
-Lacuna can currently dump the active process list on both Windows and Linux. Memory reading is supported on Windows via the `WindowsMemoryReader` class.
+Lacuna can currently dump the active process list and read a process' memory on both Windows and Linux.
 
 Tested platforms:
 * Windows:
@@ -25,11 +25,7 @@ See [Releases](https://github.com/cxcorp/lacuna/releases) for ready jars. See **
 5. Run Lacuna: `java -jar target/lacuna-<VERSION>.jar`
 
 ### Sample output
-#### Linux
-![](http://i.imgur.com/mhiWzFU.png)
-
-#### Windows
-![](http://i.imgur.com/IoEvW2d.png)
+![](http://i.imgur.com/nacDx4w.png)
 
 ## Links
 * [**Documentation**](https://github.com/cxcorp/lacuna/tree/master/dokumentaatio)
