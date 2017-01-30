@@ -6,6 +6,8 @@ Coursework for [Javalabra-2017-3](https://github.com/javaLabra/Javalabra2017-3).
 ## Current state
 Lacuna can currently dump the active process list and read a process' memory on both Windows and Linux.
 
+![](http://i.imgur.com/nacDx4w.png)
+
 Tested platforms:
 * Windows:
   - Microsoft Windows 10 Pro N (Build 14393)
@@ -23,9 +25,6 @@ See [Releases](https://github.com/cxcorp/lacuna/releases) for ready jars. See **
 4. Compile and package the project: `mvn clean package`. This step generates the .jar file in the target/ directory.
   - You may optionally choose to skip running unit tests: `mvn clean package -DskipTests`
 5. Run Lacuna: `java -jar target/lacuna-<VERSION>.jar`
-
-### Sample output
-![](http://i.imgur.com/nacDx4w.png)
 
 ## Links
 * [**Documentation**](https://github.com/cxcorp/lacuna/tree/master/dokumentaatio)
