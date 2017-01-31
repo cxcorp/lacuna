@@ -4,9 +4,7 @@ import cx.corp.lacuna.core.MemoryReadException;
 import cx.corp.lacuna.core.MemoryReader;
 import cx.corp.lacuna.core.NativeProcess;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -22,36 +20,44 @@ public class LinuxMemoryReader implements MemoryReader {
         this.procRoot = procRoot;
     }
 
+    /** {@inheritDoc}
+     *
+     * @throws MemoryReadException if the virtual memory file for the process cannot be opened,
+     *                             seeking to the requested offset fails, or reading the requested
+     *                             bytes fails.
+     */
     @Override
     public byte[] read(NativeProcess process, int offset, int bytesToRead) {
         File memFile = getProcessMemFile(process);
 
-        byte[] bytes = new byte[bytesToRead];
-        int actuallyRead = 0;
-
-        try (RandomAccessFile stream = new RandomAccessFile(memFile, FILE_MODE)) {
-            stream.seek(offset);
-            actuallyRead = stream.read(bytes, 0, bytesToRead);
+        try (FileInputStream stream = new FileInputStream(memFile)) {
+            return read(stream, offset, bytesToRead);
         } catch (IOException ex) {
-            String msg =
-                    "Reading process memory failed, see getCause()! Memory path is "
-                    + memFile + ".";
-            throw new MemoryReadException(msg, ex);
+            throw new MemoryReadException("Failed to open memory file for reading, see getCause()!", ex);
+        }
+    }
+
+
+    byte[] read(InputStream input, int offset, int bytesToRead) {
+        byte[] bytes = new byte[bytesToRead];
+        int bytesRead;
+
+        try {
+            long skippedBytes = input.skip(offset);
+            if ((offset & 0xFFFFFFFFL) != skippedBytes) {
+                throw new MemoryReadException("Failed to seek to offset " + offset);
+            }
+
+            bytesRead = input.read(bytes);
+        } catch (IOException ex) {
+            throw new MemoryReadException("Reading process memory failed, see getCause()!", ex);
         }
 
-        if (actuallyRead < 1 && bytesToRead > actuallyRead) {
-            // was meant to read more bytes, but actually read nothing ??
-            String msg = "No bytes were read when expecting to read more! Memory path is "
-                    + memFile + ".";
-            throw new MemoryReadException(msg);
+        if (bytesRead == -1) {
+            throw new MemoryReadException("Reading process memory failed!");
         }
 
-        if (actuallyRead < bytesToRead) {
-            // managed to read fewer bytes than expecting, trim array
-            return Arrays.copyOf(bytes, actuallyRead);
-        }
-
-        return bytes;
+        return Arrays.copyOf(bytes, bytesRead);
     }
 
     private File getProcessMemFile(NativeProcess process) {
