@@ -10,6 +10,7 @@ Lacuna can currently dump the active process list and read a process' memory on 
 
 Tested platforms:
 * Windows:
+  - Microsoft Windows 8.1 Pro (Build 9600)
   - Microsoft Windows 10 Pro N (Build 14393)
 * Linux:
   - Ubuntu 16.04.1 LTS (Kernel 4.4.0-59-generic x86_64 GNU/Linux)
