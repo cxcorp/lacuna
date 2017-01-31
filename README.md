@@ -16,11 +16,13 @@ Tested platforms:
   - Ubuntu 16.04.1 LTS (Kernel 4.4.0-59-generic x86_64 GNU/Linux)
 
 ## Download
-See [Releases](https://github.com/cxcorp/lacuna/releases) for ready jars. See **Compiling** for compilation instructions.
+See [**Releases**](https://github.com/cxcorp/lacuna/releases) for ready jars. Run with `java -jar lacuna-<VERSION>.jar`
+
+For compilation instructions, see below.
 
 ## Compiling
 ### Maven
-1. Install [Apache Maven](https://maven.apache.org/install.html). Lacuna uses Maven to manage dependencies and manage lifecycle scripts.
+1. Install [Apache Maven](https://maven.apache.org/install.html). Lacuna uses Maven to manage dependencies and lifecycle scripts.
 2. Clone or download this repository.
 3. Go to the project folder: `cd lacuna/lacuna`
 4. Compile and package the project: `mvn clean package`. This step generates the .jar file in the target/ directory.
