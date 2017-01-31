@@ -7,6 +7,7 @@ import com.sun.jna.Platform;
 import cx.corp.lacuna.core.MemoryReader;
 import cx.corp.lacuna.core.NativeProcess;
 import cx.corp.lacuna.core.NativeProcessEnumerator;
+import cx.corp.lacuna.core.linux.FileMemoryProvider;
 import cx.corp.lacuna.core.linux.LinuxConstants;
 import cx.corp.lacuna.core.linux.LinuxMemoryReader;
 import cx.corp.lacuna.core.linux.LinuxNativeProcessEnumerator;
@@ -19,6 +20,7 @@ import cx.corp.lacuna.core.windows.winapi.Psapi;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,6 +102,7 @@ public class Main {
     private static void setupForLinux() {
         Path procRoot = LinuxConstants.DEFAULT_PROC_ROOT;
         processEnumerator = new LinuxNativeProcessEnumerator(procRoot);
-        memoryReader = new LinuxMemoryReader(procRoot);
+        FileMemoryProvider memProvider = new FileMemoryProvider(Paths.get("/proc"), "mem");
+        memoryReader = new LinuxMemoryReader(memProvider);
     }
 }

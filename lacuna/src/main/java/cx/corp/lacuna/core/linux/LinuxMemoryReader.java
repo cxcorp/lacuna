@@ -4,20 +4,19 @@ import cx.corp.lacuna.core.MemoryReadException;
 import cx.corp.lacuna.core.MemoryReader;
 import cx.corp.lacuna.core.NativeProcess;
 
-import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
 public class LinuxMemoryReader implements MemoryReader {
 
-    private static final String PROC_MEM_FILENAME = "mem";
-    private static final String FILE_MODE = "r";
+    private final MemoryProvider memoryProvider;
 
-    private final Path procRoot;
-
-    public LinuxMemoryReader(Path procRoot) {
-        this.procRoot = procRoot;
+    public LinuxMemoryReader(MemoryProvider memoryProvider) {
+        if (memoryProvider == null) {
+            throw new IllegalArgumentException("memoryProvider cannot be null");
+        }
+        this.memoryProvider = memoryProvider;
     }
 
     /** {@inheritDoc}
@@ -28,40 +27,39 @@ public class LinuxMemoryReader implements MemoryReader {
      */
     @Override
     public byte[] read(NativeProcess process, int offset, int bytesToRead) {
-        File memFile = getProcessMemFile(process);
+        validateArguments(process, offset);
 
-        try (FileInputStream stream = new FileInputStream(memFile)) {
-            return read(stream, offset, bytesToRead);
-        } catch (IOException ex) {
-            throw new MemoryReadException("Failed to open memory file for reading, see getCause()!", ex);
-        }
-    }
-
-
-    byte[] read(InputStream input, int offset, int bytesToRead) {
         byte[] bytes = new byte[bytesToRead];
         int bytesRead;
 
-        try {
+        try (InputStream input = memoryProvider.open(process)) {
+            if (input == null) {
+                throw new MemoryReadException("MemoryProvider provided a null stream!");
+            }
+
             long skippedBytes = input.skip(offset);
-            if ((offset & 0xFFFFFFFFL) != skippedBytes) {
+            if (offset != skippedBytes) {
                 throw new MemoryReadException("Failed to seek to offset " + offset);
             }
 
-            bytesRead = input.read(bytes);
+            bytesRead = input.read(bytes, 0, bytesToRead);
+
+            if (bytesRead == -1) {
+                throw new MemoryReadException("Reading process memory failed!");
+            }
+
+            return Arrays.copyOf(bytes, bytesRead);
         } catch (IOException ex) {
             throw new MemoryReadException("Reading process memory failed, see getCause()!", ex);
         }
-
-        if (bytesRead == -1) {
-            throw new MemoryReadException("Reading process memory failed!");
-        }
-
-        return Arrays.copyOf(bytes, bytesRead);
     }
 
-    private File getProcessMemFile(NativeProcess process) {
-        Path mem = procRoot.resolve(Paths.get(process.getPid() + "", PROC_MEM_FILENAME));
-        return mem.toFile();
+    private static void validateArguments(NativeProcess process, int offset) {
+        if (process == null) {
+            throw new IllegalArgumentException("process cannot be null");
+        }
+        if (offset < 0) {
+            throw new IllegalArgumentException("offset cannot be negative");
+        }
     }
 }
