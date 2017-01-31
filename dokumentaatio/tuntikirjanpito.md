@@ -11,4 +11,5 @@ Päivä | Tunnit | Kuvaus
 26.1.2016 | 1h | ^
 27.1.2016 | 5h | Muistin luku Windowsilla, enkapsulointi. Raporttien generointi.
 28.1.2016 | 4h | Alustava versio muistinlukemisesta Linuxilla.
-30.1.2016 | 7h | Linuxin muistinluku loppuun.
+30.1.2016 | 8h | Linuxin muistinluku loppuun.
+31.1.2016 | 2h | Mavenin raportointitoiminnon tutkiminen, mavenin site-toiminnon tutkiminen, uuden releasen luonti.
