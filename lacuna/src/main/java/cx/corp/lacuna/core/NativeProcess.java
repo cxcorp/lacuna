@@ -1,5 +1,7 @@
 package cx.corp.lacuna.core;
 
+import java.util.Objects;
+
 public class NativeProcess {
 
     public static final String UNKNOWN_OWNER = "";
@@ -65,5 +67,20 @@ public class NativeProcess {
      */
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NativeProcess process = (NativeProcess) o;
+        return pid == process.pid &&
+            Objects.equals(description, process.description) &&
+            Objects.equals(owner, process.owner);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pid, description, owner);
     }
 }
