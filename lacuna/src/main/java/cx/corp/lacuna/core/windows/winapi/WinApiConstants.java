@@ -47,6 +47,4 @@ public final class WinApiConstants {
      * depicts that the callee is requesting a TokenOwner struct.
      */
     public static final int GETTOKENINFORMATION_TOKENUSER = 1;
-
-    public static final int ERROR_INSUFFICIENT_BUFFER = 122;
 }

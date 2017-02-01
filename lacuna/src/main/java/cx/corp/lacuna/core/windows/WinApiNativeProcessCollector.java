@@ -5,22 +5,27 @@ import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.NativeProcess;
+import cx.corp.lacuna.core.NativeProcessCollector;
 import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
+import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
-public class WindowsNativeProcessInfoGatherer {
+public class WinApiNativeProcessCollector implements NativeProcessCollector {
 
     private final Advapi32 advapi;
     private final Kernel32 kernel;
 
-    public WindowsNativeProcessInfoGatherer(Kernel32 kernel, Advapi32 advapi) {
+    public WinApiNativeProcessCollector(Kernel32 kernel, Advapi32 advapi) {
+        if (kernel == null || advapi == null) {
+            throw new IllegalArgumentException("Parameters cannot be null!");
+        }
         this.advapi = advapi;
         this.kernel = kernel;
     }
 
-    public NativeProcess gather(int pid) {
+    public NativeProcess collect(int pid) {
         NativeProcess process = new NativeProcess();
         process.setPid(pid);
 
@@ -82,7 +87,7 @@ public class WindowsNativeProcessInfoGatherer {
                 null,
                 0,
                 bytesNeeded);
-        if (!success && Native.getLastError() != WinApiConstants.ERROR_INSUFFICIENT_BUFFER) {
+        if (!success && Native.getLastError() != SystemErrorCode.INSUFFICIENT_BUFFER.getSystemErrorId()) {
             return NativeProcess.UNKNOWN_OWNER;
         }
 

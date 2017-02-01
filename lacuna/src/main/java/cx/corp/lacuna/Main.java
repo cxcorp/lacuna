@@ -6,13 +6,17 @@ import com.sun.jna.Native;
 import com.sun.jna.Platform;
 import cx.corp.lacuna.core.MemoryReader;
 import cx.corp.lacuna.core.NativeProcess;
+import cx.corp.lacuna.core.NativeProcessCollector;
 import cx.corp.lacuna.core.NativeProcessEnumerator;
+import cx.corp.lacuna.core.PidEnumerator;
 import cx.corp.lacuna.core.linux.FileMemoryProvider;
 import cx.corp.lacuna.core.linux.LinuxConstants;
 import cx.corp.lacuna.core.linux.LinuxMemoryReader;
 import cx.corp.lacuna.core.linux.LinuxNativeProcessEnumerator;
 import cx.corp.lacuna.core.windows.WindowsMemoryReader;
+import cx.corp.lacuna.core.windows.WinApiNativeProcessCollector;
 import cx.corp.lacuna.core.windows.WindowsNativeProcessEnumerator;
+import cx.corp.lacuna.core.windows.WinApiPidEnumerator;
 import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.CamelToPascalCaseFunctionMapper;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
@@ -95,7 +99,9 @@ public class Main {
         Psapi psapi = Native.loadLibrary("Psapi", Psapi.class, options);
         Advapi32 advapi = Native.loadLibrary("Advapi32", Advapi32.class, options);
 
-        processEnumerator = new WindowsNativeProcessEnumerator(kernel, psapi, advapi);
+        PidEnumerator enumerator = new WinApiPidEnumerator(psapi);
+        NativeProcessCollector collector = new WinApiNativeProcessCollector(kernel, advapi);
+        processEnumerator = new WindowsNativeProcessEnumerator(enumerator, collector);
         memoryReader = new WindowsMemoryReader(kernel);
     }
 
