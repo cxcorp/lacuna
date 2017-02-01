@@ -1,0 +1,11 @@
+language: java
+jdk:
+  - oraclejdk8
+before_install: cd lacuna
+
+# OracleJDK 8 and JavaFX projects may need to update to the latest available version from a repository.
+sudo: false
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
