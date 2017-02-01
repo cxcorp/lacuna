@@ -43,6 +43,11 @@ public class MockKernel32 implements Kernel32 {
     }
 
     @Override
+    public int getProcessId(int handle) {
+        return 0;
+    }
+
+    @Override
     public int openProcess(int processAccessFlags, boolean bInheritHandle, int processId) {
         return openProcessReturnValue;
     }

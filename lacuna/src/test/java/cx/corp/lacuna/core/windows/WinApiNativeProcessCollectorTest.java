@@ -92,9 +92,4 @@ public class WinApiNativeProcessCollectorTest {
 
         assertEquals(NativeProcess.UNKNOWN_DESCRIPTION, proc.getDescription());
     }
-
-    @Test
-    public void collectGetsCorrect() {
-        
-    }
 }
