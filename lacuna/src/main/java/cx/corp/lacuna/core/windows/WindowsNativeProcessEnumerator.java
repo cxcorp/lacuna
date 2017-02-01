@@ -1,73 +1,32 @@
 package cx.corp.lacuna.core.windows;
 
-import com.sun.jna.Native;
-import com.sun.jna.ptr.IntByReference;
+import cx.corp.lacuna.core.NativeProcessCollector;
 import cx.corp.lacuna.core.NativeProcessEnumerator;
 import cx.corp.lacuna.core.NativeProcess;
-import cx.corp.lacuna.core.ProcessEnumerationException;
-import cx.corp.lacuna.core.windows.winapi.Advapi32;
-import cx.corp.lacuna.core.windows.winapi.Kernel32;
-import cx.corp.lacuna.core.windows.winapi.Psapi;
-import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
+import cx.corp.lacuna.core.PidEnumerator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class WindowsNativeProcessEnumerator implements NativeProcessEnumerator {
 
-    private final WindowsNativeProcessInfoGatherer infoGatherer;
-    private final Psapi psapi;
+    private final NativeProcessCollector collector;
+    private final PidEnumerator pidEnumerator;
 
-    public WindowsNativeProcessEnumerator(Kernel32 kernel, Psapi psapi, Advapi32 advapi) {
-        this.infoGatherer = new WindowsNativeProcessInfoGatherer(kernel, advapi); // todo: inject this some day
-        this.psapi = psapi;
+    public WindowsNativeProcessEnumerator(PidEnumerator pidEnumerator, NativeProcessCollector collector) {
+        if (pidEnumerator == null || collector == null) {
+            throw new IllegalArgumentException("Parameters cannot be null!");
+        }
+
+        this.pidEnumerator = pidEnumerator;
+        this.collector = collector;
     }
 
     @Override
     public List<NativeProcess> getProcesses() {
-        int[] pids = getProcessIds();
-        return constructProcessModels(pids);
+        return pidEnumerator
+            .getPids()
+            .mapToObj(collector::collect)
+            .collect(Collectors.toList());
     }
-
-    private int[] getProcessIds() {
-        int[] pidBuffer = createMaxSizePidBuffer();
-        int pidCount = enumerateProcesses(pidBuffer);
-        // Trim the unused array values. Well, copy them to a smaller array.
-        return Arrays.copyOf(pidBuffer, pidCount);
-    }
-
-    private int[] createMaxSizePidBuffer() {
-        return new int[WinApiConstants.MAX_PROCESSES_SUPPORTED];
-    }
-
-    private int enumerateProcesses(int[] pidBuffer) {
-        IntByReference bytesReturned = new IntByReference(0);
-        if (!psapi.enumProcesses(pidBuffer, pidBuffer.length, bytesReturned)) {
-            throw new ProcessEnumerationException(
-                    "Kernel32 EnumProcesses failed with error code " + Native.getLastError());
-        }
-        return byteCountToIntCount(bytesReturned.getValue());
-    }
-
-    private int byteCountToIntCount(int bytes) {
-        return bytes / WinApiConstants.SIZEOF_INT;
-    }
-
-    private List<NativeProcess> constructProcessModels(int[] pids) {
-        ArrayList<NativeProcess> processes = new ArrayList<>();
-        for (int pid : pids) {
-            NativeProcess process = infoGatherer.gather(pid);
-            processes.add(process);
-        }
-        return processes;
-    }
-
-
-
-
-
-
-
-
 }

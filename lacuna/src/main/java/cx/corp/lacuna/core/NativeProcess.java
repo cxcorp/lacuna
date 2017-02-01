@@ -9,6 +9,14 @@ public class NativeProcess {
     private String description;
     private String owner;
 
+    public NativeProcess() { }
+
+    public NativeProcess(int pid, String description, String owner) {
+        this.pid = pid;
+        this.description = description;
+        this.owner = owner;
+    }
+
     /** Gets the process identifier.
      *
      * @return The PID.
