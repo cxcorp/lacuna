@@ -1,7 +1,12 @@
 language: java
 jdk:
   - oraclejdk8
+
+# actual code is inside lacuna/lacuna
 before_install: cd lacuna
+
+# verify runs both unit and integration tests
+script: mvn verify -B
 
 # OracleJDK 8 and JavaFX projects may need to update to the latest available version from a repository.
 sudo: false
