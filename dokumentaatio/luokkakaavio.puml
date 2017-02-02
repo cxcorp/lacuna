@@ -1,0 +1,73 @@
+@startuml
+
+package cx.corp.lacuna.core.domain {
+    class NativeProcess
+}
+
+package cx.corp.lacuna.core {
+    interface MemoryReader {
+        read(NativeProcess, int, int) : byte[]
+    }
+    interface NativeProcessEnumerator {
+        getProcesses() : List<NativeProcess>
+    }
+    
+    MemoryReader ..>  "1" NativeProcess : uses
+    NativeProcessEnumerator ..> "0..*" NativeProcess : creates
+}
+
+package cx.corp.lacuna.core.windows {
+
+    package cx.corp.lacuna.core.windows.winapi {
+        interface Kernel32
+        interface Advapi32
+        interface Psapi
+    }
+    
+    interface NativeProcessCollector {
+        NativeProcess collect(int)
+    }
+    interface PidEnumerator {
+        getPids() : IntStream
+    }
+
+    class WindowsNativeProcessEnumerator
+    class WinApiNativeProcessCollector
+    class WinApiPidEnumerator
+    class WindowsMemoryReader
+    
+    NativeProcessEnumerator <|.. WindowsNativeProcessEnumerator
+    WindowsNativeProcessEnumerator "*" -- "1" PidEnumerator
+    WindowsNativeProcessEnumerator "*" -- "1" NativeProcessCollector
+    
+    NativeProcessCollector <|.. WinApiNativeProcessCollector
+    WinApiNativeProcessCollector "*" -- "1" Kernel32
+    WinApiNativeProcessCollector "*" -- "1" Advapi32
+    
+    PidEnumerator <|.. WinApiPidEnumerator
+    WinApiPidEnumerator "*" -- "1" Psapi
+    
+    MemoryReader <|.. WindowsMemoryReader
+    WindowsMemoryReader "*" -- "1" Kernel32
+}
+
+package cx.corp.lacuna.core.linux {
+    interface MemoryProvider {
+        open(NativeProcess) : InputStream
+    }
+    class LinuxNativeProcessEnumerator
+    class LinuxMemoryReader
+    class ProcFileFilter
+    class FileMemoryProvider
+    
+    NativeProcessEnumerator <|.. LinuxNativeProcessEnumerator
+    LinuxNativeProcessEnumerator *-- "1" ProcFileFilter
+    
+    MemoryProvider ..> "1" NativeProcess : uses
+    MemoryProvider <|.. FileMemoryProvider
+    
+    MemoryReader <|.. LinuxMemoryReader
+    LinuxMemoryReader "*" -- "1" MemoryProvider
+}
+
+@enduml
