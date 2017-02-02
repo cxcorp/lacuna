@@ -13,6 +13,9 @@ import cx.corp.lacuna.core.linux.FileMemoryProvider;
 import cx.corp.lacuna.core.linux.LinuxConstants;
 import cx.corp.lacuna.core.linux.LinuxMemoryReader;
 import cx.corp.lacuna.core.linux.LinuxNativeProcessEnumerator;
+import cx.corp.lacuna.core.windows.ProcessOpenException;
+import cx.corp.lacuna.core.windows.ProcessOpener;
+import cx.corp.lacuna.core.windows.WinApiProcessOpener;
 import cx.corp.lacuna.core.windows.WindowsMemoryReader;
 import cx.corp.lacuna.core.windows.WinApiNativeProcessCollector;
 import cx.corp.lacuna.core.windows.WindowsNativeProcessEnumerator;
@@ -100,7 +103,8 @@ public class Main {
         Advapi32 advapi = Native.loadLibrary("Advapi32", Advapi32.class, options);
 
         PidEnumerator enumerator = new WinApiPidEnumerator(psapi);
-        NativeProcessCollector collector = new WinApiNativeProcessCollector(kernel, advapi);
+        ProcessOpener procOpener = new WinApiProcessOpener(kernel);
+        NativeProcessCollector collector = new WinApiNativeProcessCollector(procOpener, kernel, advapi);
         processEnumerator = new WindowsNativeProcessEnumerator(enumerator, collector);
         memoryReader = new WindowsMemoryReader(kernel);
     }

@@ -17,28 +17,35 @@ public class WinApiNativeProcessCollectorTest {
     private MockKernel32 kernel;
     private MockAdvapi32 advapi;
     private WinApiNativeProcessCollector collector;
+    private MockProcessOpener processOpener;
 
     @Before
     public void setUp() {
         kernel = new MockKernel32();
         advapi = new MockAdvapi32();
-        collector = new WinApiNativeProcessCollector(kernel, advapi);
+        processOpener = new MockProcessOpener();
+        processOpener.setOpenReturnValue(new MockProcessHandle(LEGAL_PROCESS_HANDLE));
+        collector = new WinApiNativeProcessCollector(processOpener, kernel, advapi);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void constructorThrowsIfProcessOpenerIsNull() {
+        new WinApiNativeProcessCollector(null, kernel, advapi);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIfKernelIsNull() {
-        new WinApiNativeProcessCollector(null, advapi);
+        new WinApiNativeProcessCollector(processOpener, null, advapi);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIfAdvapiIsNull() {
-        new WinApiNativeProcessCollector(kernel, null);
+        new WinApiNativeProcessCollector(processOpener, kernel, null);
     }
 
     @Test
-    public void collectGetsCorrectPidEvenIfDetailsFail() {
-        kernel.setQueryFullProcessImageSuccess(false);
-        advapi.setOpenProcessTokenReturnValue(false);
+    public void collectGetsCorrectPidEvenIfProcessCannotBeOpenedForDetails() {
+        processOpener.makeOpenThrowException();
         int pid = 555;
 
         NativeProcess process = collector.collect(pid);
@@ -47,12 +54,7 @@ public class WinApiNativeProcessCollectorTest {
 
     @Test
     public void collectGetsUnknownDescriptionIfProcessCannotBeOpened() {
-        kernel.setOpenProcessReturnValue(WinApiConstants.NULLPTR);
-        // make QueryFullProcessImageName succeed, it shouldn't even be called
-        // if the process cannot be opened!
-        kernel.setQueryFullProcessImageSuccess(true);
-        kernel.setQueryFullProcessImageNameExeName("shouldntgetme.exe");
-
+        processOpener.makeOpenThrowException();
         NativeProcess proc = collector.collect(123);
 
         assertEquals(NativeProcess.UNKNOWN_DESCRIPTION, proc.getDescription());
@@ -81,12 +83,7 @@ public class WinApiNativeProcessCollectorTest {
 
     @Test
     public void collectGetsUnknownOwnerIfProcessCannotBeOpened() {
-        kernel.setOpenProcessReturnValue(WinApiConstants.NULLPTR);
-        // make QueryFullProcessImageName succeed, it shouldn't even be called
-        // if the process cannot be opened!
-        advapi.setOpenProcessTokenReturnValue(true);
-        advapi.setOpenProcessTokenTokenHandle(LEGAL_PROCESS_TOKEN);
-
+        processOpener.makeOpenThrowException();
 
         NativeProcess proc = collector.collect(123);
 

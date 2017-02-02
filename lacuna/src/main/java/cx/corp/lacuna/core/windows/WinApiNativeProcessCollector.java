@@ -15,40 +15,37 @@ import java.util.Optional;
 
 public class WinApiNativeProcessCollector implements NativeProcessCollector {
 
+    private ProcessOpener processOpener;
     private final Advapi32 advapi;
     private final Kernel32 kernel;
 
-    public WinApiNativeProcessCollector(Kernel32 kernel, Advapi32 advapi) {
-        if (kernel == null || advapi == null) {
+    public WinApiNativeProcessCollector(ProcessOpener processOpener, Kernel32 kernel, Advapi32 advapi) {
+        if (processOpener == null || kernel == null || advapi == null) {
             throw new IllegalArgumentException("Parameters cannot be null!");
         }
+        this.processOpener = processOpener;
         this.advapi = advapi;
         this.kernel = kernel;
     }
 
     public NativeProcess collect(int pid) {
-        NativeProcess process = new NativeProcessImpl();
-        process.setPid(pid);
+        NativeProcess process = new NativeProcessImpl(
+            pid,
+            NativeProcess.UNKNOWN_DESCRIPTION,
+            NativeProcess.UNKNOWN_OWNER);
 
-        int processHandle = openProcessForInformationReading(pid);
-        if (processHandle == WinApiConstants.NULLPTR) {
-            process.setDescription(NativeProcess.UNKNOWN_DESCRIPTION);
-            process.setOwner(NativeProcess.UNKNOWN_OWNER);
-            return process;
+        try (ProcessHandle handle = processOpener.open(pid, ProcessAccessFlags.QUERY_INFORMATION)) {
+            process.setDescription(getProcessDescription(handle));
+            process.setOwner(getProcessOwner(handle));
+        } catch (ProcessOpenException ex) {
+            // TODO: log
         }
 
-        process.setDescription(getProcessDescription(processHandle));
-        process.setOwner(getProcessOwner(processHandle));
-        closeHandleIfNotNull(processHandle);
         return process;
     }
 
-    private int openProcessForInformationReading(int pid) {
-        return kernel.openProcess(ProcessAccessFlags.QUERY_INFORMATION, false, pid);
-    }
-
-    private String getProcessDescription(int processHandle) {
-        return getProcessImageName(processHandle)
+    private String getProcessDescription(ProcessHandle processHandle) {
+        return getProcessImageName(processHandle.getNativeHandle())
             .orElse(NativeProcess.UNKNOWN_DESCRIPTION);
     }
 
@@ -70,9 +67,9 @@ public class WinApiNativeProcessCollector implements NativeProcessCollector {
             : Optional.empty();
     }
 
-    private String getProcessOwner(int processHandle) {
+    private String getProcessOwner(ProcessHandle processHandle) {
         // Get token for process
-        Optional<Integer> token = getProcessToken(processHandle);
+        Optional<Integer> token = getProcessToken(processHandle.getNativeHandle());
         if (!token.isPresent()) {
             return NativeProcess.UNKNOWN_OWNER;
         }
@@ -196,11 +193,5 @@ public class WinApiNativeProcessCollector implements NativeProcessCollector {
 
     private boolean callFailedBecauseBufferWasTooSmall() {
         return Native.getLastError() == SystemErrorCode.INSUFFICIENT_BUFFER.getSystemErrorId();
-    }
-
-    private void closeHandleIfNotNull(int handle) {
-        if (handle != WinApiConstants.NULLPTR) {
-            kernel.closeHandle(handle);
-        }
     }
 }
