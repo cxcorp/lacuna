@@ -32,7 +32,8 @@ For compilation instructions, see below.
 5. Run Lacuna: `java -jar target/lacuna-<VERSION>.jar`
 
 ## Links
-* [**Documentation**](https://github.com/cxcorp/lacuna/tree/master/dokumentaatio)
+* [**Javadoc**](https://htmlpreview.github.io/?https://github.com/cxcorp/lacuna/blob/master/javadoc/index.html)
+* [**Documentation**](https://github.com/cxcorp/lacuna/tree/master/dokumentaatio) (spec, diagrams, reports)
 * [**Trello**](https://trello.com/b/KGL8icHx/lacuna)
 
 ## License
