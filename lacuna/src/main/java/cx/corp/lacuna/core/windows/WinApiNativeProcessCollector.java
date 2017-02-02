@@ -2,7 +2,6 @@ package cx.corp.lacuna.core.windows;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
-import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
@@ -11,6 +10,8 @@ import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
+
+import java.util.Optional;
 
 public class WinApiNativeProcessCollector implements NativeProcessCollector {
 
@@ -36,7 +37,7 @@ public class WinApiNativeProcessCollector implements NativeProcessCollector {
             return process;
         }
 
-        process.setDescription(queryProcessName(processHandle));
+        process.setDescription(getProcessDescription(processHandle));
         process.setOwner(getProcessOwner(processHandle));
         closeHandleIfNotNull(processHandle);
         return process;
@@ -46,89 +47,126 @@ public class WinApiNativeProcessCollector implements NativeProcessCollector {
         return kernel.openProcess(ProcessAccessFlags.QUERY_INFORMATION, false, pid);
     }
 
-    private String queryProcessName(int processHandle) {
+    private String getProcessDescription(int processHandle) {
+        return getProcessImageName(processHandle)
+            .orElse(NativeProcess.UNKNOWN_DESCRIPTION);
+    }
+
+    private Optional<String> getProcessImageName(int processHandle) {
         char[] nameBuf = new char[WinApiConstants.MAX_FILENAME_LENGTH];
         IntByReference bufferSize = new IntByReference(nameBuf.length);
 
         boolean success =
-                kernel.queryFullProcessImageNameW(
-                        processHandle,
-                        WinApiConstants.QUERYFULLPROCESSIMAGENAME_PATHFORMAT_WIN32,
-                        nameBuf,
-                        bufferSize);
-
-        if (!success) {
-            return NativeProcess.UNKNOWN_DESCRIPTION;
-        }
+            kernel.queryFullProcessImageNameW(
+                processHandle,
+                WinApiConstants.QUERYFULLPROCESSIMAGENAME_PATHFORMAT_WIN32,
+                nameBuf,
+                bufferSize);
 
         // bufferSize gets updated with the amount of written characters
         // as a consequence of a successful call
-        return new String(nameBuf, 0, bufferSize.getValue());
+        return success
+            ? Optional.of(new String(nameBuf, 0, bufferSize.getValue()))
+            : Optional.empty();
     }
 
     private String getProcessOwner(int processHandle) {
         // Get token for process
+        Optional<Integer> token = getProcessToken(processHandle);
+        if (!token.isPresent()) {
+            return NativeProcess.UNKNOWN_OWNER;
+        }
+
+        // First find out how big of a buffer we need...
+        Optional<Integer> neededBufferLength = findNeededTokenInformationBufferLength(token.get());
+        if (!neededBufferLength.isPresent()) {
+            return NativeProcess.UNKNOWN_OWNER;
+        }
+
+        // Then get the information with a properly sized buffer...
+        Optional<Advapi32.TokenUser> user = getTokenUser(token.get(), neededBufferLength.get());
+        if (!user.isPresent()) {
+            return NativeProcess.UNKNOWN_OWNER;
+        }
+
+        Optional<String> tokenUserName = lookupTokenUserName(user.get().user);
+        if (!tokenUserName.isPresent()) {
+            return NativeProcess.UNKNOWN_OWNER;
+        }
+
+        return tokenUserName.get();
+    }
+
+    private Optional<Integer> getProcessToken(int processHandle) {
         IntByReference token = new IntByReference(0);
         boolean success =
             advapi.openProcessToken(
                 processHandle,
                 WinApiConstants.OPENPROCESSTOKEN_TOKEN_QUERY,
                 token);
-        if (!success) {
-            return NativeProcess.UNKNOWN_OWNER;
-        }
+        return success ? Optional.of(token.getValue()) : Optional.empty();
+    }
 
-        // First find out how big of a buffer we need...
+    private Optional<Integer> findNeededTokenInformationBufferLength(int processToken) {
         IntByReference bytesNeeded = new IntByReference(0);
-        success =
+        boolean success =
             advapi.getTokenInformation(
-                token.getValue(),
+                processToken,
                 WinApiConstants.GETTOKENINFORMATION_TOKENUSER,
                 null,
                 0,
                 bytesNeeded);
-        if (!success && Native.getLastError() != SystemErrorCode.INSUFFICIENT_BUFFER.getSystemErrorId()) {
-            return NativeProcess.UNKNOWN_OWNER;
-        }
 
-        // Then get the information with a properly sized buffer...
-        Memory memory = new Memory(bytesNeeded.getValue());
-        Pointer tokenUserPointer = memory.share(0);
-        success =
+        return success && callFailedBecauseBufferWasTooSmall()
+            ? Optional.of(bytesNeeded.getValue())
+            : Optional.empty();
+    }
+
+    private Optional<Advapi32.TokenUser> getTokenUser(int token, int infoBufferLength) {
+        Memory memory = new Memory(infoBufferLength);
+        IntByReference bufferLen = new IntByReference(infoBufferLength);
+        boolean success =
             advapi.getTokenInformation(
-                token.getValue(),
+                token,
                 WinApiConstants.GETTOKENINFORMATION_TOKENUSER,
-                tokenUserPointer,
+                memory,
                 (int) memory.size(),
-                bytesNeeded);
+                bufferLen);
 
         if (!success) {
-            return NativeProcess.UNKNOWN_DESCRIPTION;
+            return Optional.empty();
         }
 
-        Advapi32.TokenUser user = new Advapi32.TokenUser(tokenUserPointer);
-        // Look up name of Owner
+        try {
+            Advapi32.TokenUser user = new Advapi32.TokenUser(memory);
+            return Optional.of(user);
+        } catch (Error | Exception ex) {
+            return Optional.empty();
+        }
+    }
+
+    private Optional<String> lookupTokenUserName(int userPsid) {
         char[] nameBuffer = new char[WinApiConstants.MAX_USERNAME_LENGTH];
         IntByReference nameBufNeededLen = new IntByReference(nameBuffer.length);
         char[] domainBuffer = new char[WinApiConstants.MAX_DOMAIN_NAME_LENGTH];
         IntByReference domainBufNeededLen = new IntByReference(domainBuffer.length);
-
         IntByReference ignored = new IntByReference(0);
 
-        success =
+        boolean success =
             advapi.lookupAccountSidW(
                 WinApiConstants.NULLPTR,
-                user.user,
+                userPsid,
                 nameBuffer,
                 nameBufNeededLen,
                 domainBuffer,
                 domainBufNeededLen,
                 ignored);
-        if (!success) {
-            return NativeProcess.UNKNOWN_OWNER;
-        }
 
-        return new String(nameBuffer);
+        return success ? Optional.of(new String(nameBuffer)) : Optional.empty();
+    }
+
+    private boolean callFailedBecauseBufferWasTooSmall() {
+        return Native.getLastError() == SystemErrorCode.INSUFFICIENT_BUFFER.getSystemErrorId();
     }
 
     private void closeHandleIfNotNull(int handle) {
