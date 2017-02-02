@@ -13,19 +13,20 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> java.lang.reflect.Method;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment">/** Provides mapping from camelCase Java method names to PascalCase WinAPI names.</em>
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../cx/corp/lacuna/core/windows/winapi/CamelToPascalCaseFunctionMapper.html">CamelToPascalCaseFunctionMapper</a> <strong class="jxr_keyword">implements</strong> FunctionMapper {
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>      @Override
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>      <strong class="jxr_keyword">public</strong> String getFunctionName(NativeLibrary nativeLibrary, Method method) {
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>          String name = method.getName();
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>          <strong class="jxr_keyword">return</strong> name == <strong class="jxr_keyword">null</strong> || name.length() &lt; 1 ? name : capitalizeFirstLetter(name);
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>      }
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String capitalizeFirstLetter(String string) {
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>          <strong class="jxr_keyword">return</strong> string.substring(0, 1).toUpperCase() + string.substring(1);
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>      }
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>  }
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * Provides mapping from camelCase Java method names to PascalCase WinAPI names.</em>
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../cx/corp/lacuna/core/windows/winapi/CamelToPascalCaseFunctionMapper.html">CamelToPascalCaseFunctionMapper</a> <strong class="jxr_keyword">implements</strong> FunctionMapper {
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String capitalizeFirstLetter(String string) {
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>          <strong class="jxr_keyword">return</strong> string.substring(0, 1).toUpperCase() + string.substring(1);
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>      }
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>      @Override
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>      <strong class="jxr_keyword">public</strong> String getFunctionName(NativeLibrary nativeLibrary, Method method) {
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>          String name = method.getName();
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>          <strong class="jxr_keyword">return</strong> name == <strong class="jxr_keyword">null</strong> || name.length() &lt; 1 ? name : capitalizeFirstLetter(name);
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>      }
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2017. All rights reserved.</div>

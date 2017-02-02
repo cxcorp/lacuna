@@ -15,19 +15,21 @@
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../../../cx/corp/lacuna/core/windows/winapi/Kernel32.html">Kernel32</a> <strong class="jxr_keyword">extends</strong> StdCallLibrary {
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>       <strong class="jxr_keyword">boolean</strong> closeHandle(<strong class="jxr_keyword">int</strong> handle);
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>      <strong class="jxr_keyword">int</strong> openProcess(<strong class="jxr_keyword">int</strong> processAccessFlags, <strong class="jxr_keyword">boolean</strong> bInheritHandle, <strong class="jxr_keyword">int</strong> processId);
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>      <strong class="jxr_keyword">int</strong> getProcessId(<strong class="jxr_keyword">int</strong> handle);
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>      <strong class="jxr_keyword">boolean</strong> queryFullProcessImageNameW(<strong class="jxr_keyword">int</strong> hProcess,
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>                                        <strong class="jxr_keyword">int</strong> dwFlags,
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>                                        <strong class="jxr_keyword">char</strong>[] lpExeName,
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>                                        IntByReference lpdwSize);
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>      <strong class="jxr_keyword">boolean</strong> readProcessMemory(<strong class="jxr_keyword">int</strong> processHandle,
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>                                <strong class="jxr_keyword">int</strong> baseAddress,
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>                                Memory buffer,
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>                                <strong class="jxr_keyword">int</strong> bufferSize,
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>                                IntByReference bytesRead);
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>  }
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>      <strong class="jxr_keyword">int</strong> openProcess(<strong class="jxr_keyword">int</strong> processAccessFlags, <strong class="jxr_keyword">boolean</strong> bInheritHandle, <strong class="jxr_keyword">int</strong> processId);
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>      <strong class="jxr_keyword">boolean</strong> queryFullProcessImageNameW(<strong class="jxr_keyword">int</strong> hProcess,
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>                                         <strong class="jxr_keyword">int</strong> dwFlags,
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>                                         <strong class="jxr_keyword">char</strong>[] lpExeName,
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>                                         IntByReference lpdwSize);
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>      <strong class="jxr_keyword">boolean</strong> readProcessMemory(<strong class="jxr_keyword">int</strong> processHandle,
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>                                <strong class="jxr_keyword">int</strong> baseAddress,
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>                                Memory buffer,
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>                                <strong class="jxr_keyword">int</strong> bufferSize,
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>                                IntByReference bytesRead);
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2017. All rights reserved.</div>
