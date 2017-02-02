@@ -17,8 +17,6 @@ public final class WinApiConstants {
      */
     public static final int MAX_FILENAME_LENGTH = 260;
 
-    public static final int MAX_USERNAME_LENGTH = 256;
-
     public static final int MAX_DOMAIN_NAME_LENGTH = 64;
 
     /** Size of an int on the supported platform.
