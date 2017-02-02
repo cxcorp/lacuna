@@ -117,7 +117,7 @@ public class WinApiNativeProcessCollector implements NativeProcessCollector {
                 0,
                 bytesNeeded);
 
-        return success && callFailedBecauseBufferWasTooSmall()
+        return !success && callFailedBecauseBufferWasTooSmall()
             ? Optional.of(bytesNeeded.getValue())
             : Optional.empty();
     }
