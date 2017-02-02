@@ -63,5 +63,5 @@ Käyttäjä
 * osoitekirjanmerkkien tuonti
 * ...
 
-## Kaaviot
-![Luokkakaavio](http://i.imgur.com/uM7K8yN.png)
+## Diagrammeja
+![](https://yuml.me/cf9898b8.png)
