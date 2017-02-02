@@ -5,6 +5,7 @@ import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.domain.NativeProcess;
+import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
@@ -25,7 +26,7 @@ public class WinApiNativeProcessCollector implements NativeProcessCollector {
     }
 
     public NativeProcess collect(int pid) {
-        NativeProcess process = new NativeProcess();
+        NativeProcess process = new NativeProcessImpl();
         process.setPid(pid);
 
         int processHandle = openProcessForInformationReading(pid);

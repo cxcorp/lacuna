@@ -2,6 +2,7 @@ package cx.corp.lacuna.core.linux;
 
 import cx.corp.lacuna.core.MemoryReadException;
 import cx.corp.lacuna.core.domain.NativeProcess;
+import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +23,7 @@ public class LinuxMemoryReaderTest {
     @Before
     public void setUp() {
         reader = new LinuxMemoryReader(p -> new ByteArrayInputStream(new byte[256]));
-        process = new NativeProcess();
+        process = new NativeProcessImpl();
         process.setPid(123);
         process.setDescription("ayy");
         process.setOwner("lmao");

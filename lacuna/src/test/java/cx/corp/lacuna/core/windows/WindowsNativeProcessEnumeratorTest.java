@@ -1,6 +1,7 @@
 package cx.corp.lacuna.core.windows;
 
 import cx.corp.lacuna.core.domain.NativeProcess;
+import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import cx.corp.lacuna.core.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +24,7 @@ public class WindowsNativeProcessEnumeratorTest {
     @Before
     public void setUp() {
         pidEnumerator = () -> Arrays.stream(new int[] {1});
-        collector = pid -> new NativeProcess(pid, "description", "owner");
+        collector = pid -> new NativeProcessImpl(pid, "description", "owner");
         enumerator = new WindowsNativeProcessEnumerator(pidEnumerator, collector);
     }
 
@@ -69,7 +70,7 @@ public class WindowsNativeProcessEnumeratorTest {
         pidDescriptions.put(3848, "ayy");
         IntStream pids = pidDescriptions.keySet().stream().mapToInt(p -> p);
         pidEnumerator = () -> pids;
-        collector = pid -> new NativeProcess(pid, pidDescriptions.get(pid), null);
+        collector = pid -> new NativeProcessImpl(pid, pidDescriptions.get(pid), null);
         enumerator = new WindowsNativeProcessEnumerator(pidEnumerator, collector);
 
         List<NativeProcess> processes = enumerator.getProcesses();
@@ -88,7 +89,7 @@ public class WindowsNativeProcessEnumeratorTest {
         pidOwners.put(1, null);
         IntStream pids = pidOwners.keySet().stream().mapToInt(p -> p);
         pidEnumerator = () -> pids;
-        collector = pid -> new NativeProcess(pid, null, pidOwners.get(pid));
+        collector = pid -> new NativeProcessImpl(pid, null, pidOwners.get(pid));
         enumerator = new WindowsNativeProcessEnumerator(pidEnumerator, collector);
 
 

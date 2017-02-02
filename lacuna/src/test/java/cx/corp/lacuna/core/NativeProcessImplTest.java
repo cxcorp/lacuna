@@ -1,17 +1,17 @@
 package cx.corp.lacuna.core;
 
-import cx.corp.lacuna.core.domain.NativeProcess;
+import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class NativeProcessTest {
-    private NativeProcess process;
+public class NativeProcessImplTest {
+    private NativeProcessImpl process;
 
     @Before
     public void setUp() {
-        process = new NativeProcess();
+        process = new NativeProcessImpl();
     }
 
     @Test
