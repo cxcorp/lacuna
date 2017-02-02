@@ -1,8 +1,9 @@
-package cx.corp.lacuna.core.windows;
+package cx.corp.lacuna.core.windows.winapi;
 
 import com.sun.jna.Native;
 import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.ProcessEnumerationException;
+import cx.corp.lacuna.core.windows.PidEnumerator;
 import cx.corp.lacuna.core.windows.winapi.Psapi;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 

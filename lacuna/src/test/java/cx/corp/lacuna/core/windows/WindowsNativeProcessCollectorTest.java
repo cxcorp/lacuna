@@ -1,21 +1,24 @@
 package cx.corp.lacuna.core.windows;
 
 import cx.corp.lacuna.core.domain.NativeProcess;
-import cx.corp.lacuna.core.windows.winapi.MockKernel32;
+import cx.corp.lacuna.core.windows.MockProcessHandle;
+import cx.corp.lacuna.core.windows.MockProcessOpener;
+import cx.corp.lacuna.core.windows.ProcessDescriptionGetter;
+import cx.corp.lacuna.core.windows.ProcessOwnerGetter;
+import cx.corp.lacuna.core.windows.WindowsNativeProcessCollector;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.annotation.Native;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
-public class WinApiNativeProcessCollectorTest {
+public class WindowsNativeProcessCollectorTest {
 
     private static final int LEGAL_PROCESS_HANDLE = 0x5;
     private static final int LEGAL_PROCESS_TOKEN = 123;
 
-    private WinApiNativeProcessCollector collector;
+    private WindowsNativeProcessCollector collector;
     private MockProcessOpener processOpener;
     private ProcessOwnerGetter ownerGetter;
     private ProcessDescriptionGetter descriptionGetter;
@@ -26,27 +29,27 @@ public class WinApiNativeProcessCollectorTest {
         processOpener.setOpenReturnValue(new MockProcessHandle(LEGAL_PROCESS_HANDLE));
         processOpener.doNotThrowExceptionOnOpen();
         // proxy the handle via another lambda so unit tests can just change the ownerGetter
-        // field instead of creating new instances of WinApiNativeProcessCollector
+        // field instead of creating new instances of WindowsNativeProcessCollector
         ownerGetter = handle -> Optional.empty();
         descriptionGetter = handle -> Optional.empty();
         ProcessOwnerGetter ownerProxy = handle -> ownerGetter.get(handle);
         ProcessDescriptionGetter descriptionProxy = handle -> descriptionGetter.get(handle);
-        collector = new WinApiNativeProcessCollector(processOpener, ownerProxy, descriptionProxy);
+        collector = new WindowsNativeProcessCollector(processOpener, ownerProxy, descriptionProxy);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIfProcessOpenerIsNull() {
-        new WinApiNativeProcessCollector(null, ownerGetter, descriptionGetter);
+        new WindowsNativeProcessCollector(null, ownerGetter, descriptionGetter);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIfOwnerGetterIsNull() {
-        new WinApiNativeProcessCollector(processOpener, null, descriptionGetter);
+        new WindowsNativeProcessCollector(processOpener, null, descriptionGetter);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIfDescriptionGetterIsNull() {
-        new WinApiNativeProcessCollector(processOpener, ownerGetter, null);
+        new WindowsNativeProcessCollector(processOpener, ownerGetter, null);
     }
 
     @Test

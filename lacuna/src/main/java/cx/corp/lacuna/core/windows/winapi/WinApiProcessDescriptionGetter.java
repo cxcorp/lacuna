@@ -1,7 +1,9 @@
-package cx.corp.lacuna.core.windows;
+package cx.corp.lacuna.core.windows.winapi;
 
 import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.domain.NativeProcess;
+import cx.corp.lacuna.core.windows.ProcessDescriptionGetter;
+import cx.corp.lacuna.core.windows.ProcessHandle;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 

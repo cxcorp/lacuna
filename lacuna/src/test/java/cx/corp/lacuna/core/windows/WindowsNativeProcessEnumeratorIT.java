@@ -8,6 +8,10 @@ import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.Psapi;
 import cx.corp.lacuna.core.windows.winapi.WinApiBootstrapper;
+import cx.corp.lacuna.core.windows.winapi.WinApiPidEnumerator;
+import cx.corp.lacuna.core.windows.winapi.WinApiProcessDescriptionGetter;
+import cx.corp.lacuna.core.windows.winapi.WinApiProcessOpener;
+import cx.corp.lacuna.core.windows.winapi.WinApiProcessOwnerGetter;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +52,7 @@ public class WindowsNativeProcessEnumeratorIT {
         ProcessOwnerGetter ownerGetter = new WinApiProcessOwnerGetter(advapi32);
         ProcessDescriptionGetter descriptionGetter = new WinApiProcessDescriptionGetter(kernel32);
         NativeProcessCollector collector =
-            new WinApiNativeProcessCollector(opener, ownerGetter, descriptionGetter);
+            new WindowsNativeProcessCollector(opener, ownerGetter, descriptionGetter);
         enumerator = new WindowsNativeProcessEnumerator(pidEnumerator, collector);
     }
 
