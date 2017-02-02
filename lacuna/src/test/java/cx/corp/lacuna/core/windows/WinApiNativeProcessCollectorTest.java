@@ -1,6 +1,6 @@
 package cx.corp.lacuna.core.windows;
 
-import cx.corp.lacuna.core.NativeProcess;
+import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.windows.winapi.MockAdvapi32;
 import cx.corp.lacuna.core.windows.winapi.MockKernel32;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;

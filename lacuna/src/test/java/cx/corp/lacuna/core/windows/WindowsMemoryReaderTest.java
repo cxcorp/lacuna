@@ -2,9 +2,8 @@ package cx.corp.lacuna.core.windows;
 
 import com.sun.jna.Native;
 import cx.corp.lacuna.core.MemoryReadException;
-import cx.corp.lacuna.core.NativeProcess;
+import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.ProcessAccessException;
-import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.MockKernel32;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;

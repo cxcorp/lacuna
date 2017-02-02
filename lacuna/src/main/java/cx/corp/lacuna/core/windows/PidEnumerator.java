@@ -1,4 +1,4 @@
-package cx.corp.lacuna.core;
+package cx.corp.lacuna.core.windows;
 
 import java.util.stream.IntStream;
 

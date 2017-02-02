@@ -1,7 +1,7 @@
 package cx.corp.lacuna.core.linux;
 
 import cx.corp.lacuna.core.MemoryReadException;
-import cx.corp.lacuna.core.NativeProcess;
+import cx.corp.lacuna.core.domain.NativeProcess;
 import org.junit.Before;
 import org.junit.Test;
 
