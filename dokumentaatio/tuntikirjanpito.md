@@ -13,3 +13,4 @@ Päivä | Tunnit | Kuvaus
 28.1.2016 | 4h | Alustava versio muistinlukemisesta Linuxilla.
 30.1.2016 | 8h | Linuxin muistinluku loppuun.
 31.1.2016 | 5h | Mavenin raportointitoiminnon tutkiminen, mavenin site-toiminnon tutkiminen, uuden releasen luonti. Linux-puolen yksikkötestaus. Yksikkötestaamisen tutkimista.
+1.2.2016 | 7h | Windows-luokkien refaktorointi testattavammaksi. Windows-luokkien yksikkö- ja integraatiotestien laajennus. Traviksen konfigurointi. UML-kaavioiden uudelleenluonti.
