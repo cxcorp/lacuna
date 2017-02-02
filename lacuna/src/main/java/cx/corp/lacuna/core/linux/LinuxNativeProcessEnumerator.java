@@ -1,6 +1,7 @@
 package cx.corp.lacuna.core.linux;
 
 import cx.corp.lacuna.core.domain.NativeProcess;
+import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import cx.corp.lacuna.core.NativeProcessEnumerator;
 import cx.corp.lacuna.core.ProcessEnumerationException;
 
@@ -48,7 +49,7 @@ public class LinuxNativeProcessEnumerator implements NativeProcessEnumerator {
     }
 
     private NativeProcess readNativeProcess(File procDirectory) {
-        NativeProcess process = new NativeProcess();
+        NativeProcess process = new NativeProcessImpl();
 
         String directoryName = procDirectory.getName();
         int pid = Integer.parseInt(directoryName);

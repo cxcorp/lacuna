@@ -1,6 +1,7 @@
 package cx.corp.lacuna.core.linux;
 
 import cx.corp.lacuna.core.domain.NativeProcess;
+import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +34,7 @@ public class FileMemoryProviderTest {
 
     @Test(expected = IOException.class)
     public void openThrowsIfProcessMemFileDoesntExist() throws IOException {
-        NativeProcess proc = new NativeProcess();
+        NativeProcess proc = new NativeProcessImpl();
         proc.setPid(-1);
         provider.open(proc);
     }

@@ -3,6 +3,7 @@ package cx.corp.lacuna.core.windows;
 import com.sun.jna.Native;
 import cx.corp.lacuna.core.MemoryReadException;
 import cx.corp.lacuna.core.domain.NativeProcess;
+import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import cx.corp.lacuna.core.ProcessAccessException;
 import cx.corp.lacuna.core.windows.winapi.MockKernel32;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
@@ -23,7 +24,7 @@ public class WindowsMemoryReaderTest {
     public void setUp() {
         kernel = new MockKernel32();
         reader = new WindowsMemoryReader(kernel);
-        process = new NativeProcess();
+        process = new NativeProcessImpl();
     }
 
     @Test(expected = ProcessAccessException.class)
