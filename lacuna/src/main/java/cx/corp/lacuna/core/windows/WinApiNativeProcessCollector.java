@@ -89,7 +89,13 @@ public class WinApiNativeProcessCollector implements NativeProcessCollector {
             return NativeProcess.UNKNOWN_OWNER;
         }
 
-        Optional<String> tokenUserName = lookupTokenUserName(user.get().user);
+        // includes null terminator!
+        Optional<Integer> nameBufferLen = findNeededTokenUserNameBufferLength(user.get().user);
+        if (!nameBufferLen.isPresent()) {
+            return NativeProcess.UNKNOWN_OWNER;
+        }
+
+        Optional<String> tokenUserName = lookupTokenUserName(user.get().user, nameBufferLen.get());
         if (!tokenUserName.isPresent()) {
             return NativeProcess.UNKNOWN_OWNER;
         }
@@ -145,8 +151,28 @@ public class WinApiNativeProcessCollector implements NativeProcessCollector {
         }
     }
 
-    private Optional<String> lookupTokenUserName(int userPsid) {
-        char[] nameBuffer = new char[WinApiConstants.MAX_USERNAME_LENGTH];
+    private Optional<Integer> findNeededTokenUserNameBufferLength(int userPsid) {
+        IntByReference nameLength = new IntByReference(0);
+        IntByReference domainLength = new IntByReference(0);
+        IntByReference ignored = new IntByReference(0);
+
+        boolean success =
+            advapi.lookupAccountSidW(
+                WinApiConstants.NULLPTR,
+                userPsid,
+                null,
+                nameLength,
+                null,
+                domainLength,
+                ignored);
+
+        return !success && callFailedBecauseBufferWasTooSmall()
+            ? Optional.of(nameLength.getValue())
+            : Optional.empty();
+    }
+
+    private Optional<String> lookupTokenUserName(int userPsid, int nameBufferLenWithNullTerminator) {
+        char[] nameBuffer = new char[nameBufferLenWithNullTerminator];
         IntByReference nameBufNeededLen = new IntByReference(nameBuffer.length);
         char[] domainBuffer = new char[WinApiConstants.MAX_DOMAIN_NAME_LENGTH];
         IntByReference domainBufNeededLen = new IntByReference(domainBuffer.length);
@@ -162,7 +188,10 @@ public class WinApiNativeProcessCollector implements NativeProcessCollector {
                 domainBufNeededLen,
                 ignored);
 
-        return success ? Optional.of(new String(nameBuffer)) : Optional.empty();
+        int lengthWithoutNullTerminator = nameBufferLenWithNullTerminator - 1;
+        return success
+            ? Optional.of(new String(nameBuffer, 0, lengthWithoutNullTerminator))
+            : Optional.empty();
     }
 
     private boolean callFailedBecauseBufferWasTooSmall() {
