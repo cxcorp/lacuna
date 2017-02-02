@@ -9,8 +9,12 @@ public class MockProcessOpener implements ProcessOpener {
         this.openReturnValue = openReturnValue;
     }
 
-    public void makeOpenThrowException() {
+    public void throwExceptionOnOpen() {
         this.throwException = true;
+    }
+
+    public void doNotThrowExceptionOnOpen() {
+        this.throwException = false;
     }
 
     @Override
