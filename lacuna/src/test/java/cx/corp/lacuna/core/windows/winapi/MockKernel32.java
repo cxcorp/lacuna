@@ -19,6 +19,7 @@ public class MockKernel32 implements Kernel32 {
     private boolean readProcessMemoryReturnValue = false;
     private byte[] readProcessReadBytes = new byte[0];
     private String queryFullProcessImageNameExeName = "";
+    private int queryFullProcessImageNameBytesWritten = 0;
     private boolean queryFullProcessImageSuccess = false;
 
     public void setOpenProcessReturnValue(int returnValue) {
@@ -39,6 +40,10 @@ public class MockKernel32 implements Kernel32 {
 
     public void setQueryFullProcessImageSuccess(boolean queryFullProcessImageSuccess) {
         this.queryFullProcessImageSuccess = queryFullProcessImageSuccess;
+    }
+
+    public void setQueryFullProcessImageNameBytesWritten(int bytes) {
+        this.queryFullProcessImageNameBytesWritten = bytes;
     }
 
     public List<Integer> getClosedHandles() {
@@ -69,7 +74,7 @@ public class MockKernel32 implements Kernel32 {
         char[] exeName = queryFullProcessImageNameExeName.toCharArray();
         int bufSize = Math.min(exeName.length, lpdwSize.getValue());
         System.arraycopy(exeName, 0, lpExeName, 0, bufSize);
-        lpdwSize.setValue(bufSize);
+        lpdwSize.setValue(queryFullProcessImageNameBytesWritten);
         return true;
     }
 

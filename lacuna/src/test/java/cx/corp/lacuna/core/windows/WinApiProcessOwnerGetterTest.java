@@ -40,6 +40,4 @@ public class WinApiProcessOwnerGetterTest {
 
         assertFalse(ret.isPresent());
     }
-
-
 }
