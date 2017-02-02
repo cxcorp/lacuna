@@ -6,10 +6,10 @@ package cx.corp.lacuna.core.domain {
 
 package cx.corp.lacuna.core {
     interface MemoryReader {
-        read(NativeProcess, int, int) : byte[]
+        {abstract} read(NativeProcess, int, int) : byte[]
     }
     interface NativeProcessEnumerator {
-        getProcesses() : List<NativeProcess>
+        {abstract} getProcesses() : List<NativeProcess>
     }
     
     MemoryReader ..>  "1" NativeProcess : uses
@@ -25,10 +25,10 @@ package cx.corp.lacuna.core.windows {
     }
     
     interface NativeProcessCollector {
-        NativeProcess collect(int)
+        {abstract} NativeProcess collect(int)
     }
     interface PidEnumerator {
-        getPids() : IntStream
+        {abstract} getPids() : IntStream
     }
 
     class WindowsNativeProcessEnumerator
@@ -37,23 +37,23 @@ package cx.corp.lacuna.core.windows {
     class WindowsMemoryReader
     
     NativeProcessEnumerator <|.. WindowsNativeProcessEnumerator
-    WindowsNativeProcessEnumerator "*" -- "1" PidEnumerator
-    WindowsNativeProcessEnumerator "*" -- "1" NativeProcessCollector
+    WindowsNativeProcessEnumerator --> "1" PidEnumerator
+    WindowsNativeProcessEnumerator --> "1" NativeProcessCollector
     
     NativeProcessCollector <|.. WinApiNativeProcessCollector
-    WinApiNativeProcessCollector "*" -- "1" Kernel32
-    WinApiNativeProcessCollector "*" -- "1" Advapi32
+    WinApiNativeProcessCollector --> "1" Kernel32
+    WinApiNativeProcessCollector --> "1" Advapi32
     
     PidEnumerator <|.. WinApiPidEnumerator
-    WinApiPidEnumerator "*" -- "1" Psapi
+    WinApiPidEnumerator --> "1" Psapi
     
     MemoryReader <|.. WindowsMemoryReader
-    WindowsMemoryReader "*" -- "1" Kernel32
+    WindowsMemoryReader --> "1" Kernel32
 }
 
 package cx.corp.lacuna.core.linux {
     interface MemoryProvider {
-        open(NativeProcess) : InputStream
+        {abstract} open(NativeProcess) : InputStream
     }
     class LinuxNativeProcessEnumerator
     class LinuxMemoryReader
@@ -67,7 +67,7 @@ package cx.corp.lacuna.core.linux {
     MemoryProvider <|.. FileMemoryProvider
     
     MemoryReader <|.. LinuxMemoryReader
-    LinuxMemoryReader "*" -- "1" MemoryProvider
+    LinuxMemoryReader --> "1" MemoryProvider
 }
 
 @enduml
