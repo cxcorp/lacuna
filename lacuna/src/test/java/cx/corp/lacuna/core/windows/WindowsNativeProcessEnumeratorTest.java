@@ -23,7 +23,7 @@ public class WindowsNativeProcessEnumeratorTest {
 
     @Before
     public void setUp() {
-        pidEnumerator = () -> Arrays.stream(new int[] {1});
+        pidEnumerator = () -> Arrays.stream(new int[]{1});
         collector = pid -> new NativeProcessImpl(pid, "description", "owner");
         enumerator = new WindowsNativeProcessEnumerator(pidEnumerator, collector);
     }
@@ -50,7 +50,7 @@ public class WindowsNativeProcessEnumeratorTest {
 
     @Test
     public void getsCorrectPids() {
-        int[] expectedPids = { 0, 1, 23, 502, 5992, 120, 235, 599, 4003 };
+        int[] expectedPids = {0, 1, 23, 502, 5992, 120, 235, 599, 4003};
         PidEnumerator pidEnumerator = () -> Arrays.stream(expectedPids);
         enumerator = new WindowsNativeProcessEnumerator(pidEnumerator, collector);
 

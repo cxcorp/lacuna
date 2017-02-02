@@ -5,24 +5,26 @@ import com.sun.jna.Native;
 import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.MemoryReadException;
 import cx.corp.lacuna.core.MemoryReader;
-import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.ProcessAccessException;
+import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
-/** {@inheritDoc}
+/**
+ * {@inheritDoc}
  * Provides native process memory reading functionality on Windows platforms.
  */
 public class WindowsMemoryReader implements MemoryReader {
 
     private static final int FLAGS_READMEMORY =
-            ProcessAccessFlags.QUERY_INFORMATION | ProcessAccessFlags.VIRTUAL_MEMORY_READ;
+        ProcessAccessFlags.QUERY_INFORMATION | ProcessAccessFlags.VIRTUAL_MEMORY_READ;
 
     private final Kernel32 kernel;
 
-    /** Instantiates a new {@link WindowsMemoryReader} instance using the specified
+    /**
+     * Instantiates a new {@link WindowsMemoryReader} instance using the specified
      * Kernel32 WindowsAPI proxy.
      *
      * @param kernel The Kernel32 WindowsAPI proxy used for process memory reading.
@@ -34,21 +36,22 @@ public class WindowsMemoryReader implements MemoryReader {
         this.kernel = kernel;
     }
 
-    /** {@inheritDoc}
-     *
+    /**
+     * {@inheritDoc}
+     * <p>
      * <p>This method implementation first attempts to open a handle for the specified {@code process}
      * using the Windows API {@link Kernel32#openProcess(int, boolean, int)} method,
      * then reads the specified memory segment using the
      * {@link Kernel32#readProcessMemory(int, int, Memory, int, IntByReference)} method.
-     *
+     * <p>
      * <p>In order to retrieve a {@link NativeProcess} instance, the
      * {@link cx.corp.lacuna.core.NativeProcessEnumerator} classes can be used.
-     *
+     * <p>
      * <blockquote><pre>{@code
      * NativeProcessEnumerator enumerator = new WindowsNativeProcessEnumerator(...);
      * List<NativeProcess> processes = enumerator.getProcesses();
      * MemoryReader reader = new WindowsMemoryReader(...);
-     *
+     * <p>
      * try {
      *     byte[] bytes = reader.read(processes[0], 0x1C5B100, 16);
      *     for (byte b : bytes) {
@@ -63,27 +66,27 @@ public class WindowsMemoryReader implements MemoryReader {
      * }</pre></blockquote>
      *
      * @throws ProcessAccessException if the specified process could not be opened for reading.
-     * @throws MemoryReadException if reading the process memory fails.
+     * @throws MemoryReadException    if reading the process memory fails.
      */
     @Override
     public byte[] read(NativeProcess process, int offset, int bytesToRead)
-            throws ProcessAccessException, MemoryReadException {
+        throws ProcessAccessException, MemoryReadException {
 
         int handle = kernel.openProcess(FLAGS_READMEMORY, false, process.getPid());
         if (handle == WinApiConstants.NULLPTR) {
             throw new ProcessAccessException(
-                    "Process " + process + " could not be opened for reading! System error: "
+                "Process " + process + " could not be opened for reading! System error: "
                     + Native.getLastError());
         }
 
         Memory buffer = new Memory(bytesToRead);
         IntByReference bytesRead = new IntByReference(0);
         boolean success = kernel.readProcessMemory(
-                handle,
-                offset,
-                buffer,
-                bytesToRead,
-                bytesRead);
+            handle,
+            offset,
+            buffer,
+            bytesToRead,
+            bytesRead);
 
         if (!success) {
             int errorCode = Native.getLastError();
@@ -100,8 +103,8 @@ public class WindowsMemoryReader implements MemoryReader {
             // This is a bit of a doomsday defensive programming scenario so not sure
             // how to unit test this one.
             throw new MemoryReadException(
-                    "An error occurred while reading memory. Use getCause() to get the cause.",
-                    err);
+                "An error occurred while reading memory. Use getCause() to get the cause.",
+                err);
         }
 
         return ret;

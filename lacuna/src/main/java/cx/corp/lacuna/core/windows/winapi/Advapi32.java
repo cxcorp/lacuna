@@ -2,7 +2,6 @@ package cx.corp.lacuna.core.windows.winapi;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
-import com.sun.jna.ptr.ByReference;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.win32.StdCallLibrary;
 
@@ -19,12 +18,12 @@ public interface Advapi32 extends StdCallLibrary {
                                 IntByReference returnLength);
 
     boolean lookupAccountSidW(int lpSystemName,
-                            int sid,
-                            char[] outNameBuffer,
-                            IntByReference bufferLengthInChars,
-                            char[] outDomainNameBuffer,
+                              int sid,
+                              char[] outNameBuffer,
+                              IntByReference bufferLengthInChars,
+                              char[] outDomainNameBuffer,
                               IntByReference domainLengthInChars,
-                            IntByReference outSidNameUse);
+                              IntByReference outSidNameUse);
 
     class TokenUser extends Structure {
 
@@ -39,7 +38,8 @@ public interface Advapi32 extends StdCallLibrary {
 
         @Override
         protected List<String> getFieldOrder() {
-            return new ArrayList<String>() { {
+            return new ArrayList<String>() {
+                {
                     add("user");
                     add("attributes");
                 }

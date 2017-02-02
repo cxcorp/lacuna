@@ -1,9 +1,9 @@
 package cx.corp.lacuna.core.linux;
 
-import cx.corp.lacuna.core.domain.NativeProcess;
-import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import cx.corp.lacuna.core.NativeProcessEnumerator;
 import cx.corp.lacuna.core.ProcessEnumerationException;
+import cx.corp.lacuna.core.domain.NativeProcess;
+import cx.corp.lacuna.core.domain.NativeProcessImpl;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -90,8 +90,8 @@ public class LinuxNativeProcessEnumerator implements NativeProcessEnumerator {
         try {
             List<String> lines = Files.readAllLines(cmdLinePath, StandardCharsets.UTF_8);
             return lines.size() > 0
-                    ? lines.get(0).replace('\0', ' ').trim()
-                    : NativeProcess.UNKNOWN_DESCRIPTION;
+                ? lines.get(0).replace('\0', ' ').trim()
+                : NativeProcess.UNKNOWN_DESCRIPTION;
         } catch (IOException e) {
             return NativeProcess.UNKNOWN_DESCRIPTION;
         }

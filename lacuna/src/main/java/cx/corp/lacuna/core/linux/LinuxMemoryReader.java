@@ -19,7 +19,17 @@ public class LinuxMemoryReader implements MemoryReader {
         this.memoryProvider = memoryProvider;
     }
 
-    /** {@inheritDoc}
+    private static void validateArguments(NativeProcess process, int offset) {
+        if (process == null) {
+            throw new IllegalArgumentException("process cannot be null");
+        }
+        if (offset < 0) {
+            throw new IllegalArgumentException("offset cannot be negative");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
      *
      * @throws MemoryReadException if the virtual memory file for the process cannot be opened,
      *                             seeking to the requested offset fails, or reading the requested
@@ -51,15 +61,6 @@ public class LinuxMemoryReader implements MemoryReader {
             return Arrays.copyOf(bytes, bytesRead);
         } catch (IOException ex) {
             throw new MemoryReadException("Reading process memory failed, see getCause()!", ex);
-        }
-    }
-
-    private static void validateArguments(NativeProcess process, int offset) {
-        if (process == null) {
-            throw new IllegalArgumentException("process cannot be null");
-        }
-        if (offset < 0) {
-            throw new IllegalArgumentException("offset cannot be negative");
         }
     }
 }

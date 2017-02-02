@@ -15,9 +15,9 @@ import java.util.Optional;
 
 public class WinApiNativeProcessCollector implements NativeProcessCollector {
 
-    private ProcessOpener processOpener;
     private final Advapi32 advapi;
     private final Kernel32 kernel;
+    private final ProcessOpener processOpener;
 
     public WinApiNativeProcessCollector(ProcessOpener processOpener, Kernel32 kernel, Advapi32 advapi) {
         if (processOpener == null || kernel == null || advapi == null) {
