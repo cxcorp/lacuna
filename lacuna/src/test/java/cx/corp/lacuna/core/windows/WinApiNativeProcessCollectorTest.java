@@ -15,36 +15,37 @@ public class WinApiNativeProcessCollectorTest {
     private static final int LEGAL_PROCESS_HANDLE = 0x5;
     private static final int LEGAL_PROCESS_TOKEN = 123;
 
-    private MockKernel32 kernel;
     private WinApiNativeProcessCollector collector;
     private MockProcessOpener processOpener;
     private ProcessOwnerGetter ownerGetter;
+    private ProcessDescriptionGetter descriptionGetter;
 
     @Before
     public void setUp() {
-        kernel = new MockKernel32();
         processOpener = new MockProcessOpener();
         processOpener.setOpenReturnValue(new MockProcessHandle(LEGAL_PROCESS_HANDLE));
         processOpener.doNotThrowExceptionOnOpen();
         // proxy the handle via another lambda so unit tests can just change the ownerGetter
         // field instead of creating new instances of WinApiNativeProcessCollector
-        ownerGetter = handle -> Optional.of("owner");
+        ownerGetter = handle -> Optional.empty();
+        descriptionGetter = handle -> Optional.empty();
         ProcessOwnerGetter ownerProxy = handle -> ownerGetter.get(handle);
-        collector = new WinApiNativeProcessCollector(processOpener, ownerProxy, kernel);
+        ProcessDescriptionGetter descriptionProxy = handle -> descriptionGetter.get(handle);
+        collector = new WinApiNativeProcessCollector(processOpener, ownerProxy, descriptionProxy);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIfProcessOpenerIsNull() {
-        new WinApiNativeProcessCollector(null, ownerGetter, kernel);
+        new WinApiNativeProcessCollector(null, ownerGetter, descriptionGetter);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIfOwnerGetterIsNull() {
-        new WinApiNativeProcessCollector(processOpener, null, kernel);
+        new WinApiNativeProcessCollector(processOpener, null, descriptionGetter);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsIfKernelIsNull() {
+    public void constructorThrowsIfDescriptionGetterIsNull() {
         new WinApiNativeProcessCollector(processOpener, ownerGetter, null);
     }
 
@@ -60,14 +61,16 @@ public class WinApiNativeProcessCollectorTest {
     @Test
     public void collectGetsUnknownDescriptionIfProcessCannotBeOpened() {
         processOpener.throwExceptionOnOpen();
+
         NativeProcess proc = collector.collect(123);
 
         assertEquals(NativeProcess.UNKNOWN_DESCRIPTION, proc.getDescription());
     }
 
     @Test
-    public void collectGetsUnknownProcessNameIfImageNameCannotBeQueried() {
-        kernel.setQueryFullProcessImageSuccess(false);
+    public void collectGetsUnknownDescriptionIfDescriptionGetterReturnsEmpty() {
+        processOpener.doNotThrowExceptionOnOpen();
+        descriptionGetter = handle -> Optional.empty();
 
         NativeProcess process = collector.collect(123);
 
@@ -75,11 +78,10 @@ public class WinApiNativeProcessCollectorTest {
     }
 
     @Test
-    public void collectGetsCorrectProcessNameIfImageNameCanBeQueried() {
+    public void collectGetsCorrectDescriptionFromDescriptionGetter() {
+        processOpener.doNotThrowExceptionOnOpen();
         String description = "toaster.exe";
-        kernel.setOpenProcessReturnValue(123);
-        kernel.setQueryFullProcessImageSuccess(true);
-        kernel.setQueryFullProcessImageNameExeName(description);
+        descriptionGetter = handle -> Optional.of(description);
 
         NativeProcess process = collector.collect(321);
 
@@ -97,6 +99,7 @@ public class WinApiNativeProcessCollectorTest {
 
     @Test
     public void collectGetsOwnerFromOwnerGetterCorrectly() {
+        processOpener.doNotThrowExceptionOnOpen();
         final String ownerName = "Lacuna";
         ownerGetter = handle -> Optional.of(ownerName);
 
@@ -106,7 +109,7 @@ public class WinApiNativeProcessCollectorTest {
     }
 
     @Test
-    public void collectGetsUnknownOwnerIfProcessCanBeOpenedButOwnerGetterFails() {
+    public void collectGetsUnknownOwnerIfOwnerGetterReturnsEmpty() {
         processOpener.doNotThrowExceptionOnOpen();
         ownerGetter = handle -> Optional.empty();
 

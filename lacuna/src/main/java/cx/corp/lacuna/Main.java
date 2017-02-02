@@ -13,9 +13,11 @@ import cx.corp.lacuna.core.linux.FileMemoryProvider;
 import cx.corp.lacuna.core.linux.LinuxConstants;
 import cx.corp.lacuna.core.linux.LinuxMemoryReader;
 import cx.corp.lacuna.core.linux.LinuxNativeProcessEnumerator;
+import cx.corp.lacuna.core.windows.ProcessDescriptionGetter;
 import cx.corp.lacuna.core.windows.ProcessOpenException;
 import cx.corp.lacuna.core.windows.ProcessOpener;
 import cx.corp.lacuna.core.windows.ProcessOwnerGetter;
+import cx.corp.lacuna.core.windows.WinApiProcessDescriptionGetter;
 import cx.corp.lacuna.core.windows.WinApiProcessOpener;
 import cx.corp.lacuna.core.windows.WinApiProcessOwnerGetter;
 import cx.corp.lacuna.core.windows.WindowsMemoryReader;
@@ -107,8 +109,9 @@ public class Main {
         PidEnumerator enumerator = new WinApiPidEnumerator(psapi);
         ProcessOpener procOpener = new WinApiProcessOpener(kernel);
         ProcessOwnerGetter ownerGetter = new WinApiProcessOwnerGetter(advapi);
+        ProcessDescriptionGetter descriptionGetter = new WinApiProcessDescriptionGetter(kernel);
         NativeProcessCollector collector =
-            new WinApiNativeProcessCollector(procOpener, ownerGetter, kernel);
+            new WinApiNativeProcessCollector(procOpener, ownerGetter, descriptionGetter);
         processEnumerator = new WindowsNativeProcessEnumerator(enumerator, collector);
         memoryReader = new WindowsMemoryReader(kernel);
     }

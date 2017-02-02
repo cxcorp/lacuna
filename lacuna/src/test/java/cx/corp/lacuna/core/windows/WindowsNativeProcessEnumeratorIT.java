@@ -46,8 +46,9 @@ public class WindowsNativeProcessEnumeratorIT {
         PidEnumerator pidEnumerator = new WinApiPidEnumerator(psapi);
         ProcessOpener opener = new WinApiProcessOpener(kernel32);
         ProcessOwnerGetter ownerGetter = new WinApiProcessOwnerGetter(advapi32);
+        ProcessDescriptionGetter descriptionGetter = new WinApiProcessDescriptionGetter(kernel32);
         NativeProcessCollector collector =
-            new WinApiNativeProcessCollector(opener, ownerGetter, kernel32);
+            new WinApiNativeProcessCollector(opener, ownerGetter, descriptionGetter);
         enumerator = new WindowsNativeProcessEnumerator(pidEnumerator, collector);
     }
 
