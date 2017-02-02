@@ -90,6 +90,6 @@ public class WinApiNativeProcessCollectorTest {
 
         NativeProcess proc = collector.collect(123);
 
-        assertEquals(NativeProcess.UNKNOWN_DESCRIPTION, proc.getDescription());
+        assertEquals(NativeProcess.UNKNOWN_OWNER, proc.getOwner());
     }
 }
