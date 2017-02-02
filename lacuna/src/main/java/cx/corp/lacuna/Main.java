@@ -14,16 +14,15 @@ import cx.corp.lacuna.core.linux.LinuxConstants;
 import cx.corp.lacuna.core.linux.LinuxMemoryReader;
 import cx.corp.lacuna.core.linux.LinuxNativeProcessEnumerator;
 import cx.corp.lacuna.core.windows.ProcessDescriptionGetter;
-import cx.corp.lacuna.core.windows.ProcessOpenException;
 import cx.corp.lacuna.core.windows.ProcessOpener;
 import cx.corp.lacuna.core.windows.ProcessOwnerGetter;
-import cx.corp.lacuna.core.windows.WinApiProcessDescriptionGetter;
-import cx.corp.lacuna.core.windows.WinApiProcessOpener;
-import cx.corp.lacuna.core.windows.WinApiProcessOwnerGetter;
+import cx.corp.lacuna.core.windows.WindowsNativeProcessCollector;
+import cx.corp.lacuna.core.windows.winapi.WinApiProcessDescriptionGetter;
+import cx.corp.lacuna.core.windows.winapi.WinApiProcessOpener;
+import cx.corp.lacuna.core.windows.winapi.WinApiProcessOwnerGetter;
 import cx.corp.lacuna.core.windows.WindowsMemoryReader;
-import cx.corp.lacuna.core.windows.WinApiNativeProcessCollector;
 import cx.corp.lacuna.core.windows.WindowsNativeProcessEnumerator;
-import cx.corp.lacuna.core.windows.WinApiPidEnumerator;
+import cx.corp.lacuna.core.windows.winapi.WinApiPidEnumerator;
 import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.CamelToPascalCaseFunctionMapper;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
@@ -111,7 +110,7 @@ public class Main {
         ProcessOwnerGetter ownerGetter = new WinApiProcessOwnerGetter(advapi);
         ProcessDescriptionGetter descriptionGetter = new WinApiProcessDescriptionGetter(kernel);
         NativeProcessCollector collector =
-            new WinApiNativeProcessCollector(procOpener, ownerGetter, descriptionGetter);
+            new WindowsNativeProcessCollector(procOpener, ownerGetter, descriptionGetter);
         processEnumerator = new WindowsNativeProcessEnumerator(enumerator, collector);
         memoryReader = new WindowsMemoryReader(kernel);
     }

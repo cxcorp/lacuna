@@ -22,6 +22,10 @@ package cx.corp.lacuna.core.windows {
         interface Kernel32
         interface Advapi32
         interface Psapi
+        class WinApiPidEnumerator
+        class WinApiProcessDescriptionGetter
+        class WinApiProcessOpener
+        class WinApiProcessOwnerGetter
     }
     
     interface NativeProcessCollector {
@@ -30,22 +34,50 @@ package cx.corp.lacuna.core.windows {
     interface PidEnumerator {
         {abstract} getPids() : IntStream
     }
+    interface ProcessDescriptionGetter {
+        {abstract} get(ProcessHandle) : Optional<String>
+    }
+    interface ProcessOwnerGetter {
+        {abstract} get(ProcessHandle) : Optional<String>
+    }
+    interface ProcessHandle <<AutoCloseable>> {
+        {abstract} getNativeHandle() : int
+    }
+    interface ProcessOpener {
+        open(int, int) : ProcessHandle
+    }
+    
 
     class WindowsNativeProcessEnumerator
-    class WinApiNativeProcessCollector
-    class WinApiPidEnumerator
+    class WindowsNativeProcessCollector
     class WindowsMemoryReader
     
     NativeProcessEnumerator <|.. WindowsNativeProcessEnumerator
     WindowsNativeProcessEnumerator --> "1" PidEnumerator
     WindowsNativeProcessEnumerator --> "1" NativeProcessCollector
     
-    NativeProcessCollector <|.. WinApiNativeProcessCollector
-    WinApiNativeProcessCollector --> "1" Kernel32
-    WinApiNativeProcessCollector --> "1" Advapi32
+    NativeProcessCollector <|.. WindowsNativeProcessCollector
+     
+    WindowsNativeProcessCollector --> "1" ProcessOpener
+    WindowsNativeProcessCollector --> "1" ProcessOwnerGetter
+    WindowsNativeProcessCollector --> "1" ProcessDescriptionGetter
+    
+    ProcessOpener ..> "1" ProcessHandle : creates
+    ProcessOwnerGetter ..> "1" ProcessHandle : uses
+    ProcessDescriptionGetter ..> "1" ProcessHandle : uses
+
     
     PidEnumerator <|.. WinApiPidEnumerator
     WinApiPidEnumerator --> "1" Psapi
+    
+    ProcessOpener <|.. WinApiProcessOpener
+    ProcessOwnerGetter <|.. WinApiProcessOwnerGetter
+    ProcessDescriptionGetter <|.. WinApiProcessDescriptionGetter
+    
+    WinApiProcessOpener --> "1" Kernel32
+    WinApiProcessDescriptionGetter --> "1" Kernel32
+    WinApiProcessOwnerGetter --> "1" Advapi32
+    
     
     MemoryReader <|.. WindowsMemoryReader
     WindowsMemoryReader --> "1" Kernel32

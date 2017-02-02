@@ -1,6 +1,9 @@
-package cx.corp.lacuna.core.windows;
+package cx.corp.lacuna.core.windows.winapi;
 
 import com.sun.jna.Native;
+import cx.corp.lacuna.core.windows.ProcessHandle;
+import cx.corp.lacuna.core.windows.ProcessOpenException;
+import cx.corp.lacuna.core.windows.ProcessOpener;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;

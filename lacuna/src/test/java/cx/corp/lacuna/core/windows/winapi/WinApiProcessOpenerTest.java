@@ -1,8 +1,11 @@
-package cx.corp.lacuna.core.windows;
+package cx.corp.lacuna.core.windows.winapi;
 
+import cx.corp.lacuna.core.windows.ProcessHandle;
+import cx.corp.lacuna.core.windows.ProcessOpenException;
 import cx.corp.lacuna.core.windows.winapi.MockKernel32;
 import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
+import cx.corp.lacuna.core.windows.winapi.WinApiProcessOpener;
 import org.junit.Before;
 import org.junit.Test;
 
