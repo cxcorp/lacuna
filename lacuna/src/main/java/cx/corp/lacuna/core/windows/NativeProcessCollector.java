@@ -1,6 +1,6 @@
-package cx.corp.lacuna.core;
+package cx.corp.lacuna.core.windows;
 
-import java.util.Optional;
+import cx.corp.lacuna.core.domain.NativeProcess;
 
 /**
  * Provides functionality for collecting the details of a native process into

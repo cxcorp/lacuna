@@ -1,5 +1,6 @@
 package cx.corp.lacuna.core;
 
+import cx.corp.lacuna.core.domain.NativeProcess;
 import org.junit.Before;
 import org.junit.Test;
 

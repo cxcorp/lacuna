@@ -2,9 +2,7 @@ package cx.corp.lacuna.core.windows;
 
 import com.sun.jna.Platform;
 import cx.corp.lacuna.core.IntegrationTestConstants;
-import cx.corp.lacuna.core.NativeProcess;
-import cx.corp.lacuna.core.NativeProcessCollector;
-import cx.corp.lacuna.core.PidEnumerator;
+import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.TestTargetLauncher;
 import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;

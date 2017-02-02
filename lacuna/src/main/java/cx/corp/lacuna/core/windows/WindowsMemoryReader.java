@@ -5,7 +5,7 @@ import com.sun.jna.Native;
 import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.MemoryReadException;
 import cx.corp.lacuna.core.MemoryReader;
-import cx.corp.lacuna.core.NativeProcess;
+import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.ProcessAccessException;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;

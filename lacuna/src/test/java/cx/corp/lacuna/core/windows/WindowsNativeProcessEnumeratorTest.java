@@ -1,18 +1,10 @@
 package cx.corp.lacuna.core.windows;
 
-import cx.corp.lacuna.core.NativeProcess;
-import cx.corp.lacuna.core.NativeProcessCollector;
-import cx.corp.lacuna.core.PidEnumerator;
-import cx.corp.lacuna.core.ProcessEnumerationException;
+import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.TestUtils;
-import cx.corp.lacuna.core.windows.winapi.MockKernel32;
-import cx.corp.lacuna.core.windows.winapi.MockPsapi;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOError;
-import java.io.IOException;
-import java.lang.annotation.Native;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;

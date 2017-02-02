@@ -1,4 +1,4 @@
-package cx.corp.lacuna.core;
+package cx.corp.lacuna.core.domain;
 
 import java.util.Objects;
 
@@ -71,8 +71,12 @@ public class NativeProcess {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         NativeProcess process = (NativeProcess) o;
         return pid == process.pid &&
             Objects.equals(description, process.description) &&
