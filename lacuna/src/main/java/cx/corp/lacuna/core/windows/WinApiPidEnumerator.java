@@ -14,6 +14,9 @@ public class WinApiPidEnumerator implements PidEnumerator {
     private final Psapi psapi;
 
     public WinApiPidEnumerator(Psapi psapi) {
+        if (psapi == null) {
+            throw new IllegalArgumentException("psapi cannot be null!");
+        }
         this.psapi = psapi;
     }
 
@@ -32,7 +35,7 @@ public class WinApiPidEnumerator implements PidEnumerator {
         IntByReference bytesReturned = new IntByReference(0);
         if (!psapi.enumProcesses(pidBuffer, pidBuffer.length, bytesReturned)) {
             throw new ProcessEnumerationException(
-                "Kernel32 EnumProcesses failed with error code " + Native.getLastError());
+                "WinApi EnumProcesses failed with error code " + Native.getLastError());
         }
         return byteCountToIntCount(bytesReturned.getValue());
     }

@@ -28,6 +28,9 @@ public class WindowsMemoryReader implements MemoryReader {
      * @param kernel The Kernel32 WindowsAPI proxy used for process memory reading.
      */
     public WindowsMemoryReader(Kernel32 kernel) {
+        if (kernel == null) {
+            throw new IllegalArgumentException("kernel cannot be null!");
+        }
         this.kernel = kernel;
     }
 

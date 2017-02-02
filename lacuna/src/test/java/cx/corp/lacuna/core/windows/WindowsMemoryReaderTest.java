@@ -27,6 +27,11 @@ public class WindowsMemoryReaderTest {
         process = new NativeProcessImpl();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void constructorThrowsIfNullKernelPassed() {
+        new WindowsMemoryReader(null);
+    }
+
     @Test(expected = ProcessAccessException.class)
     public void readThrowsIfProcessCannotBeOpened() {
         // WinAPI docs state that OpenProcess returns NULL if it fails
