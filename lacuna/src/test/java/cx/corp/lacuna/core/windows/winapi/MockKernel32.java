@@ -6,10 +6,14 @@ import com.sun.jna.ptr.IntByReference;
 import org.junit.Before;
 
 import java.nio.CharBuffer;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class MockKernel32 implements Kernel32 {
+
+    private List<Integer> closedHandles = new ArrayList<>();
 
     private int openProcessReturnValue = WinApiConstants.NULLPTR;
     private boolean readProcessMemoryReturnValue = false;
@@ -37,8 +41,13 @@ public class MockKernel32 implements Kernel32 {
         this.queryFullProcessImageSuccess = queryFullProcessImageSuccess;
     }
 
+    public List<Integer> getClosedHandles() {
+        return closedHandles;
+    }
+
     @Override
     public boolean closeHandle(int handle) {
+        closedHandles.add(handle);
         return true;
     }
 
