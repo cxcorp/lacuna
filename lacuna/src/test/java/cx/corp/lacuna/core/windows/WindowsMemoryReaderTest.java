@@ -59,7 +59,7 @@ public class WindowsMemoryReaderTest {
         kernel.setOpenProcessReturnValue(notNullHandle);
         process.setPid(321);
         kernel.setReadProcessMemoryReturnValue(true);
-        byte[] memoryBytes = new byte[] { 123, -127, 42, 0, 1, 0, 0, 45 };
+        byte[] memoryBytes = new byte[]{123, -127, 42, 0, 1, 0, 0, 45};
         kernel.setReadProcessReadMemory(memoryBytes);
 
         byte[] readBytes = reader.read(process, 0, memoryBytes.length);

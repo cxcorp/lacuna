@@ -1,14 +1,12 @@
 package cx.corp.lacuna.core.windows;
 
 import cx.corp.lacuna.core.ProcessEnumerationException;
-import cx.corp.lacuna.core.windows.WinApiPidEnumerator;
 import cx.corp.lacuna.core.windows.winapi.MockPsapi;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -39,7 +37,7 @@ public class WinApiPidEnumeratorTest {
     @Test
     public void getPidsReturnsCorrectlySizedArray() {
         psapi.setEnumProcessesReturnValue(true);
-        int[] input = new int[] {123, 321, 5, 19, 0, 0, 0, 0, 0};
+        int[] input = new int[]{123, 321, 5, 19, 0, 0, 0, 0, 0};
         psapi.setEnumProcessesPids(input);
         int pidsToReturn = 2;
         psapi.setEnumProcessesBytesReturned(pidsToReturn * WinApiConstants.SIZEOF_INT);
@@ -52,7 +50,7 @@ public class WinApiPidEnumeratorTest {
     @Test
     public void getPidsReturnsNoPidsWhenPsapiSaysNoBytesReturned() {
         psapi.setEnumProcessesReturnValue(true);
-        psapi.setEnumProcessesPids(new int[] {123, 321});
+        psapi.setEnumProcessesPids(new int[]{123, 321});
         psapi.setEnumProcessesBytesReturned(0);
 
         long count = enumerator.getPids().count();

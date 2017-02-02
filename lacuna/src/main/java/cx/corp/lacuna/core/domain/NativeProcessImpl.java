@@ -11,7 +11,8 @@ public class NativeProcessImpl implements NativeProcess {
     private String description;
     private String owner;
 
-    public NativeProcessImpl() { }
+    public NativeProcessImpl() {
+    }
 
     public NativeProcessImpl(int pid, String description, String owner) {
         this.pid = pid;
@@ -19,7 +20,8 @@ public class NativeProcessImpl implements NativeProcess {
         this.owner = owner;
     }
 
-    /** Gets the process identifier.
+    /**
+     * Gets the process identifier.
      *
      * @return The PID.
      */
@@ -27,7 +29,17 @@ public class NativeProcessImpl implements NativeProcess {
         return pid;
     }
 
-    /** Gets the description of the process. The description may be an
+    /**
+     * Sets the process identifier.
+     *
+     * @param pid The process identifier.
+     */
+    public void setPid(int pid) {
+        this.pid = pid;
+    }
+
+    /**
+     * Gets the description of the process. The description may be an
      * image name or the command line used to start the process.
      *
      * @return Description of the process.
@@ -36,23 +48,8 @@ public class NativeProcessImpl implements NativeProcess {
         return description;
     }
 
-    /** Gets the name of the owner of the process.
-     *
-     * @return Name of the owner of the process
-     */
-    public String getOwner() {
-        return owner;
-    }
-
-    /** Sets the process identifier.
-     *
-     * @param pid The process identifier.
-     */
-    public void setPid(int pid) {
-        this.pid = pid;
-    }
-
-    /** Sets the description of the process. The description may be an
+    /**
+     * Sets the description of the process. The description may be an
      * image name or the command line used to start the process.
      *
      * @param description The process description.
@@ -61,7 +58,17 @@ public class NativeProcessImpl implements NativeProcess {
         this.description = description;
     }
 
-    /** Sets the name of the owner of the process.
+    /**
+     * Gets the name of the owner of the process.
+     *
+     * @return Name of the owner of the process
+     */
+    public String getOwner() {
+        return owner;
+    }
+
+    /**
+     * Sets the name of the owner of the process.
      *
      * @param owner The owner of the process.
      */

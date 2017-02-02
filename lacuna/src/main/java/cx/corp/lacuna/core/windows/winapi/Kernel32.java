@@ -12,9 +12,9 @@ public interface Kernel32 extends StdCallLibrary {
     int openProcess(int processAccessFlags, boolean bInheritHandle, int processId);
 
     boolean queryFullProcessImageNameW(int hProcess,
-                                      int dwFlags,
-                                      char[] lpExeName,
-                                      IntByReference lpdwSize);
+                                       int dwFlags,
+                                       char[] lpExeName,
+                                       IntByReference lpdwSize);
 
     boolean readProcessMemory(int processHandle,
                               int baseAddress,
