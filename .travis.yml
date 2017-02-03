@@ -8,6 +8,9 @@ before_install: cd lacuna
 # verify runs both unit and integration tests
 script: mvn clean && mvn verify -B
 
+after_success:
+  - mvn jacoco:report coveralls:report
+
 # OracleJDK 8 and JavaFX projects may need to update to the latest available version from a repository.
 sudo: false
 addons:
