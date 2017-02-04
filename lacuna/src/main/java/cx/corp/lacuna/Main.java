@@ -112,7 +112,7 @@ public class Main {
         NativeProcessCollector collector =
             new WindowsNativeProcessCollector(procOpener, ownerGetter, descriptionGetter);
         processEnumerator = new WindowsNativeProcessEnumerator(enumerator, collector);
-        memoryReader = new WindowsMemoryReader(kernel);
+        memoryReader = new WindowsMemoryReader(procOpener, kernel);
     }
 
     private static void setupForLinux() {
