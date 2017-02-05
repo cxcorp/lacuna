@@ -64,4 +64,4 @@ Käyttäjä
 * ...
 
 ## Diagrammeja
-![](https://yuml.me/cf9898b8.png)
+![](https://raw.githubusercontent.com/cxcorp/lacuna/master/dokumentaatio/luokkakaavio.png)
