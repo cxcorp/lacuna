@@ -1,4 +1,4 @@
-package cx.corp.lacuna.core;
+package cx.corp.lacuna.core.domain;
 
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import org.junit.Before;

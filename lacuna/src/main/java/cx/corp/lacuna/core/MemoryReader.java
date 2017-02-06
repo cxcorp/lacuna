@@ -4,7 +4,7 @@ import cx.corp.lacuna.core.domain.NativeProcess;
 
 /**
  * The {@link MemoryReader} interface provides methods for reading bytes from the memory
- * of a {@link NativeProcess} and reconstructing from them data in certain Java types.
+ * of a {@link NativeProcess}.
  *
  * @see cx.corp.lacuna.core.NativeProcessEnumerator
  */
