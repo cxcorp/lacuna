@@ -6,9 +6,9 @@ Program for reading and writing other programs' memory.
 Coursework for [Javalabra-2017-3](https://github.com/javaLabra/Javalabra2017-3).
 
 ## Current state
-Lacuna can currently dump the active process list and read a process' memory on both Windows and Linux.
+Lacuna can currently dump the active process list and read a process' memory on both Windows and Linux. Serialization classes exist for serializing between byte array, boolean and integer.
 
-![](http://i.imgur.com/nacDx4w.png)
+![](http://i.imgur.com/ATN6vdf.png)
 
 Tested platforms:
 * Windows:
