@@ -16,6 +16,29 @@ package cx.corp.lacuna.core {
     NativeProcessEnumerator ..> "0..*" NativeProcess : creates
 }
 
+package cx.corp.lacuna.core.serialization {
+	interface TypeSerializers<T> {
+		{abstract} find(Class<T>) : TypeSerializer<T>
+		{abstract} register(Class<T>, TypeSerializer<T>) : boolean
+	}
+	interface TypeSerializer<T> {
+		{abstract} canDeserialize(byte[]) : boolean
+		{abstract} deserialize(byte[]) : T
+		{abstract} serialize(T) : byte[]
+	}
+	
+	class AbstractTypeSerializer<T>
+	class Boolean8Serializer
+	class Int32Serializer
+	
+	TypeSerializer  <|.. AbstractTypeSerializer
+	AbstractTypeSerializer <|-- Boolean8Serializer
+	AbstractTypeSerializer <|-- Int32Serializer
+	
+	TypeSerializers <|.. TypeSerializerImpl
+	TypeSerializers --> "*" TypeSerializer
+}
+
 package cx.corp.lacuna.core.windows {
 
     package cx.corp.lacuna.core.windows.winapi {
@@ -81,6 +104,7 @@ package cx.corp.lacuna.core.windows {
     
     MemoryReader <|.. WindowsMemoryReader
     WindowsMemoryReader --> "1" Kernel32
+	WindowsMemoryReader --> "1" ProcessOpener
 }
 
 package cx.corp.lacuna.core.linux {
