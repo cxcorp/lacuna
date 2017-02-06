@@ -6,6 +6,11 @@ import com.sun.jna.Native;
 import com.sun.jna.Platform;
 import cx.corp.lacuna.core.MemoryReader;
 import cx.corp.lacuna.core.domain.NativeProcess;
+import cx.corp.lacuna.core.serialization.Boolean8Serializer;
+import cx.corp.lacuna.core.serialization.Int32Serializer;
+import cx.corp.lacuna.core.serialization.TypeSerializer;
+import cx.corp.lacuna.core.serialization.TypeSerializers;
+import cx.corp.lacuna.core.serialization.TypeSerializersImpl;
 import cx.corp.lacuna.core.windows.NativeProcessCollector;
 import cx.corp.lacuna.core.NativeProcessEnumerator;
 import cx.corp.lacuna.core.windows.PidEnumerator;
@@ -31,6 +36,7 @@ import cx.corp.lacuna.core.windows.winapi.Psapi;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,9 +47,11 @@ public class Main {
 
     private static NativeProcessEnumerator processEnumerator;
     private static MemoryReader memoryReader;
+    private static TypeSerializers typeSerializers;
 
     public static void main(String[] args) throws IOException {
         setupPlatformSpecificStuff();
+        setupSerializers();
 
         List<NativeProcess> processes = processEnumerator.getProcesses();
         for (NativeProcess proc : processes) {
@@ -85,6 +93,28 @@ public class Main {
             System.out.printf("%02X ", bytes[i]);
         }
         System.out.println();
+
+        if (bytes.length >= 0x10) {
+            TypeSerializer<Integer> intSerializer = typeSerializers.find(Integer.class);
+            byte[] firstInt = Arrays.copyOfRange(bytes, 0, 4);
+            byte[] secondInt = Arrays.copyOfRange(bytes, 4, 8);
+            System.out.println("firstInt = " + intSerializer.deserialize(firstInt));
+            System.out.println("secondInt = " + intSerializer.deserialize(secondInt));
+
+
+            TypeSerializer<Boolean> boolSerializer = typeSerializers.find(Boolean.class);
+            byte[] firstBool = Arrays.copyOfRange(bytes, 8, 9);
+            byte[] secondBool = Arrays.copyOfRange(bytes, 9, 10);
+
+            System.out.println("firstBool = " + boolSerializer.deserialize(firstBool));
+            System.out.println("secondBool = " + boolSerializer.deserialize(secondBool));
+        }
+    }
+
+    private static void setupSerializers() {
+        typeSerializers = new TypeSerializersImpl();
+        typeSerializers.register(Boolean.class, new Boolean8Serializer());
+        typeSerializers.register(Integer.class, new Int32Serializer());
     }
 
     private static void setupPlatformSpecificStuff() {
