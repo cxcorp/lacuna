@@ -23,7 +23,6 @@ Yleiset tietotyypit määritellään seuraavanlaisesti:
 |------|-------------------|-----------------
 | bool | 8 | boolean
 | char | 8 | char
-| byte | 8 | byte
 | wchar | 16 | char
 | short | 16 | short
 | int | 32 | int
