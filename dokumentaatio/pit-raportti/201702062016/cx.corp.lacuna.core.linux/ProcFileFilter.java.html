@@ -1,0 +1,879 @@
+<html>
+<head>
+<style type='text/css'>
+html, body, div, span, p, blockquote, pre {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+
+body{
+	line-height: 1;
+	color: black;
+	background: white;
+	margin-left: 20px;
+}
+
+.src { 
+	border: 1px solid #dddddd;
+	padding-top: 10px;
+	padding-right: 5px;
+	padding-left: 5px;
+	font-family: Consolas, Courier, monospace;
+}
+
+
+.covered {background-color: #ddffdd}
+.uncovered {background-color: #ffdddd}
+.killed {background-color: #aaffaa}
+.survived {background-color: #ffaaaa}
+.uncertain {background-color: #dde7ef}
+.run_error {background-color: #dde7ef}
+.na {background-color: #eeeeee}
+.timed_out {background-color: #dde7ef}
+.non_viable {background-color: #aaffaa}
+.memory_error {background-color: #dde7ef}
+.not_started {background-color: #dde7ef; color : red}
+.no_coverage {background-color: #ffaaaa}
+
+
+.pop {outline:none; }
+.pop strong {line-height:30px;}
+.pop {text-decoration:none;}
+.pop span { z-index:10;display:none; padding:14px 20px; margin-top:-30px; margin-left:28px; width:800px; line-height:16px; word-wrap:break-word; }
+.pop:hover span{ display:inline; position:absolute; color:#111; border:1px solid #DCA; background:#fffAF0;}
+
+.pop span { border-radius:4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; -moz-box-shadow: 5px 5px 8px #CCC; -webkit-box-shadow: 5px 5px 8px #CCC; box-shadow: 5px 5px 8px #CCC; }
+</style>
+
+</head>
+<body>
+
+
+<h1>ProcFileFilter.java</h1>
+
+<table class="src">
+
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_1'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package cx.corp.lacuna.core.linux;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_2'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_3'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.io.File;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_4'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.io.FileFilter;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_5'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_6'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>class ProcFileFilter implements FileFilter {</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_7'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_8'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private final int pidMax;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_9'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_10'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    public ProcFileFilter(int pidMax) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_11'/>
+11
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_11'>2</a>
+<span>
+
+1. <init> : changed conditional boundary &rarr; KILLED<br/>
+
+2. <init> : negated conditional &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (pidMax &#60;= LinuxConstants.LOWEST_LEGAL_PID) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_12'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            throw new IllegalArgumentException(&#34;pidMax cannot be lower than or equal to 1!&#34;);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_13'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_14'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        this.pidMax = pidMax;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_15'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_16'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_17'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_18'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public boolean accept(File pathname) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_19'/>
+19
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_19'>1</a>
+<span>
+
+1. accept : negated conditional &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (pathname == null) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_20'/>
+20
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_20'>1</a>
+<span>
+
+1. accept : replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return false;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_21'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_22'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_23'/>
+23
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_23'>1</a>
+<span>
+
+1. accept : replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; NO_COVERAGE<br/>
+
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>        return accept(pathname.isDirectory(), pathname.getName());</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_24'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_25'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_26'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    boolean accept(boolean isDirectory, String fileName) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_27'/>
+27
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_27'>1</a>
+<span>
+
+1. accept : negated conditional &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (!isDirectory) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_28'/>
+28
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_28'>1</a>
+<span>
+
+1. accept : replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return false;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_29'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_30'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_31'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        Integer numericalPid = tryParseInt(fileName);</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_32'/>
+32
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_32'>2</a>
+<span>
+
+1. accept : negated conditional &rarr; KILLED<br/>
+
+2. accept : replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return numericalPid != null</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_33'/>
+33
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_33'>2</a>
+<span>
+
+1. accept : changed conditional boundary &rarr; KILLED<br/>
+
+2. accept : negated conditional &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            &#38;&#38; numericalPid &#62;= LinuxConstants.LOWEST_LEGAL_PID</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_34'/>
+34
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_34'>2</a>
+<span>
+
+1. accept : changed conditional boundary &rarr; KILLED<br/>
+
+2. accept : negated conditional &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            &#38;&#38; numericalPid &#60; pidMax;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_35'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_36'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_37'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private Integer tryParseInt(String value) {</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_38'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        try {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_39'/>
+39
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_39'>1</a>
+<span>
+
+1. tryParseInt : mutated return of Object value for cx/corp/lacuna/core/linux/ProcFileFilter::tryParseInt to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return Integer.parseInt(value);</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_40'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        } catch (NumberFormatException ex) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_41'/>
+41
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_41'>1</a>
+<span>
+
+1. tryParseInt : mutated return of Object value for cx/corp/lacuna/core/linux/ProcFileFilter::tryParseInt to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return null;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_42'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_43'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7de35070_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_44'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7de35070_11'>11</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_11'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b><init><br/><b>Killed by : </b>cx.corp.lacuna.core.linux.ProcFileFilterTest.ctorThrowsIfPassingPidMaxEqualToLowestLegalPid[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest)</span></span> changed conditional boundary &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b><init><br/><b>Killed by : </b>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesNonDirectoryFiles[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest)</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7de35070_19'>19</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_19'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>accept<br/><b>Killed by : </b>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesNullFiles[1: pid_max = 32 768](cx.corp.lacuna.core.linux.ProcFileFilterTest)</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7de35070_20'>20</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_20'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>accept<br/><b>Killed by : </b>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesNullFiles[1: pid_max = 32 768](cx.corp.lacuna.core.linux.ProcFileFilterTest)</span></span> replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7de35070_23'>23</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_23'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>accept<br/><b>Killed by : </b>none</span></span> replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; NO_COVERAGE</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7de35070_27'>27</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_27'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>accept<br/><b>Killed by : </b>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesNonDirectoryFiles[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest)</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7de35070_28'>28</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_28'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>accept<br/><b>Killed by : </b>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesNonDirectoryFiles[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest)</span></span> replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7de35070_32'>32</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_32'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>accept<br/><b>Killed by : </b>cx.corp.lacuna.core.linux.ProcFileFilterTest.acceptsDirectoryWithLowerBoundIntegerName[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest)</span></span> negated conditional &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>accept<br/><b>Killed by : </b>cx.corp.lacuna.core.linux.ProcFileFilterTest.acceptsDirectoryWithLowerBoundIntegerName[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest)</span></span> replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7de35070_33'>33</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_33'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>accept<br/><b>Killed by : </b>cx.corp.lacuna.core.linux.ProcFileFilterTest.acceptsDirectoryWithLowerBoundIntegerName[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest)</span></span> changed conditional boundary &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>accept<br/><b>Killed by : </b>cx.corp.lacuna.core.linux.ProcFileFilterTest.acceptsDirectoryWithLowerBoundIntegerName[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest)</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7de35070_34'>34</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_34'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>accept<br/><b>Killed by : </b>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesDirectoriesWithNumbersEqualToPidMax[1: pid_max = 32 768](cx.corp.lacuna.core.linux.ProcFileFilterTest)</span></span> changed conditional boundary &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>accept<br/><b>Killed by : </b>cx.corp.lacuna.core.linux.ProcFileFilterTest.acceptsDirectoryWithLowerBoundIntegerName[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest)</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7de35070_39'>39</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_39'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>tryParseInt<br/><b>Killed by : </b>cx.corp.lacuna.core.linux.ProcFileFilterTest.acceptsDirectoryWithLowerBoundIntegerName[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest)</span></span> mutated return of Object value for cx/corp/lacuna/core/linux/ProcFileFilter::tryParseInt to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7de35070_41'>41</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7de35070_41'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>tryParseInt<br/><b>Killed by : </b>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesDirectoriesWithNonIntegerName[1: pid_max = 32 768](cx.corp.lacuna.core.linux.ProcFileFilterTest)</span></span> mutated return of Object value for cx/corp/lacuna/core/linux/ProcFileFilter::tryParseInt to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED</p> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+
+<li class='mutator'>INCREMENTS_MUTATOR</li>
+
+<li class='mutator'>VOID_METHOD_CALL_MUTATOR</li>
+
+<li class='mutator'>RETURN_VALS_MUTATOR</li>
+
+<li class='mutator'>MATH_MUTATOR</li>
+
+<li class='mutator'>NEGATE_CONDITIONALS_MUTATOR</li>
+
+<li class='mutator'>INVERT_NEGS_MUTATOR</li>
+
+<li class='mutator'>CONDITIONALS_BOUNDARY_MUTATOR</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesNullFiles[2: pid_max = 4 194 304](cx.corp.lacuna.core.linux.ProcFileFilterTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesNullFiles[1: pid_max = 32 768](cx.corp.lacuna.core.linux.ProcFileFilterTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.ctorThrowsIfPassingPidMaxEqualToLowestLegalPid[2: pid_max = 4 194 304](cx.corp.lacuna.core.linux.ProcFileFilterTest) (2 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesDirectoriesWithNumbersGreaterThanPidMax[2: pid_max = 4 194 304](cx.corp.lacuna.core.linux.ProcFileFilterTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.ctorThrowsIfPassingPidMaxLowerThanLowestLegalPid[2: pid_max = 4 194 304](cx.corp.lacuna.core.linux.ProcFileFilterTest) (6 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.acceptsDirectoriesWithLegalIntegerName[2: pid_max = 4 194 304](cx.corp.lacuna.core.linux.ProcFileFilterTest) (3 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.ctorThrowsIfPassingPidMaxEqualToLowestLegalPid[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest) (2 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesDirectoriesWithNamesLowerThanLowestLegalPid[1: pid_max = 32 768](cx.corp.lacuna.core.linux.ProcFileFilterTest) (3 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.acceptsDirectoryWithLowerBoundIntegerName[1: pid_max = 32 768](cx.corp.lacuna.core.linux.ProcFileFilterTest) (2 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesDirectoriesWithNamesLowerThanLowestLegalPid[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest) (6 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.ctorThrowsIfPassingPidMaxLowerThanLowestLegalPid[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest) (5 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.acceptsDirectoryWithLowerBoundIntegerName[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.acceptsDirectoriesWithLegalIntegerName[1: pid_max = 32 768](cx.corp.lacuna.core.linux.ProcFileFilterTest) (2 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.ctorThrowsIfPassingPidMaxLowerThanLowestLegalPid[1: pid_max = 32 768](cx.corp.lacuna.core.linux.ProcFileFilterTest) (6 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.acceptsDirectoriesWithLegalIntegerName[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest) (2 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesNonDirectoryFiles[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesDirectoriesWithNumbersEqualToPidMax[2: pid_max = 4 194 304](cx.corp.lacuna.core.linux.ProcFileFilterTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesDirectoriesWithNonIntegerName[2: pid_max = 4 194 304](cx.corp.lacuna.core.linux.ProcFileFilterTest) (4 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.ctorThrowsIfPassingPidMaxEqualToLowestLegalPid[1: pid_max = 32 768](cx.corp.lacuna.core.linux.ProcFileFilterTest) (2 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.acceptsDirectoryWithLowerBoundIntegerName[2: pid_max = 4 194 304](cx.corp.lacuna.core.linux.ProcFileFilterTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesDirectoriesWithNonIntegerName[1: pid_max = 32 768](cx.corp.lacuna.core.linux.ProcFileFilterTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesDirectoriesWithNonIntegerName[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest) (3 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesDirectoriesWithNumbersGreaterThanPidMax[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest) (2 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesDirectoriesWithNumbersEqualToPidMax[1: pid_max = 32 768](cx.corp.lacuna.core.linux.ProcFileFilterTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesDirectoriesWithNumbersEqualToPidMax[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest) (2 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesNonDirectoryFiles[2: pid_max = 4 194 304](cx.corp.lacuna.core.linux.ProcFileFilterTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesDirectoriesWithNumbersGreaterThanPidMax[1: pid_max = 32 768](cx.corp.lacuna.core.linux.ProcFileFilterTest) (2 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesDirectoriesWithNamesLowerThanLowestLegalPid[2: pid_max = 4 194 304](cx.corp.lacuna.core.linux.ProcFileFilterTest) (2 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesNonDirectoryFiles[1: pid_max = 32 768](cx.corp.lacuna.core.linux.ProcFileFilterTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.ProcFileFilterTest.declinesNullFiles[0: pid_max = 10](cx.corp.lacuna.core.linux.ProcFileFilterTest) (2 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='http://pitest.org'>PIT</a> 1.1.11
+
+</body>
+</html>
