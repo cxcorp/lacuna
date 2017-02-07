@@ -43,12 +43,6 @@ public class ProcFileFilterTest {
     }
 
     @Test
-    public void declinesNullFiles() {
-        boolean result = procFileFilter.accept(null);
-        assertFalse(result);
-    }
-
-    @Test
     public void declinesNonDirectoryFiles() {
         String procName = generateRandomValidProcName();
         boolean result = procFileFilter.accept(false, procName);

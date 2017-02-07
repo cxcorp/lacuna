@@ -6,6 +6,8 @@ import com.sun.jna.Native;
 import com.sun.jna.Platform;
 import cx.corp.lacuna.core.MemoryReader;
 import cx.corp.lacuna.core.domain.NativeProcess;
+import cx.corp.lacuna.core.linux.LinuxNativeProcessCollector;
+import cx.corp.lacuna.core.linux.LinuxPidEnumerator;
 import cx.corp.lacuna.core.serialization.Boolean8Serializer;
 import cx.corp.lacuna.core.serialization.Int32Serializer;
 import cx.corp.lacuna.core.serialization.TypeSerializer;
@@ -147,7 +149,9 @@ public class Main {
 
     private static void setupForLinux() {
         Path procRoot = LinuxConstants.DEFAULT_PROC_ROOT;
-        processEnumerator = new LinuxNativeProcessEnumerator(procRoot);
+        PidEnumerator pidEnumerator = new LinuxPidEnumerator(procRoot);
+        NativeProcessCollector collector = new LinuxNativeProcessCollector(procRoot);
+        processEnumerator = new LinuxNativeProcessEnumerator(pidEnumerator, collector);
         FileMemoryProvider memProvider = new FileMemoryProvider(Paths.get("/proc"), "mem");
         memoryReader = new LinuxMemoryReader(memProvider);
     }
