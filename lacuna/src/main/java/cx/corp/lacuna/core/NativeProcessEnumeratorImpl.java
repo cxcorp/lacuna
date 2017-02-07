@@ -1,19 +1,15 @@
-package cx.corp.lacuna.core.linux;
+package cx.corp.lacuna.core;
 
-import cx.corp.lacuna.core.NativeProcessCollector;
-import cx.corp.lacuna.core.NativeProcessEnumerator;
-import cx.corp.lacuna.core.PidEnumerator;
 import cx.corp.lacuna.core.domain.NativeProcess;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class LinuxNativeProcessEnumerator implements NativeProcessEnumerator {
-
+public class NativeProcessEnumeratorImpl implements NativeProcessEnumerator {
     private final NativeProcessCollector processCollector;
     private final PidEnumerator pidEnumerator;
 
-    public LinuxNativeProcessEnumerator(PidEnumerator pidEnumerator, NativeProcessCollector processCollector) {
+    public NativeProcessEnumeratorImpl(PidEnumerator pidEnumerator, NativeProcessCollector processCollector) {
         if (pidEnumerator == null || processCollector == null) {
             throw new IllegalArgumentException("Parameters cannot be null!");
         }
@@ -30,6 +26,4 @@ public class LinuxNativeProcessEnumerator implements NativeProcessEnumerator {
             .map(processCollector::collect)
             .collect(Collectors.toList());
     }
-
-
 }

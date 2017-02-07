@@ -1,8 +1,8 @@
-package cx.corp.lacuna.core.windows.winapi;
+package cx.corp.lacuna.core.windows;
 
 import cx.corp.lacuna.core.windows.MockProcessHandle;
+import cx.corp.lacuna.core.windows.WindowsProcessOwnerGetter;
 import cx.corp.lacuna.core.windows.winapi.MockAdvapi32;
-import cx.corp.lacuna.core.windows.winapi.WinApiProcessOwnerGetter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,22 +10,22 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertFalse;
 
-public class WinApiProcessOwnerGetterTest {
+public class WindowsProcessOwnerGetterTest {
 
     private MockAdvapi32 advapi;
-    private WinApiProcessOwnerGetter getter;
+    private WindowsProcessOwnerGetter getter;
     private MockProcessHandle handle;
 
     @Before
     public void setUp() {
         advapi = new MockAdvapi32();
-        getter = new WinApiProcessOwnerGetter(advapi);
+        getter = new WindowsProcessOwnerGetter(advapi);
         handle = new MockProcessHandle(123);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIfNullAdvapiPassed() {
-        new WinApiProcessOwnerGetter(null);
+        new WindowsProcessOwnerGetter(null);
     }
 
     @Test(expected = IllegalArgumentException.class)

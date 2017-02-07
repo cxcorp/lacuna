@@ -24,7 +24,7 @@ public class LinuxPidEnumerator implements PidEnumerator {
     @Override
     public List<Integer> getPids() {
         int pidMax = readPidMax();
-        BiPredicate<Path, BasicFileAttributes> filter = new ProcFileFilter(pidMax);
+        BiPredicate<Path, BasicFileAttributes> filter = new ProcPathFilter(pidMax);
 
         try {
             // assumption: the used filter removes any non-integer files from the stream

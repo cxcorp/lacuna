@@ -1,6 +1,7 @@
-package cx.corp.lacuna.core.windows;
+package cx.corp.lacuna.core;
 
 import cx.corp.lacuna.core.NativeProcessCollector;
+import cx.corp.lacuna.core.NativeProcessEnumeratorImpl;
 import cx.corp.lacuna.core.PidEnumerator;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
@@ -17,9 +18,9 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
-public class WindowsNativeProcessEnumeratorTest {
+public class NativeProcessEnumeratorImplTest {
 
-    private WindowsNativeProcessEnumerator enumerator;
+    private NativeProcessEnumeratorImpl enumerator;
     private PidEnumerator pidEnumerator;
     private NativeProcessCollector collector;
 
@@ -32,17 +33,17 @@ public class WindowsNativeProcessEnumeratorTest {
         this.collector = pid -> new NativeProcessImpl(pid, "description", "owner");
         NativeProcessCollector proxyCollector = pid -> this.collector.collect(pid);
 
-        this.enumerator = new WindowsNativeProcessEnumerator(proxyEnumerator, proxyCollector);
+        this.enumerator = new NativeProcessEnumeratorImpl(proxyEnumerator, proxyCollector);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsWhenPassedNullPidEnumerator() {
-        new WindowsNativeProcessEnumerator(null, collector);
+        new NativeProcessEnumeratorImpl(null, collector);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsWhenPassedNullCollector() {
-        new WindowsNativeProcessEnumerator(pidEnumerator, null);
+        new NativeProcessEnumeratorImpl(pidEnumerator, null);
     }
 
     @Test

@@ -27,15 +27,8 @@ public class FileMemoryProviderTest {
         new FileMemoryProvider(Paths.get("."), null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void openThrowsIfProcessIsNull() throws IOException {
-        provider.open(null);
-    }
-
     @Test(expected = IOException.class)
     public void openThrowsIfProcessMemFileDoesntExist() throws IOException {
-        NativeProcess proc = new NativeProcessImpl();
-        proc.setPid(-1);
-        provider.open(proc);
+        provider.open(-1);
     }
 }

@@ -1,21 +1,19 @@
-package cx.corp.lacuna.core.windows.winapi;
+package cx.corp.lacuna.core.windows;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.ptr.IntByReference;
-import cx.corp.lacuna.core.windows.ProcessHandle;
-import cx.corp.lacuna.core.windows.ProcessOwnerGetter;
 import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
 import java.util.Optional;
 
-public class WinApiProcessOwnerGetter implements ProcessOwnerGetter {
+public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
 
     private final Advapi32 advapi;
 
-    public WinApiProcessOwnerGetter(Advapi32 advapi) {
+    public WindowsProcessOwnerGetter(Advapi32 advapi) {
         if (advapi == null) {
             throw new IllegalArgumentException("advapi cannot be null!");
         }

@@ -1,18 +1,15 @@
-package cx.corp.lacuna.core.windows.winapi;
+package cx.corp.lacuna.core.windows;
 
 import com.sun.jna.Native;
-import cx.corp.lacuna.core.windows.ProcessHandle;
-import cx.corp.lacuna.core.windows.ProcessOpenException;
-import cx.corp.lacuna.core.windows.ProcessOpener;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
-public class WinApiProcessOpener implements ProcessOpener {
+public class WindowsProcessOpener implements ProcessOpener {
 
     private final Kernel32 kernel;
 
-    public WinApiProcessOpener(Kernel32 kernel) {
+    public WindowsProcessOpener(Kernel32 kernel) {
         if (kernel == null) {
             throw new IllegalArgumentException("kernel cannot be null");
         }

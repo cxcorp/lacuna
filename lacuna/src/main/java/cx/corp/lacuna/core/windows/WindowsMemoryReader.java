@@ -9,7 +9,6 @@ import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
-import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
 /**
  * {@inheritDoc}

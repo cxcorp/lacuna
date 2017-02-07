@@ -7,11 +7,11 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.function.BiPredicate;
 
-class ProcFileFilter implements BiPredicate<Path, BasicFileAttributes> {
+class ProcPathFilter implements BiPredicate<Path, BasicFileAttributes> {
 
     private final int pidMax;
 
-    public ProcFileFilter(int pidMax) {
+    public ProcPathFilter(int pidMax) {
         if (pidMax <= LinuxConstants.LOWEST_LEGAL_PID) {
             throw new IllegalArgumentException("pidMax cannot be lower than or equal to 1!");
         }

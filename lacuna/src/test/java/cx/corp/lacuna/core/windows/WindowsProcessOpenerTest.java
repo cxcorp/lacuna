@@ -1,31 +1,31 @@
-package cx.corp.lacuna.core.windows.winapi;
+package cx.corp.lacuna.core.windows;
 
 import cx.corp.lacuna.core.windows.ProcessHandle;
 import cx.corp.lacuna.core.windows.ProcessOpenException;
+import cx.corp.lacuna.core.windows.WindowsProcessOpener;
 import cx.corp.lacuna.core.windows.winapi.MockKernel32;
 import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
-import cx.corp.lacuna.core.windows.winapi.WinApiProcessOpener;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class WinApiProcessOpenerTest {
+public class WindowsProcessOpenerTest {
 
     private MockKernel32 kernel;
-    private WinApiProcessOpener opener;
+    private WindowsProcessOpener opener;
 
     @Before
     public void setUp() {
         kernel = new MockKernel32();
-        opener = new WinApiProcessOpener(kernel);
+        opener = new WindowsProcessOpener(kernel);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIfKernelIsNull() {
-        new WinApiProcessOpener(null);
+        new WindowsProcessOpener(null);
     }
 
     @Test(expected = ProcessOpenException.class)

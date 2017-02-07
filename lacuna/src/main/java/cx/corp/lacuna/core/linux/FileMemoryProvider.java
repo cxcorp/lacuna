@@ -1,7 +1,5 @@
 package cx.corp.lacuna.core.linux;
 
-import cx.corp.lacuna.core.domain.NativeProcess;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,18 +24,14 @@ public class FileMemoryProvider implements MemoryProvider {
     }
 
     @Override
-    public InputStream open(NativeProcess process) throws IOException {
-        if (process == null) {
-            throw new IllegalArgumentException("process cannot be null!");
-        }
-
-        Path memFile = createPathToProcessMemoryFile(process);
+    public InputStream open(int pid) throws IOException {
+        Path memFile = createPathToProcessMemoryFile(pid);
         return new FileInputStream(memFile.toFile());
     }
 
-    private Path createPathToProcessMemoryFile(NativeProcess process) {
-        String pid = Integer.toString(process.getPid());
-        Path relativeMemLocation = Paths.get(pid, memFileName);
+    private Path createPathToProcessMemoryFile(int pid) {
+        String pidStr = Integer.toString(pid);
+        Path relativeMemLocation = Paths.get(pidStr, memFileName);
         return procRoot.resolve(relativeMemLocation);
     }
 }
