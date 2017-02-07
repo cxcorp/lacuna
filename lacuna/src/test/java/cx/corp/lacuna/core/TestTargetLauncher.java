@@ -1,18 +1,17 @@
 package cx.corp.lacuna.core;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestTargetLauncher {
 
     private final Path executablePath;
-    private Integer money = 0;
-    private Integer gold = 0;
-    private Boolean gentooInstalled = false;
-    private Boolean privilegeChecked = false;
-    private Short speedOfSeriousShit = 0;
+    private Integer firstArgInt = 0;
+    private Integer secondArgInt = 0;
+    private Boolean thirdArgBoolean = false;
+    private Boolean fourthArgBoolean = false;
+    private Short fifthArgShort = 0;
     private String name = "name";
 
     public TestTargetLauncher(Path executablePath) {
@@ -26,42 +25,42 @@ public class TestTargetLauncher {
     public ProcessBuilder createBuilder() {
         List<String> args = new ArrayList<>();
         args.add(executablePath.toString());
-        args.add(money.toString());
-        args.add(gold.toString());
-        args.add(toIntString(gentooInstalled));
-        args.add(toIntString(privilegeChecked));
-        args.add(speedOfSeriousShit.toString());
+        args.add(firstArgInt.toString());
+        args.add(secondArgInt.toString());
+        args.add(toIntString(thirdArgBoolean));
+        args.add(toIntString(fourthArgBoolean));
+        args.add(fifthArgShort.toString());
         args.add(name);
         return new ProcessBuilder(args);
     }
 
-    public TestTargetLauncher withMoney(int money) {
-        this.money = money;
+    public TestTargetLauncher withFirstArg(int value) {
+        this.firstArgInt = value;
         return this;
     }
 
-    public TestTargetLauncher withGold(int gold) {
-        this.gold = gold;
+    public TestTargetLauncher withSecondArg(int value) {
+        this.secondArgInt = value;
         return this;
     }
 
-    public TestTargetLauncher withGentooInstalled(boolean installed) {
-        this.gentooInstalled = installed;
+    public TestTargetLauncher withThirdArg(boolean value) {
+        this.thirdArgBoolean = value;
         return this;
     }
 
-    public TestTargetLauncher withPrivilegeChecked(boolean checked) {
-        this.privilegeChecked = checked;
+    public TestTargetLauncher withFourthArg(boolean value) {
+        this.fourthArgBoolean = value;
         return this;
     }
 
-    public TestTargetLauncher withSpeedOfSeriousShit(short val) {
-        this.speedOfSeriousShit = val;
+    public TestTargetLauncher withFifthArg(short value) {
+        this.fifthArgShort = value;
         return this;
     }
 
-    public TestTargetLauncher withName(String name) {
-        this.name = name;
+    public TestTargetLauncher withSixthArg(String value) {
+        this.name = value;
         return this;
     }
 
