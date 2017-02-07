@@ -1,7 +1,5 @@
 package cx.corp.lacuna.core.linux;
 
-import java.io.File;
-import java.io.FileFilter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
