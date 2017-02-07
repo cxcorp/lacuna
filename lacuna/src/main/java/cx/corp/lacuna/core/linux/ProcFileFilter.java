@@ -2,8 +2,12 @@ package cx.corp.lacuna.core.linux;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.function.BiPredicate;
 
-class ProcFileFilter implements FileFilter {
+class ProcFileFilter implements BiPredicate<Path, BasicFileAttributes> {
 
     private final int pidMax;
 
@@ -15,12 +19,8 @@ class ProcFileFilter implements FileFilter {
     }
 
     @Override
-    public boolean accept(File pathname) {
-        if (pathname == null) {
-            return false;
-        }
-
-        return accept(pathname.isDirectory(), pathname.getName());
+    public boolean test(Path path, BasicFileAttributes basicFileAttributes) {
+        return accept(Files.isDirectory(path), path.getFileName().toString());
     }
 
     boolean accept(boolean isDirectory, String fileName) {
