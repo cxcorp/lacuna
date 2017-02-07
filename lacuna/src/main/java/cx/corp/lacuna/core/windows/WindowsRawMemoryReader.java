@@ -7,8 +7,8 @@ import cx.corp.lacuna.core.MemoryReadException;
 import cx.corp.lacuna.core.RawMemoryReader;
 import cx.corp.lacuna.core.MemoryReaderImpl;
 import cx.corp.lacuna.core.domain.NativeProcess;
-import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
+import cx.corp.lacuna.core.windows.winapi.ReadProcessMemory;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 
 import java.nio.ByteBuffer;
@@ -20,21 +20,21 @@ public class WindowsRawMemoryReader implements RawMemoryReader {
         ProcessAccessFlags.QUERY_INFORMATION | ProcessAccessFlags.VIRTUAL_MEMORY_READ;
 
     private final ProcessOpener processOpener;
-    private final Kernel32 kernel;
+    private final ReadProcessMemory memoryReader;
 
     /**
      * Instantiates a new {@link MemoryReaderImpl} instance using the specified
      * process opener and  Kernel32 WindowsAPI proxy.
      *
      * @param processOpener The process opener used to open a handle to the target process.
-     * @param kernel The Kernel32 WindowsAPI proxy used for process memory reading.
+     * @param memoryReader The WindowsAPI proxy used for process memory reading.
      */
-    public WindowsRawMemoryReader(ProcessOpener processOpener, Kernel32 kernel) {
-        if (kernel == null || processOpener == null) {
+    public WindowsRawMemoryReader(ProcessOpener processOpener, ReadProcessMemory memoryReader) {
+        if (processOpener == null || memoryReader == null) {
             throw new IllegalArgumentException("Parameters cannot be null!");
         }
         this.processOpener = processOpener;
-        this.kernel = kernel;
+        this.memoryReader = memoryReader;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class WindowsRawMemoryReader implements RawMemoryReader {
         try (ProcessHandle handle = processOpener.open(process.getPid(), FLAGS_READMEMORY)) {
             Memory buffer = new Memory(bytesToRead);
             IntByReference bytesRead = new IntByReference(0);
-            boolean success = kernel.readProcessMemory(
+            boolean success = memoryReader.readProcessMemory(
                 handle.getNativeHandle(),
                 offset,
                 buffer,

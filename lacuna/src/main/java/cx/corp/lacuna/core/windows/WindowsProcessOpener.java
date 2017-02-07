@@ -1,26 +1,29 @@
 package cx.corp.lacuna.core.windows;
 
 import com.sun.jna.Native;
-import cx.corp.lacuna.core.windows.winapi.Kernel32;
+import cx.corp.lacuna.core.windows.winapi.CloseHandle;
+import cx.corp.lacuna.core.windows.winapi.OpenProcess;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
 public class WindowsProcessOpener implements ProcessOpener {
 
-    private final Kernel32 kernel;
+    private final OpenProcess openProcess;
+    private final CloseHandle closeHandle;
 
-    public WindowsProcessOpener(Kernel32 kernel) {
-        if (kernel == null) {
-            throw new IllegalArgumentException("kernel cannot be null");
+    public WindowsProcessOpener(OpenProcess openProcess, CloseHandle closeHandle) {
+        if (openProcess == null || closeHandle == null) {
+            throw new IllegalArgumentException("Arguments cannot be null");
         }
-        this.kernel = kernel;
+        this.openProcess = openProcess;
+        this.closeHandle = closeHandle;
     }
 
     @Override
     public ProcessHandle open(int pid, int processAccessFlags) throws ProcessOpenException {
-        int handle = kernel.openProcess(processAccessFlags, false, pid);
+        int handle = openProcess.openProcess(processAccessFlags, false, pid);
 
-        if (handle == WinApiConstants.NULLPTR) {
+        if (handle == WinApiConstants.NULL) {
             Integer lastError = Native.getLastError();
             SystemErrorCode error = SystemErrorCode.fromId(lastError);
             String message = String.format(
@@ -51,7 +54,7 @@ public class WindowsProcessOpener implements ProcessOpener {
         public void close() {
             // non-static child classes can access parent **instance**!
             // make use of this to access kernel32
-            kernel.closeHandle(this.nativeHandle);
+            closeHandle.closeHandle(this.nativeHandle);
         }
     }
 }

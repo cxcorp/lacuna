@@ -1,8 +1,6 @@
 package cx.corp.lacuna.core.windows;
 
-import cx.corp.lacuna.core.windows.MockProcessHandle;
-import cx.corp.lacuna.core.windows.WindowsProcessDescriptionGetter;
-import cx.corp.lacuna.core.windows.winapi.MockKernel32;
+import cx.corp.lacuna.core.windows.winapi.QueryFullProcessImageName;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,14 +11,15 @@ import static org.junit.Assert.assertFalse;
 
 public class WindowsProcessDescriptionGetterTest {
 
-    private MockKernel32 kernel;
+    private QueryFullProcessImageName nameQuerier;
     private WindowsProcessDescriptionGetter getter;
     private MockProcessHandle handle;
 
     @Before
     public void setUp() {
-        kernel = new MockKernel32();
-        getter = new WindowsProcessDescriptionGetter(kernel);
+        nameQuerier = null;
+        // capture local field via closure so tests can modify it
+        getter = new WindowsProcessDescriptionGetter((a, b, c, d) -> nameQuerier.queryFullProcessImageNameW(a, b, c, d));
         handle = new MockProcessHandle(0);
     }
 
@@ -36,7 +35,7 @@ public class WindowsProcessDescriptionGetterTest {
 
     @Test
     public void getReturnsEmptyIfKernelQueryFails() {
-        kernel.setQueryFullProcessImageSuccess(false);
+        nameQuerier = (a, b, c, d) -> false;
 
         Optional<String> result = getter.get(handle);
 
@@ -45,9 +44,14 @@ public class WindowsProcessDescriptionGetterTest {
 
     @Test
     public void getReturnsEmptyStringIfKernelSaysItWroteZeroBytes() {
-        kernel.setQueryFullProcessImageSuccess(true);
-        kernel.setQueryFullProcessImageNameExeName("not zero length");
-        kernel.setQueryFullProcessImageNameBytesWritten(0);
+        nameQuerier = (procHandle, flags, exeName, bufSize) -> {
+            char[] name = "Image name that isn not empty.exe".toCharArray();
+            // copy the value to the receiving array
+            System.arraycopy(name, 0, exeName, 0, name.length);
+            // but claim that zero bytes were copied
+            bufSize.setValue(0);
+            return true;
+        };
 
         Optional<String> result = getter.get(handle);
 
@@ -56,13 +60,19 @@ public class WindowsProcessDescriptionGetterTest {
 
     @Test
     public void getReturnsCorrectlyTrimmedString() {
-        kernel.setQueryFullProcessImageSuccess(true);
-        String description = "toasters.exe";
-        kernel.setQueryFullProcessImageNameExeName(description);
-        kernel.setQueryFullProcessImageNameBytesWritten(description.length());
+        final String description = "toasters.exe";
+        final int howManyBytesWeClaimToHaveCopied = description.length() - 1;
+        final String expected = description.substring(0, howManyBytesWeClaimToHaveCopied);
+
+        nameQuerier = (procHandle, flags, exeName, bufSize) -> {
+            char[] name = description.toCharArray();
+            System.arraycopy(name, 0, exeName, 0, howManyBytesWeClaimToHaveCopied);
+            bufSize.setValue(howManyBytesWeClaimToHaveCopied);
+            return true;
+        };
 
         Optional<String> result = getter.get(handle);
 
-        assertEquals(description, result.get());
+        assertEquals(expected, result.get());
     }
 }

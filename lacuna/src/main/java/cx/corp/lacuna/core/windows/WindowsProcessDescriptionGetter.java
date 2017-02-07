@@ -1,20 +1,20 @@
 package cx.corp.lacuna.core.windows;
 
 import com.sun.jna.ptr.IntByReference;
-import cx.corp.lacuna.core.windows.winapi.Kernel32;
+import cx.corp.lacuna.core.windows.winapi.QueryFullProcessImageName;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
 import java.util.Optional;
 
 public class WindowsProcessDescriptionGetter implements ProcessDescriptionGetter {
 
-    private final Kernel32 kernel;
+    private final QueryFullProcessImageName winapi;
 
-    public WindowsProcessDescriptionGetter(Kernel32 kernel) {
-        if (kernel == null) {
-            throw new IllegalArgumentException("kernel cannot be null!");
+    public WindowsProcessDescriptionGetter(QueryFullProcessImageName winapi) {
+        if (winapi == null) {
+            throw new IllegalArgumentException("winapi cannot be null!");
         }
-        this.kernel = kernel;
+        this.winapi = winapi;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class WindowsProcessDescriptionGetter implements ProcessDescriptionGetter
         IntByReference bufferSize = new IntByReference(nameBuf.length);
 
         boolean success =
-            kernel.queryFullProcessImageNameW(
+            winapi.queryFullProcessImageNameW(
                 processHandle,
                 WinApiConstants.QUERYFULLPROCESSIMAGENAME_PATHFORMAT_WIN32,
                 nameBuf,

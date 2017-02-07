@@ -2,15 +2,12 @@ package cx.corp.lacuna.core.windows;
 
 import com.sun.jna.Platform;
 import cx.corp.lacuna.core.IntegrationTestConstants;
-import cx.corp.lacuna.core.NativeProcessCollector;
 import cx.corp.lacuna.core.RawMemoryReader;
 import cx.corp.lacuna.core.TestTargetLauncher;
 import cx.corp.lacuna.core.MemoryReaderImpl;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
-import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
-import cx.corp.lacuna.core.windows.winapi.Psapi;
 import cx.corp.lacuna.core.windows.winapi.WinApiBootstrapper;
 import org.junit.Assume;
 import org.junit.Before;
@@ -43,7 +40,7 @@ public class WindowsMemoryReaderIT {
 
         kernel32 = winapi.getKernel32();
 
-        ProcessOpener opener = new WindowsProcessOpener(kernel32);
+        ProcessOpener opener = new WindowsProcessOpener(kernel32, kernel32);
         RawMemoryReader rawReader = new WindowsRawMemoryReader(opener, kernel32);
         reader = new MemoryReaderImpl(rawReader);
         Path testTargetPath = IntegrationTestConstants.getTestTargetUrlForWindows();

@@ -120,7 +120,7 @@ public class Main {
         Advapi32 advapi = Native.loadLibrary("Advapi32", Advapi32.class, options);
 
         PidEnumerator enumerator = new WindowsPidEnumerator(psapi);
-        ProcessOpener procOpener = new WindowsProcessOpener(kernel);
+        ProcessOpener procOpener = new WindowsProcessOpener(kernel, kernel);
         ProcessOwnerGetter ownerGetter = new WindowsProcessOwnerGetter(advapi);
         ProcessDescriptionGetter descriptionGetter = new WindowsProcessDescriptionGetter(kernel);
         NativeProcessCollector collector =

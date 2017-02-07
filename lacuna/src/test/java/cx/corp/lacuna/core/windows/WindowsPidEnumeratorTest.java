@@ -1,7 +1,6 @@
 package cx.corp.lacuna.core.windows;
 
 import cx.corp.lacuna.core.ProcessEnumerationException;
-import cx.corp.lacuna.core.windows.WindowsPidEnumerator;
 import cx.corp.lacuna.core.windows.winapi.MockPsapi;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 import org.junit.Before;
