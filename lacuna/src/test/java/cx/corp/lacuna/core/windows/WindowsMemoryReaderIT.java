@@ -2,7 +2,10 @@ package cx.corp.lacuna.core.windows;
 
 import com.sun.jna.Platform;
 import cx.corp.lacuna.core.IntegrationTestConstants;
+import cx.corp.lacuna.core.NativeProcessCollector;
+import cx.corp.lacuna.core.RawMemoryReader;
 import cx.corp.lacuna.core.TestTargetLauncher;
+import cx.corp.lacuna.core.MemoryReaderImpl;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import cx.corp.lacuna.core.windows.winapi.Advapi32;
@@ -14,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
@@ -25,8 +27,7 @@ public class WindowsMemoryReaderIT {
     private static final int TESTTARGET_STRUCT_SIZE = 0x10;
 
     private final WinApiBootstrapper winapi;
-    private WindowsMemoryReader reader;
-    private WindowsNativeProcessCollector processCollector;
+    private MemoryReaderImpl reader;
     private Kernel32 kernel32;
     private TestTargetLauncher testTargetLauncher;
 
@@ -41,16 +42,10 @@ public class WindowsMemoryReaderIT {
         Assume.assumeTrue(Platform.isWindows());
 
         kernel32 = winapi.getKernel32();
-        Advapi32 advapi32 = winapi.getAdvapi32();
-        Psapi psapi = winapi.getPsapi();
 
         ProcessOpener opener = new WindowsProcessOpener(kernel32);
-        ProcessOwnerGetter ownerGetter = new WindowsProcessOwnerGetter(advapi32);
-        ProcessDescriptionGetter descriptionGetter = new WindowsProcessDescriptionGetter(kernel32);
-
-        processCollector = new WindowsNativeProcessCollector(opener, ownerGetter, descriptionGetter);
-        reader = new WindowsMemoryReader(opener, kernel32);
-
+        RawMemoryReader rawReader = new WindowsRawMemoryReader(opener, kernel32);
+        reader = new MemoryReaderImpl(rawReader);
         Path testTargetPath = IntegrationTestConstants.getTestTargetUrlForWindows();
         testTargetLauncher = new TestTargetLauncher(testTargetPath);
     }

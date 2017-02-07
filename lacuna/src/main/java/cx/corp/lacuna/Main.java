@@ -6,6 +6,7 @@ import com.sun.jna.Native;
 import com.sun.jna.Platform;
 import cx.corp.lacuna.core.MemoryReader;
 import cx.corp.lacuna.core.NativeProcessEnumeratorImpl;
+import cx.corp.lacuna.core.RawMemoryReader;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.linux.LinuxNativeProcessCollector;
 import cx.corp.lacuna.core.linux.LinuxPidEnumerator;
@@ -14,7 +15,7 @@ import cx.corp.lacuna.core.NativeProcessEnumerator;
 import cx.corp.lacuna.core.PidEnumerator;
 import cx.corp.lacuna.core.linux.FileMemoryProvider;
 import cx.corp.lacuna.core.linux.LinuxConstants;
-import cx.corp.lacuna.core.linux.LinuxMemoryReader;
+import cx.corp.lacuna.core.linux.LinuxRawMemoryReader;
 import cx.corp.lacuna.core.windows.ProcessDescriptionGetter;
 import cx.corp.lacuna.core.windows.ProcessOpener;
 import cx.corp.lacuna.core.windows.ProcessOwnerGetter;
@@ -22,8 +23,9 @@ import cx.corp.lacuna.core.windows.WindowsNativeProcessCollector;
 import cx.corp.lacuna.core.windows.WindowsProcessDescriptionGetter;
 import cx.corp.lacuna.core.windows.WindowsProcessOpener;
 import cx.corp.lacuna.core.windows.WindowsProcessOwnerGetter;
-import cx.corp.lacuna.core.windows.WindowsMemoryReader;
+import cx.corp.lacuna.core.MemoryReaderImpl;
 import cx.corp.lacuna.core.windows.WindowsPidEnumerator;
+import cx.corp.lacuna.core.windows.WindowsRawMemoryReader;
 import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.CamelToPascalCaseFunctionMapper;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
@@ -125,7 +127,9 @@ public class Main {
             new WindowsNativeProcessCollector(procOpener, ownerGetter, descriptionGetter);
 
         processEnumerator = new NativeProcessEnumeratorImpl(enumerator, collector);
-        memoryReader = new WindowsMemoryReader(procOpener, kernel);
+
+        RawMemoryReader rawMemoryReader = new WindowsRawMemoryReader(procOpener, kernel);
+        memoryReader = new MemoryReaderImpl(rawMemoryReader);
     }
 
     private static void setupForLinux() {
@@ -134,7 +138,9 @@ public class Main {
         NativeProcessCollector collector = new LinuxNativeProcessCollector(procRoot);
 
         processEnumerator = new NativeProcessEnumeratorImpl(enumerator, collector);
+
         FileMemoryProvider memProvider = new FileMemoryProvider(Paths.get("/proc"), "mem");
-        memoryReader = new LinuxMemoryReader(memProvider);
+        RawMemoryReader rawMemoryReader = new LinuxRawMemoryReader(memProvider);
+        memoryReader = new MemoryReaderImpl(rawMemoryReader);
     }
 }
