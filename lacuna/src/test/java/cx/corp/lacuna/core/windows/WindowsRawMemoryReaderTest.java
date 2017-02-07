@@ -2,6 +2,7 @@ package cx.corp.lacuna.core.windows;
 
 import com.sun.jna.Native;
 import cx.corp.lacuna.core.MemoryReadException;
+import cx.corp.lacuna.core.MemoryReaderImpl;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import cx.corp.lacuna.core.windows.winapi.MockKernel32;
@@ -9,14 +10,16 @@ import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.nio.ByteBuffer;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-public class WindowsMemoryReaderTest {
+public class WindowsRawMemoryReaderTest {
 
     private ProcessOpener processOpener;
     private MockKernel32 kernel;
-    private WindowsMemoryReader reader;
+    private WindowsRawMemoryReader reader;
     private NativeProcess process;
 
     @Before
@@ -25,18 +28,33 @@ public class WindowsMemoryReaderTest {
         processOpener = (pid, flags) -> new MockProcessHandle(123);
         // create another lambda so that we can change processOpener in the tests and still maintain the reference
         ProcessOpener proxyOpener = (pid, processAccessFlags) -> processOpener.open(pid, processAccessFlags);
-        reader = new WindowsMemoryReader(proxyOpener, kernel);
+        reader = new WindowsRawMemoryReader(proxyOpener, kernel);
         process = new NativeProcessImpl();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIfNullProcessOpenerPassed() {
-        new WindowsMemoryReader(null, kernel);
+        new WindowsRawMemoryReader(null, kernel);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIfNullKernelPassed() {
-        new WindowsMemoryReader(processOpener, null);
+        new WindowsRawMemoryReader(processOpener, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void readThrowsIfProcessIsNull() {
+        reader.read(null, 0, 10);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void readThrowsIfOffsetIsNegative() {
+        reader.read(process, -100, 10);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void readThrowsIfReadNegativeBytes() {
+        reader.read(process, 100, -100);
     }
 
     @Test(expected = ProcessOpenException.class)
@@ -80,7 +98,7 @@ public class WindowsMemoryReaderTest {
         byte[] memoryBytes = new byte[]{123, -127, 42, 0, 1, 0, 0, 45};
         kernel.setReadProcessReadMemory(memoryBytes);
 
-        byte[] readBytes = reader.read(process, 0, 0);
+        reader.read(process, 0, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -91,7 +109,7 @@ public class WindowsMemoryReaderTest {
         byte[] memoryBytes = new byte[]{123, -127, 42, 0, 1, 0, 0, 45};
         kernel.setReadProcessReadMemory(memoryBytes);
 
-        byte[] readBytes = reader.read(process, 0, -123);
+        reader.read(process, 0, -123);
     }
 
     @Test
@@ -102,7 +120,10 @@ public class WindowsMemoryReaderTest {
         byte[] memoryBytes = new byte[]{123, -127, 42, 0, 1, 0, 0, 45};
         kernel.setReadProcessReadMemory(memoryBytes);
 
-        byte[] readBytes = reader.read(process, 0, memoryBytes.length);
+        ByteBuffer readBuffer = reader.read(process, 0, memoryBytes.length);
+        byte[] readBytes = new byte[readBuffer.remaining()];
+        readBuffer.get(readBytes);
+
         assertArrayEquals(memoryBytes, readBytes);
     }
 }
