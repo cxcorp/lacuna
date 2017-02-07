@@ -2,12 +2,7 @@ package cx.corp.lacuna.core.windows;
 
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
-import cx.corp.lacuna.core.windows.NativeProcessCollector;
-import cx.corp.lacuna.core.windows.ProcessDescriptionGetter;
-import cx.corp.lacuna.core.windows.ProcessHandle;
-import cx.corp.lacuna.core.windows.ProcessOpenException;
-import cx.corp.lacuna.core.windows.ProcessOpener;
-import cx.corp.lacuna.core.windows.ProcessOwnerGetter;
+import cx.corp.lacuna.core.NativeProcessCollector;
 import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
 
 public class WindowsNativeProcessCollector implements NativeProcessCollector {

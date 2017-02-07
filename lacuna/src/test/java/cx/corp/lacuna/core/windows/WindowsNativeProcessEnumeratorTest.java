@@ -1,8 +1,9 @@
 package cx.corp.lacuna.core.windows;
 
+import cx.corp.lacuna.core.NativeProcessCollector;
+import cx.corp.lacuna.core.PidEnumerator;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
-import cx.corp.lacuna.core.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;

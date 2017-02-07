@@ -1,6 +1,8 @@
 package cx.corp.lacuna.core.windows;
 
+import cx.corp.lacuna.core.NativeProcessCollector;
 import cx.corp.lacuna.core.NativeProcessEnumerator;
+import cx.corp.lacuna.core.PidEnumerator;
 import cx.corp.lacuna.core.domain.NativeProcess;
 
 import java.util.List;
