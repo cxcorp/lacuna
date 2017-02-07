@@ -7,7 +7,10 @@ import cx.corp.lacuna.core.windows.PidEnumerator;
 import cx.corp.lacuna.core.windows.winapi.Psapi;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class WinApiPidEnumerator implements PidEnumerator {
@@ -22,10 +25,12 @@ public class WinApiPidEnumerator implements PidEnumerator {
     }
 
     @Override
-    public IntStream getPids() {
+    public List<Integer> getPids() {
         int[] pidBuffer = createMaxSizePidBuffer();
         int pidCount = fillBufferWithProcessIds(pidBuffer);
-        return Arrays.stream(pidBuffer, 0, pidCount);
+        return Arrays.stream(pidBuffer, 0, pidCount)
+            .boxed()
+            .collect(Collectors.toList());
     }
 
     private int[] createMaxSizePidBuffer() {

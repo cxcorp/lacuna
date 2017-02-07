@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -37,15 +38,17 @@ public class WinApiPidEnumeratorTest {
 
     @Test
     public void getPidsReturnsCorrectlySizedArray() {
-        psapi.setEnumProcessesReturnValue(true);
-        int[] input = new int[]{123, 321, 5, 19, 0, 0, 0, 0, 0};
-        psapi.setEnumProcessesPids(input);
         int pidsToReturn = 2;
+        int[] input = new int[]{123, 321, 5, 19, 0, 0, 0, 0, 0};
+        psapi.setEnumProcessesReturnValue(true);
+        psapi.setEnumProcessesPids(input);
         psapi.setEnumProcessesBytesReturned(pidsToReturn * WinApiConstants.SIZEOF_INT);
         int[] expectedReturn = Arrays.copyOf(input, pidsToReturn);
 
-        int[] returned = enumerator.getPids().toArray();
-        assertArrayEquals(expectedReturn, returned);
+        List<Integer> returned = enumerator.getPids();
+
+        int[] returnedAsArray = returned.stream().mapToInt(i -> i).toArray();
+        assertArrayEquals(expectedReturn, returnedAsArray);
     }
 
     @Test
@@ -54,7 +57,7 @@ public class WinApiPidEnumeratorTest {
         psapi.setEnumProcessesPids(new int[]{123, 321});
         psapi.setEnumProcessesBytesReturned(0);
 
-        long count = enumerator.getPids().count();
+        int count = enumerator.getPids().size();
         assertEquals(0, count);
     }
 
@@ -65,7 +68,7 @@ public class WinApiPidEnumeratorTest {
         psapi.setEnumProcessesPids(input);
         psapi.setEnumProcessesBytesReturned(input.length * WinApiConstants.SIZEOF_INT);
 
-        int[] pids = enumerator.getPids().toArray();
+        int[] pids = enumerator.getPids().stream().mapToInt(i -> i).toArray();
         assertArrayEquals(input, pids);
     }
 }

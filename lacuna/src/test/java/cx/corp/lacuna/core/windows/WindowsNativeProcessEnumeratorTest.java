@@ -6,10 +6,12 @@ import cx.corp.lacuna.core.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertTrue;
@@ -23,9 +25,14 @@ public class WindowsNativeProcessEnumeratorTest {
 
     @Before
     public void setUp() {
-        pidEnumerator = () -> Arrays.stream(new int[]{1});
-        collector = pid -> new NativeProcessImpl(pid, "description", "owner");
-        enumerator = new WindowsNativeProcessEnumerator(pidEnumerator, collector);
+        // create proxy pidenumerator & collector to use in the ctor so we can change this.pidEnumerator
+        // and this.collector in the tests without having to reconstruct the enumerator instance
+        this.pidEnumerator = ArrayList::new;
+        PidEnumerator proxyEnumerator = () -> this.pidEnumerator.getPids();
+        this.collector = pid -> new NativeProcessImpl(pid, "description", "owner");
+        NativeProcessCollector proxyCollector = pid -> this.collector.collect(pid);
+
+        this.enumerator = new WindowsNativeProcessEnumerator(proxyEnumerator, proxyCollector);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -40,9 +47,7 @@ public class WindowsNativeProcessEnumeratorTest {
 
     @Test
     public void returnsEmptyListWhenNoProcessesFound() {
-        PidEnumerator pidEnumerator = IntStream::empty;
-        enumerator = new WindowsNativeProcessEnumerator(pidEnumerator, collector);
-
+        pidEnumerator = ArrayList::new;
         List<NativeProcess> processes = enumerator.getProcesses();
 
         assertEquals("Expected enumerator to return zero processes!", 0, processes.size());
@@ -50,16 +55,15 @@ public class WindowsNativeProcessEnumeratorTest {
 
     @Test
     public void getsCorrectPids() {
-        int[] expectedPids = {0, 1, 23, 502, 5992, 120, 235, 599, 4003};
-        PidEnumerator pidEnumerator = () -> Arrays.stream(expectedPids);
-        enumerator = new WindowsNativeProcessEnumerator(pidEnumerator, collector);
+        List<Integer> expectedPids = Arrays.asList(0, 1, 23, 502, 5992, 120, 235, 599, 4003);
+        // pass `new` list so that `enumerator` can't break the test by mutating expectedPids
+        pidEnumerator = () -> new ArrayList<>(expectedPids);
 
         List<NativeProcess> processes = enumerator.getProcesses();
-        int[] pids = processes.stream().mapToInt(NativeProcess::getPid).toArray();
+        List<Integer> pids = processes.stream().map(NativeProcess::getPid).collect(Collectors.toList());
 
-        // whooee O(n^2) * 2
-        assertTrue(TestUtils.containsAll(expectedPids, pids));
-        assertTrue(TestUtils.containsAll(pids, expectedPids));
+        assertTrue(expectedPids.containsAll(pids));
+        assertTrue(pids.containsAll(expectedPids));
     }
 
     @Test
@@ -68,10 +72,11 @@ public class WindowsNativeProcessEnumeratorTest {
         pidDescriptions.put(123, "toaster");
         pidDescriptions.put(1, null);
         pidDescriptions.put(3848, "ayy");
-        IntStream pids = pidDescriptions.keySet().stream().mapToInt(p -> p);
-        pidEnumerator = () -> pids;
+
+        List<Integer> expectedPids = new ArrayList<>(pidDescriptions.keySet());
+        // pass `new` list so that `enumerator` can't break the test by mutating expectedPids
+        pidEnumerator = () -> new ArrayList<>(expectedPids);
         collector = pid -> new NativeProcessImpl(pid, pidDescriptions.get(pid), null);
-        enumerator = new WindowsNativeProcessEnumerator(pidEnumerator, collector);
 
         List<NativeProcess> processes = enumerator.getProcesses();
         for (NativeProcess process : processes) {
@@ -87,13 +92,13 @@ public class WindowsNativeProcessEnumeratorTest {
         pidOwners.put(123, "me");
         pidOwners.put(3848, "you");
         pidOwners.put(1, null);
-        IntStream pids = pidOwners.keySet().stream().mapToInt(p -> p);
-        pidEnumerator = () -> pids;
-        collector = pid -> new NativeProcessImpl(pid, null, pidOwners.get(pid));
-        enumerator = new WindowsNativeProcessEnumerator(pidEnumerator, collector);
 
+        List<Integer> expectedPids = new ArrayList<>(pidOwners.keySet());
+        pidEnumerator = () -> new ArrayList<>(expectedPids);
+        collector = pid -> new NativeProcessImpl(pid, null, pidOwners.get(pid));
 
         List<NativeProcess> processes = enumerator.getProcesses();
+
         for (NativeProcess process : processes) {
             int pid = process.getPid();
             String owner = process.getOwner();
