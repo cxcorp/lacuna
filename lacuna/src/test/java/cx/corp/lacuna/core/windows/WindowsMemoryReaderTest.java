@@ -6,7 +6,6 @@ import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import cx.corp.lacuna.core.windows.winapi.MockKernel32;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
-import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -61,18 +60,6 @@ public class WindowsMemoryReaderTest {
         reader.read(process, 0, 16);
     }
 
-    @Test
-    public void readReadsCorrectByteArray() {
-        processOpener = (pid, flags) -> new MockProcessHandle(123);
-        process.setPid(321);
-        kernel.setReadProcessMemoryReturnValue(true);
-        byte[] memoryBytes = new byte[]{123, -127, 42, 0, 1, 0, 0, 45};
-        kernel.setReadProcessReadMemory(memoryBytes);
-
-        byte[] readBytes = reader.read(process, 0, memoryBytes.length);
-        assertArrayEquals(memoryBytes, readBytes);
-    }
-
     @Test(expected = MemoryReadException.class)
     public void readThrowsIfUnexpectedSystemErrorOccurs() {
         processOpener = (pid, flags) -> new MockProcessHandle(123);
@@ -83,5 +70,39 @@ public class WindowsMemoryReaderTest {
         Native.setLastError(unexpectedSystemError);
 
         reader.read(process, 0, 16);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void readThrowsWhenReadingZeroBytes() {
+        processOpener = (pid, flags) -> new MockProcessHandle(123);
+        process.setPid(321);
+        kernel.setReadProcessMemoryReturnValue(true);
+        byte[] memoryBytes = new byte[]{123, -127, 42, 0, 1, 0, 0, 45};
+        kernel.setReadProcessReadMemory(memoryBytes);
+
+        byte[] readBytes = reader.read(process, 0, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void readThrowsWhenReadingNegativeAmountOfBytes() {
+        processOpener = (pid, flags) -> new MockProcessHandle(123);
+        process.setPid(321);
+        kernel.setReadProcessMemoryReturnValue(true);
+        byte[] memoryBytes = new byte[]{123, -127, 42, 0, 1, 0, 0, 45};
+        kernel.setReadProcessReadMemory(memoryBytes);
+
+        byte[] readBytes = reader.read(process, 0, -123);
+    }
+
+    @Test
+    public void readReadsCorrectByteArray() {
+        processOpener = (pid, flags) -> new MockProcessHandle(123);
+        process.setPid(321);
+        kernel.setReadProcessMemoryReturnValue(true);
+        byte[] memoryBytes = new byte[]{123, -127, 42, 0, 1, 0, 0, 45};
+        kernel.setReadProcessReadMemory(memoryBytes);
+
+        byte[] readBytes = reader.read(process, 0, memoryBytes.length);
+        assertArrayEquals(memoryBytes, readBytes);
     }
 }

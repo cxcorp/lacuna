@@ -4,11 +4,7 @@ import com.sun.jna.Platform;
 import cx.corp.lacuna.core.IntegrationTestConstants;
 import cx.corp.lacuna.core.TestTargetLauncher;
 import cx.corp.lacuna.core.domain.NativeProcess;
-import cx.corp.lacuna.core.serialization.Boolean8Serializer;
-import cx.corp.lacuna.core.serialization.Int32Serializer;
-import cx.corp.lacuna.core.serialization.TypeSerializer;
-import cx.corp.lacuna.core.serialization.TypeSerializers;
-import cx.corp.lacuna.core.serialization.TypeSerializersImpl;
+import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.Psapi;
@@ -28,7 +24,6 @@ public class WindowsMemoryReaderIT {
 
     private static final int TESTTARGET_STRUCT_SIZE = 0x10;
 
-    private final TypeSerializers serializers;
     private final WinApiBootstrapper winapi;
     private WindowsMemoryReader reader;
     private WindowsNativeProcessCollector processCollector;
@@ -37,13 +32,6 @@ public class WindowsMemoryReaderIT {
 
     public WindowsMemoryReaderIT() {
         winapi = new WinApiBootstrapper();
-        serializers = new TypeSerializersImpl();
-        setupSerializers();
-    }
-
-    private void setupSerializers() {
-        serializers.register(Boolean.class, new Boolean8Serializer());
-        serializers.register(Integer.class, new Int32Serializer());
     }
 
     @Before
@@ -95,26 +83,23 @@ public class WindowsMemoryReaderIT {
             int targetAddress = processOutput.nextInt(16);
 
             int pid = IntegrationTestUtils.getPid(kernel32, targetProcess);
-            NativeProcess process = processCollector.collect(pid);
+            NativeProcess process = new NativeProcessImpl(pid, null, null);
 
-            byte[] bytes = reader.read(process, targetAddress, TESTTARGET_STRUCT_SIZE);
+            int readArg1 = reader.readInt(process, targetAddress + 0);
+            int readArg2 = reader.readInt(process, targetAddress + 4);
+            boolean readArg3 = reader.readBoolean(process, targetAddress + 8);
+            boolean readArg4 = reader.readBoolean(process, targetAddress + 9);
+            short readArg5 = reader.readShort(process, targetAddress + 10);
 
-            TypeSerializer<Integer> intSerializer = serializers.find(Integer.class);
-            TypeSerializer<Boolean> boolSerializer = serializers.find(Boolean.class);
-
-            int readArg1 = intSerializer.deserialize(Arrays.copyOfRange(bytes, 0, 4));
-            int readArg2 = intSerializer.deserialize(Arrays.copyOfRange(bytes, 4, 8));
-            boolean readArg3 = boolSerializer.deserialize(Arrays.copyOfRange(bytes, 8, 9));
-            boolean readArg4 = boolSerializer.deserialize(Arrays.copyOfRange(bytes, 9, 10));
-            // short readArg5 = shortSerializer.deserialize(Arrays.copyOfRange(bytes, 10, 12));
-            // int arg6ptr = intSerializer.deserialize(Arrays.copyOfRange(bytes, 12, 16));
-            // byte[] arg6bytes = reader.read(process, arg6ptr, arg6.length());
-            // String readArg6 = stringSerializer.deserialize(arg6bytes);
+            int readArg6Pointer = reader.readInt(process, targetAddress + 12);
+            String readArg6 = reader.readString(process, readArg6Pointer, arg6.length());
 
             assertEquals(arg1, readArg1);
             assertEquals(arg2, readArg2);
             assertEquals(arg3, readArg3);
             assertEquals(arg4, readArg4);
+            assertEquals(arg5, readArg5);
+            assertEquals(arg6, readArg6);
         } finally {
             targetProcess.destroyForcibly();
         }
