@@ -63,7 +63,7 @@ public class WindowsNativeProcessEnumeratorImplIT {
         Process process = builder.start();
 
         try {
-            int actualPid = getPid(process);
+            int actualPid = IntegrationTestUtils.getPid(kernel32, process);
 
             List<NativeProcess> list = enumerator.getProcesses();
             list.removeAll(processesBefore);
@@ -101,18 +101,5 @@ public class WindowsNativeProcessEnumeratorImplIT {
         } finally {
             process.destroyForcibly();
         }
-    }
-
-    /**
-     * Uses reflection to get the private handle id if this is indeed a Windows platform!
-     * Tested on JDK 8!
-     */
-    private int getPid(Process process) throws Exception {
-        Class<? extends Process> clazz = process.getClass();
-        Field handleField = clazz.getDeclaredField("handle");
-        handleField.setAccessible(true);
-        long handle = (Long) handleField.get(process);
-        handleField.setAccessible(false);
-        return kernel32.getProcessId((int) handle);
     }
 }
