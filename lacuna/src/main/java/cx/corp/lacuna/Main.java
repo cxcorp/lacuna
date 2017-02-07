@@ -121,7 +121,7 @@ public class Main {
 
         PidEnumerator enumerator = new WindowsPidEnumerator(psapi);
         ProcessOpener procOpener = new WindowsProcessOpener(kernel, kernel);
-        ProcessOwnerGetter ownerGetter = new WindowsProcessOwnerGetter(advapi);
+        ProcessOwnerGetter ownerGetter = new WindowsProcessOwnerGetter(advapi, kernel);
         ProcessDescriptionGetter descriptionGetter = new WindowsProcessDescriptionGetter(kernel);
         NativeProcessCollector collector =
             new WindowsNativeProcessCollector(procOpener, ownerGetter, descriptionGetter);
