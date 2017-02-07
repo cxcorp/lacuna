@@ -4,6 +4,7 @@ import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.windows.winapi.Advapi32;
+import cx.corp.lacuna.core.windows.winapi.CloseHandle;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
@@ -12,12 +13,14 @@ import java.util.Optional;
 public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
 
     private final Advapi32 advapi;
+    private final CloseHandle handleCloser;
 
-    public WindowsProcessOwnerGetter(Advapi32 advapi) {
-        if (advapi == null) {
-            throw new IllegalArgumentException("advapi cannot be null!");
+    public WindowsProcessOwnerGetter(Advapi32 advapi, CloseHandle handleCloser) {
+        if (advapi == null || handleCloser == null) {
+            throw new IllegalArgumentException("Arguments cannot be null!");
         }
         this.advapi = advapi;
+        this.handleCloser = handleCloser;
     }
 
     @Override
@@ -26,9 +29,12 @@ public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
             throw new IllegalArgumentException("processHandle cannot be null!");
         }
 
-        return getProcessToken(processHandle.getNativeHandle())
-            .flatMap(this::getTokenUser)
-            .flatMap(this::getUserName);
+        Optional<Integer> token = getProcessToken(processHandle.getNativeHandle());
+        try {
+            return token.flatMap(this::getTokenUser).flatMap(this::getUserName);
+        } finally {
+            token.ifPresent(handleCloser::closeHandle);
+        }
     }
 
     private Optional<Integer> getProcessToken(int processHandle) {
@@ -113,6 +119,9 @@ public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
             return Optional.of(user);
         } catch (Error | Exception ex) {
             return Optional.empty();
+        } finally {
+            // clean up token
+            handleCloser.closeHandle(token);
         }
     }
 
