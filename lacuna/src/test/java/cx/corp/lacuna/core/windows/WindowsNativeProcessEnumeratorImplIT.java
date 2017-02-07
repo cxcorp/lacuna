@@ -3,6 +3,7 @@ package cx.corp.lacuna.core.windows;
 import com.sun.jna.Platform;
 import cx.corp.lacuna.core.IntegrationTestConstants;
 import cx.corp.lacuna.core.NativeProcessCollector;
+import cx.corp.lacuna.core.NativeProcessEnumeratorImpl;
 import cx.corp.lacuna.core.PidEnumerator;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.TestTargetLauncher;
@@ -10,10 +11,6 @@ import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.Psapi;
 import cx.corp.lacuna.core.windows.winapi.WinApiBootstrapper;
-import cx.corp.lacuna.core.windows.winapi.WinApiPidEnumerator;
-import cx.corp.lacuna.core.windows.winapi.WinApiProcessDescriptionGetter;
-import cx.corp.lacuna.core.windows.winapi.WinApiProcessOpener;
-import cx.corp.lacuna.core.windows.winapi.WinApiProcessOwnerGetter;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,14 +23,14 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class WindowsNativeProcessEnumeratorIT {
+public class WindowsNativeProcessEnumeratorImplIT {
 
     private final WinApiBootstrapper winapi;
     private Kernel32 kernel32;
     private TestTargetLauncher launcher;
-    private WindowsNativeProcessEnumerator enumerator;
+    private NativeProcessEnumeratorImpl enumerator;
 
-    public WindowsNativeProcessEnumeratorIT() {
+    public WindowsNativeProcessEnumeratorImplIT() {
         winapi = new WinApiBootstrapper();
     }
 
@@ -49,13 +46,13 @@ public class WindowsNativeProcessEnumeratorIT {
         kernel32 = winapi.getKernel32();
         Advapi32 advapi32 = winapi.getAdvapi32();
         Psapi psapi = winapi.getPsapi();
-        PidEnumerator pidEnumerator = new WinApiPidEnumerator(psapi);
-        ProcessOpener opener = new WinApiProcessOpener(kernel32);
-        ProcessOwnerGetter ownerGetter = new WinApiProcessOwnerGetter(advapi32);
-        ProcessDescriptionGetter descriptionGetter = new WinApiProcessDescriptionGetter(kernel32);
+        PidEnumerator pidEnumerator = new WindowsPidEnumerator(psapi);
+        ProcessOpener opener = new WindowsProcessOpener(kernel32);
+        ProcessOwnerGetter ownerGetter = new WindowsProcessOwnerGetter(advapi32);
+        ProcessDescriptionGetter descriptionGetter = new WindowsProcessDescriptionGetter(kernel32);
         NativeProcessCollector collector =
             new WindowsNativeProcessCollector(opener, ownerGetter, descriptionGetter);
-        enumerator = new WindowsNativeProcessEnumerator(pidEnumerator, collector);
+        enumerator = new NativeProcessEnumeratorImpl(pidEnumerator, collector);
     }
 
     @Test

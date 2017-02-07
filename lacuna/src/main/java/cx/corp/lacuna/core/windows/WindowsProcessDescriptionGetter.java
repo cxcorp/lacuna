@@ -1,19 +1,16 @@
-package cx.corp.lacuna.core.windows.winapi;
+package cx.corp.lacuna.core.windows;
 
 import com.sun.jna.ptr.IntByReference;
-import cx.corp.lacuna.core.domain.NativeProcess;
-import cx.corp.lacuna.core.windows.ProcessDescriptionGetter;
-import cx.corp.lacuna.core.windows.ProcessHandle;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
 import java.util.Optional;
 
-public class WinApiProcessDescriptionGetter implements ProcessDescriptionGetter {
+public class WindowsProcessDescriptionGetter implements ProcessDescriptionGetter {
 
     private final Kernel32 kernel;
 
-    public WinApiProcessDescriptionGetter(Kernel32 kernel) {
+    public WindowsProcessDescriptionGetter(Kernel32 kernel) {
         if (kernel == null) {
             throw new IllegalArgumentException("kernel cannot be null!");
         }

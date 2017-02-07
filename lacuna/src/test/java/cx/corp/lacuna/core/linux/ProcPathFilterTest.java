@@ -10,7 +10,7 @@ import org.junit.runners.Parameterized;
 import java.util.concurrent.ThreadLocalRandom;
 
 @RunWith(Parameterized.class)
-public class ProcFileFilterTest {
+public class ProcPathFilterTest {
 
     @Parameterized.Parameters(name = "{index}: pid_max = {0}")
     public static Object[] data() {
@@ -24,28 +24,28 @@ public class ProcFileFilterTest {
     @Parameterized.Parameter
     public int pidMax;
 
-    private ProcFileFilter procFileFilter;
+    private ProcPathFilter procPathFilter;
 
     @Before
     public void setUp() {
         pidMax = LinuxConstants.FALLBACK_PID_MAX;
-        procFileFilter = new ProcFileFilter(pidMax);
+        procPathFilter = new ProcPathFilter(pidMax);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void ctorThrowsIfPassingPidMaxLowerThanLowestLegalPid() {
-        new ProcFileFilter(LinuxConstants.LOWEST_LEGAL_PID - 1);
+        new ProcPathFilter(LinuxConstants.LOWEST_LEGAL_PID - 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void ctorThrowsIfPassingPidMaxEqualToLowestLegalPid() {
-        new ProcFileFilter(LinuxConstants.LOWEST_LEGAL_PID);
+        new ProcPathFilter(LinuxConstants.LOWEST_LEGAL_PID);
     }
 
     @Test
     public void declinesNonDirectoryFiles() {
         String procName = generateRandomValidProcName();
-        boolean result = procFileFilter.accept(false, procName);
+        boolean result = procPathFilter.accept(false, procName);
         assertFalse("Expected filter to decline non-directory named " + procName, result);
     }
 
@@ -63,7 +63,7 @@ public class ProcFileFilterTest {
         };
 
         for (String illegalName : illegalNames) {
-            boolean result = procFileFilter.accept(true, illegalName);
+            boolean result = procPathFilter.accept(true, illegalName);
             assertFalse("Expected filter to decline file \"" + illegalName + "\"", result);
         }
     }
@@ -77,14 +77,14 @@ public class ProcFileFilterTest {
         };
 
         for (Integer illegalPid : illegalPids) {
-            boolean result = procFileFilter.accept(true, illegalPid.toString());
+            boolean result = procPathFilter.accept(true, illegalPid.toString());
             assertFalse(result);
         }
     }
 
     @Test
     public void declinesDirectoriesWithNumbersEqualToPidMax() {
-        boolean result = procFileFilter.accept(true, Integer.toString(pidMax));
+        boolean result = procPathFilter.accept(true, Integer.toString(pidMax));
         assertFalse(result);
     }
 
@@ -97,21 +97,21 @@ public class ProcFileFilterTest {
         };
 
         for (String illegalName : illegalNames) {
-            boolean result = procFileFilter.accept(true, illegalName);
+            boolean result = procPathFilter.accept(true, illegalName);
             assertFalse(result);
         }
     }
 
     @Test
     public void acceptsDirectoryWithLowerBoundIntegerName() {
-        boolean result = procFileFilter.accept(true, Integer.toString(LinuxConstants.LOWEST_LEGAL_PID));
+        boolean result = procPathFilter.accept(true, Integer.toString(LinuxConstants.LOWEST_LEGAL_PID));
         assertTrue(result);
     }
 
     @Test
     public void acceptsDirectoriesWithLegalIntegerName() {
         String procName = generateRandomValidProcName();
-        boolean result = procFileFilter.accept(true, procName);
+        boolean result = procPathFilter.accept(true, procName);
         assertTrue("Expected name " + procName + " to be accepted!", result);
     }
 

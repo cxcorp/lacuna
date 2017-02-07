@@ -5,6 +5,7 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Platform;
 import cx.corp.lacuna.core.MemoryReader;
+import cx.corp.lacuna.core.NativeProcessEnumeratorImpl;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.linux.LinuxNativeProcessCollector;
 import cx.corp.lacuna.core.linux.LinuxPidEnumerator;
@@ -19,17 +20,15 @@ import cx.corp.lacuna.core.PidEnumerator;
 import cx.corp.lacuna.core.linux.FileMemoryProvider;
 import cx.corp.lacuna.core.linux.LinuxConstants;
 import cx.corp.lacuna.core.linux.LinuxMemoryReader;
-import cx.corp.lacuna.core.linux.LinuxNativeProcessEnumerator;
 import cx.corp.lacuna.core.windows.ProcessDescriptionGetter;
 import cx.corp.lacuna.core.windows.ProcessOpener;
 import cx.corp.lacuna.core.windows.ProcessOwnerGetter;
 import cx.corp.lacuna.core.windows.WindowsNativeProcessCollector;
-import cx.corp.lacuna.core.windows.winapi.WinApiProcessDescriptionGetter;
-import cx.corp.lacuna.core.windows.winapi.WinApiProcessOpener;
-import cx.corp.lacuna.core.windows.winapi.WinApiProcessOwnerGetter;
+import cx.corp.lacuna.core.windows.WindowsProcessDescriptionGetter;
+import cx.corp.lacuna.core.windows.WindowsProcessOpener;
+import cx.corp.lacuna.core.windows.WindowsProcessOwnerGetter;
 import cx.corp.lacuna.core.windows.WindowsMemoryReader;
-import cx.corp.lacuna.core.windows.WindowsNativeProcessEnumerator;
-import cx.corp.lacuna.core.windows.winapi.WinApiPidEnumerator;
+import cx.corp.lacuna.core.windows.WindowsPidEnumerator;
 import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.CamelToPascalCaseFunctionMapper;
 import cx.corp.lacuna.core.windows.winapi.Kernel32;
@@ -137,21 +136,23 @@ public class Main {
         Psapi psapi = Native.loadLibrary("Psapi", Psapi.class, options);
         Advapi32 advapi = Native.loadLibrary("Advapi32", Advapi32.class, options);
 
-        PidEnumerator enumerator = new WinApiPidEnumerator(psapi);
-        ProcessOpener procOpener = new WinApiProcessOpener(kernel);
-        ProcessOwnerGetter ownerGetter = new WinApiProcessOwnerGetter(advapi);
-        ProcessDescriptionGetter descriptionGetter = new WinApiProcessDescriptionGetter(kernel);
+        PidEnumerator enumerator = new WindowsPidEnumerator(psapi);
+        ProcessOpener procOpener = new WindowsProcessOpener(kernel);
+        ProcessOwnerGetter ownerGetter = new WindowsProcessOwnerGetter(advapi);
+        ProcessDescriptionGetter descriptionGetter = new WindowsProcessDescriptionGetter(kernel);
         NativeProcessCollector collector =
             new WindowsNativeProcessCollector(procOpener, ownerGetter, descriptionGetter);
-        processEnumerator = new WindowsNativeProcessEnumerator(enumerator, collector);
+
+        processEnumerator = new NativeProcessEnumeratorImpl(enumerator, collector);
         memoryReader = new WindowsMemoryReader(procOpener, kernel);
     }
 
     private static void setupForLinux() {
         Path procRoot = LinuxConstants.DEFAULT_PROC_ROOT;
-        PidEnumerator pidEnumerator = new LinuxPidEnumerator(procRoot);
+        PidEnumerator enumerator = new LinuxPidEnumerator(procRoot);
         NativeProcessCollector collector = new LinuxNativeProcessCollector(procRoot);
-        processEnumerator = new LinuxNativeProcessEnumerator(pidEnumerator, collector);
+
+        processEnumerator = new NativeProcessEnumeratorImpl(enumerator, collector);
         FileMemoryProvider memProvider = new FileMemoryProvider(Paths.get("/proc"), "mem");
         memoryReader = new LinuxMemoryReader(memProvider);
     }

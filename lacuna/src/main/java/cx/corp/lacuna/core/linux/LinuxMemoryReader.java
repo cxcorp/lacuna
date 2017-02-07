@@ -42,7 +42,7 @@ public class LinuxMemoryReader implements MemoryReader {
         byte[] bytes = new byte[bytesToRead];
         int bytesRead;
 
-        try (InputStream input = memoryProvider.open(process)) {
+        try (InputStream input = memoryProvider.open(process.getPid())) {
             if (input == null) {
                 throw new MemoryReadException("MemoryProvider provided a null stream!");
             }

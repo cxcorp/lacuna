@@ -1,9 +1,9 @@
-package cx.corp.lacuna.core.windows.winapi;
+package cx.corp.lacuna.core.windows;
 
 import cx.corp.lacuna.core.ProcessEnumerationException;
+import cx.corp.lacuna.core.windows.WindowsPidEnumerator;
 import cx.corp.lacuna.core.windows.winapi.MockPsapi;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
-import cx.corp.lacuna.core.windows.winapi.WinApiPidEnumerator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,20 +14,20 @@ import java.util.stream.IntStream;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-public class WinApiPidEnumeratorTest {
+public class WindowsPidEnumeratorTest {
 
     private MockPsapi psapi;
-    private WinApiPidEnumerator enumerator;
+    private WindowsPidEnumerator enumerator;
 
     @Before
     public void setUp() {
         psapi = new MockPsapi();
-        enumerator = new WinApiPidEnumerator(psapi);
+        enumerator = new WindowsPidEnumerator(psapi);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIfNullPsapiPassed() {
-        new WinApiPidEnumerator(null);
+        new WindowsPidEnumerator(null);
     }
 
     @Test(expected = ProcessEnumerationException.class)
