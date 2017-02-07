@@ -28,6 +28,12 @@ public class WindowsProcessOpenerTest {
         opener = new WindowsProcessOpener(proxyOpener, proxyCloser);
     }
 
+    @Test
+    public void unifiedConstructorThrowsIfArgumentIsNull() {
+        new WindowsProcessOpener(null);
+
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIfOpenProcessIsNull() {
         new WindowsProcessOpener(null, arg -> true);

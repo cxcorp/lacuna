@@ -47,7 +47,7 @@ public class WindowsNativeProcessEnumeratorImplIT {
         Advapi32 advapi32 = winapi.getAdvapi32();
         Psapi psapi = winapi.getPsapi();
         PidEnumerator pidEnumerator = new WindowsPidEnumerator(psapi);
-        ProcessOpener opener = new WindowsProcessOpener(kernel32, kernel32);
+        ProcessOpener opener = new WindowsProcessOpener(kernel32);
         ProcessOwnerGetter ownerGetter = new WindowsProcessOwnerGetter(advapi32, kernel32);
         ProcessDescriptionGetter descriptionGetter = new WindowsProcessDescriptionGetter(kernel32);
         NativeProcessCollector collector =
