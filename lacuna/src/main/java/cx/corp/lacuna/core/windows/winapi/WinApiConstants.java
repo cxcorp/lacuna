@@ -25,9 +25,9 @@ public final class WinApiConstants {
     public static final int SIZEOF_INT = 4;
 
     /**
-     * Depicts a NULL pointer as returned by certain API functions.
+     * Value of the NULL macro as provided by the Windows.h header.
      */
-    public static final int NULLPTR = 0;
+    public static final int NULL = 0;
 
     /**
      * When used as the {@code dwFlags} parameter of

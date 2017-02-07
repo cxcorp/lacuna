@@ -1,11 +1,6 @@
 package cx.corp.lacuna.core.windows;
 
 import cx.corp.lacuna.core.domain.NativeProcess;
-import cx.corp.lacuna.core.windows.MockProcessHandle;
-import cx.corp.lacuna.core.windows.MockProcessOpener;
-import cx.corp.lacuna.core.windows.ProcessDescriptionGetter;
-import cx.corp.lacuna.core.windows.ProcessOwnerGetter;
-import cx.corp.lacuna.core.windows.WindowsNativeProcessCollector;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -76,7 +76,7 @@ public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
 
         boolean success =
             advapi.lookupAccountSidW(
-                WinApiConstants.NULLPTR,
+                WinApiConstants.NULL,
                 user.user,
                 null,
                 nameLength,
@@ -125,7 +125,7 @@ public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
 
         boolean success =
             advapi.lookupAccountSidW(
-                WinApiConstants.NULLPTR,
+                WinApiConstants.NULL,
                 user.user,
                 nameBuffer,
                 nameBufNeededLen,

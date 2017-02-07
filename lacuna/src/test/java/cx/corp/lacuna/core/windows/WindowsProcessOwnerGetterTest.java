@@ -1,7 +1,5 @@
 package cx.corp.lacuna.core.windows;
 
-import cx.corp.lacuna.core.windows.MockProcessHandle;
-import cx.corp.lacuna.core.windows.WindowsProcessOwnerGetter;
 import cx.corp.lacuna.core.windows.winapi.MockAdvapi32;
 import org.junit.Before;
 import org.junit.Test;

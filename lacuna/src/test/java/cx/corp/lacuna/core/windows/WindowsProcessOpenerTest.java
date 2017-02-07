@@ -1,43 +1,54 @@
 package cx.corp.lacuna.core.windows;
 
-import cx.corp.lacuna.core.windows.ProcessHandle;
-import cx.corp.lacuna.core.windows.ProcessOpenException;
-import cx.corp.lacuna.core.windows.WindowsProcessOpener;
-import cx.corp.lacuna.core.windows.winapi.MockKernel32;
+import cx.corp.lacuna.core.windows.winapi.CloseHandle;
+import cx.corp.lacuna.core.windows.winapi.OpenProcess;
 import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class WindowsProcessOpenerTest {
 
-    private MockKernel32 kernel;
+    private OpenProcess openProcess;
+    private CloseHandle closeHandle;
     private WindowsProcessOpener opener;
 
     @Before
     public void setUp() {
-        kernel = new MockKernel32();
-        opener = new WindowsProcessOpener(kernel);
+        openProcess = null;
+        closeHandle = null;
+        OpenProcess proxyOpener = (flags, inheritHandle, pid) -> openProcess.openProcess(flags, inheritHandle, pid);
+        CloseHandle proxyCloser = handle -> closeHandle.closeHandle(handle);
+        opener = new WindowsProcessOpener(proxyOpener, proxyCloser);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsIfKernelIsNull() {
-        new WindowsProcessOpener(null);
+    public void constructorThrowsIfOpenProcessIsNull() {
+        new WindowsProcessOpener(null, arg -> true);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void constructorThrowsIfCloseHandleIsNull() {
+        new WindowsProcessOpener((a, b, c) -> 0, null);
     }
 
     @Test(expected = ProcessOpenException.class)
-    public void openThrowsIfKernelCannotOpenProcess() throws Exception {
-        kernel.setOpenProcessReturnValue(WinApiConstants.NULLPTR);
+    public void openThrowsIfProcessCannotBeOpened() throws Exception {
+        // Kernel returns NULL if opening the process fails
+        openProcess = (flags, inherit, pid) -> WinApiConstants.NULL;
         opener.open(123, ProcessAccessFlags.QUERY_INFORMATION);
     }
 
     @Test
     public void openOpensHandleCorrectly() throws Exception {
         int nativeHandle = 5192;
-        kernel.setOpenProcessReturnValue(nativeHandle);
+        openProcess = (flags, inherit, pid) -> nativeHandle;
 
         ProcessHandle handle = opener.open(111, ProcessAccessFlags.VIRTUAL_MEMORY_READ);
 
@@ -47,20 +58,24 @@ public class WindowsProcessOpenerTest {
     @Test
     public void openedProcessHandleCloseClosesHandle() throws Exception {
         int nativeHandle = 999;
-        kernel.setOpenProcessReturnValue(nativeHandle);
+        openProcess = (flags, inherit, pid) -> nativeHandle;
+        List<Integer> closedHandles = new ArrayList<>();
+        closeHandle = closedHandles::add;
 
         ProcessHandle handle = opener.open(123, ProcessAccessFlags.ALL);
         handle.close();
 
         assertTrue(
-            "ProcessHandle didn't close the handle via the kernel!",
-            kernel.getClosedHandles().contains(nativeHandle));
+            "ProcessHandle didn't close the process handle!",
+            closedHandles.contains(nativeHandle));
     }
 
     @Test
     public void openedProcessHandleClosesItselfAfterTryWithResourcesBlock() throws Exception {
         int nativeHandle = 123;
-        kernel.setOpenProcessReturnValue(nativeHandle);
+        openProcess = (flags, inherit, pid) -> nativeHandle;
+        List<Integer> closedHandles = new ArrayList<>();
+        closeHandle = closedHandles::add;
 
         try (ProcessHandle handle = opener.open(1555, ProcessAccessFlags.ALL)) {
             assertEquals(nativeHandle, handle.getNativeHandle());
@@ -68,6 +83,6 @@ public class WindowsProcessOpenerTest {
 
         assertTrue(
             "ProcessHandle didn't close after the try-with-resources block!",
-            kernel.getClosedHandles().contains(nativeHandle));
+            closedHandles.contains(nativeHandle));
     }
 }

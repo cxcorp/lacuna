@@ -2,8 +2,6 @@ package cx.corp.lacuna.core;
 
 import cx.corp.lacuna.core.domain.NativeProcess;
 
-import java.nio.ByteBuffer;
-
 /**
  * The {@link MemoryReader} interface provides methods for reading bytes from the memory
  * of a {@link NativeProcess}.

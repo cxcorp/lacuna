@@ -1,8 +1,5 @@
 package cx.corp.lacuna.core;
 
-import cx.corp.lacuna.core.NativeProcessCollector;
-import cx.corp.lacuna.core.NativeProcessEnumeratorImpl;
-import cx.corp.lacuna.core.PidEnumerator;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import org.junit.Before;
