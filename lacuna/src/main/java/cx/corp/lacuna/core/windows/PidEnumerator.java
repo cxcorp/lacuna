@@ -1,8 +1,8 @@
 package cx.corp.lacuna.core.windows;
 
-import java.util.stream.IntStream;
+import java.util.List;
 
 @FunctionalInterface
 public interface PidEnumerator {
-    IntStream getPids();
+    List<Integer> getPids();
 }

@@ -8,23 +8,24 @@ import java.util.stream.Collectors;
 
 public class WindowsNativeProcessEnumerator implements NativeProcessEnumerator {
 
-    private final NativeProcessCollector collector;
+    private final NativeProcessCollector processCollector;
     private final PidEnumerator pidEnumerator;
 
-    public WindowsNativeProcessEnumerator(PidEnumerator pidEnumerator, NativeProcessCollector collector) {
-        if (pidEnumerator == null || collector == null) {
+    public WindowsNativeProcessEnumerator(PidEnumerator pidEnumerator, NativeProcessCollector processCollector) {
+        if (pidEnumerator == null || processCollector == null) {
             throw new IllegalArgumentException("Parameters cannot be null!");
         }
 
         this.pidEnumerator = pidEnumerator;
-        this.collector = collector;
+        this.processCollector = processCollector;
     }
 
     @Override
     public List<NativeProcess> getProcesses() {
         return pidEnumerator
             .getPids()
-            .mapToObj(collector::collect)
+            .stream()
+            .map(processCollector::collect)
             .collect(Collectors.toList());
     }
 }
