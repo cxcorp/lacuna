@@ -1,4 +1,4 @@
-package cx.corp.lacuna.core.windows;
+package cx.corp.lacuna.core;
 
 import cx.corp.lacuna.core.domain.NativeProcess;
 

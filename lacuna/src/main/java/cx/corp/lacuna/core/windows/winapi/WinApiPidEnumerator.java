@@ -3,15 +3,11 @@ package cx.corp.lacuna.core.windows.winapi;
 import com.sun.jna.Native;
 import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.ProcessEnumerationException;
-import cx.corp.lacuna.core.windows.PidEnumerator;
-import cx.corp.lacuna.core.windows.winapi.Psapi;
-import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
+import cx.corp.lacuna.core.PidEnumerator;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class WinApiPidEnumerator implements PidEnumerator {
 
