@@ -11,9 +11,21 @@ package cx.corp.lacuna.core {
     interface NativeProcessEnumerator {
         {abstract} getProcesses() : List<NativeProcess>
     }
+    interface NativeProcessCollector {
+        {abstract} NativeProcess collect(int)
+    }
+    interface PidEnumerator {
+        {abstract} getPids() : List<Integer>
+    }
     
-    MemoryReader ..>  "1" NativeProcess : uses
-    NativeProcessEnumerator ..> "0..*" NativeProcess : creates
+    class NativeProcessEnumeratorImpl
+    
+    NativeProcessEnumerator <|.. NativeProcessEnumeratorImpl
+    NativeProcessEnumeratorImpl --> "1" PidEnumerator
+    NativeProcessEnumeratorImpl --> "1" NativeProcessCollector
+    
+    MemoryReader .up.>  "1" NativeProcess : uses
+    NativeProcessEnumerator .up.> "0..*" NativeProcess : creates
 }
 
 package cx.corp.lacuna.core.serialization {
@@ -42,21 +54,22 @@ package cx.corp.lacuna.core.serialization {
 package cx.corp.lacuna.core.windows {
 
     package cx.corp.lacuna.core.windows.winapi {
-        interface Kernel32
-        interface Advapi32
-        interface Psapi
-        class WinApiPidEnumerator
-        class WinApiProcessDescriptionGetter
-        class WinApiProcessOpener
-        class WinApiProcessOwnerGetter
+        interface Kernel32 {
+            {abstract} getProcessId(...) : int
+            {abstract} openProcess(...) : int
+            {abstract} queryFullProcessImageNameW(...) : boolean
+            {abstract} readProcessMemory(...) : boolean
+        }
+        interface Advapi32 {
+            {abstract} openProcessToken(...) : boolean
+            {abstract} getTokenInformation(...) : boolean
+            {abstract} lookupAccountSidW(...) : boolean
+        }
+        interface Psapi {
+            {abstract} enumProcesses(...) : boolean
+        }
     }
     
-    interface NativeProcessCollector {
-        {abstract} NativeProcess collect(int)
-    }
-    interface PidEnumerator {
-        {abstract} getPids() : IntStream
-    }
     interface ProcessDescriptionGetter {
         {abstract} get(ProcessHandle) : Optional<String>
     }
@@ -67,17 +80,16 @@ package cx.corp.lacuna.core.windows {
         {abstract} getNativeHandle() : int
     }
     interface ProcessOpener {
-        open(int, int) : ProcessHandle
+        {abstract} open(int, int) : ProcessHandle
     }
     
-
-    class WindowsNativeProcessEnumerator
-    class WindowsNativeProcessCollector
     class WindowsMemoryReader
+    class WindowsNativeProcessCollector
+    class WindowsPidEnumerator
     
-    NativeProcessEnumerator <|.. WindowsNativeProcessEnumerator
-    WindowsNativeProcessEnumerator --> "1" PidEnumerator
-    WindowsNativeProcessEnumerator --> "1" NativeProcessCollector
+    class WindowsProcessDescriptionGetter
+    class WindowsProcessOpener
+    class WindowsProcessOwnerGetter
     
     NativeProcessCollector <|.. WindowsNativeProcessCollector
      
@@ -89,18 +101,16 @@ package cx.corp.lacuna.core.windows {
     ProcessOwnerGetter ..> "1" ProcessHandle : uses
     ProcessDescriptionGetter ..> "1" ProcessHandle : uses
 
+    PidEnumerator <|.. WindowsPidEnumerator
+    WindowsPidEnumerator --> "1" Psapi
     
-    PidEnumerator <|.. WinApiPidEnumerator
-    WinApiPidEnumerator --> "1" Psapi
+    ProcessOpener <|.. WindowsProcessOpener
+    ProcessOwnerGetter <|.. WindowsProcessOwnerGetter
+    ProcessDescriptionGetter <|.. WindowsProcessDescriptionGetter
     
-    ProcessOpener <|.. WinApiProcessOpener
-    ProcessOwnerGetter <|.. WinApiProcessOwnerGetter
-    ProcessDescriptionGetter <|.. WinApiProcessDescriptionGetter
-    
-    WinApiProcessOpener --> "1" Kernel32
-    WinApiProcessDescriptionGetter --> "1" Kernel32
-    WinApiProcessOwnerGetter --> "1" Advapi32
-    
+    WindowsProcessOpener --> "1" Kernel32
+    WindowsProcessDescriptionGetter --> "1" Kernel32
+    WindowsProcessOwnerGetter --> "1" Advapi32
     
     MemoryReader <|.. WindowsMemoryReader
     WindowsMemoryReader --> "1" Kernel32
@@ -109,17 +119,19 @@ package cx.corp.lacuna.core.windows {
 
 package cx.corp.lacuna.core.linux {
     interface MemoryProvider {
-        {abstract} open(NativeProcess) : InputStream
+        {abstract} open(int) : InputStream
     }
-    class LinuxNativeProcessEnumerator
+    class LinuxNativeProcessCollector
+    class LinuxPidEnumerator
     class LinuxMemoryReader
-    class ProcFileFilter
+    class ProcPathFilter
     class FileMemoryProvider
     
-    NativeProcessEnumerator <|.. LinuxNativeProcessEnumerator
-    LinuxNativeProcessEnumerator *-- "1" ProcFileFilter
+    NativeProcessCollector <|.. LinuxNativeProcessCollector
+    PidEnumerator <|.. LinuxPidEnumerator
     
-    MemoryProvider ..> "1" NativeProcess : uses
+    LinuxPidEnumerator *-- ProcPathFilter
+    
     MemoryProvider <|.. FileMemoryProvider
     
     MemoryReader <|.. LinuxMemoryReader
