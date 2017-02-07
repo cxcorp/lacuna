@@ -40,7 +40,7 @@ public class WindowsMemoryReaderIT {
 
         kernel32 = winapi.getKernel32();
 
-        ProcessOpener opener = new WindowsProcessOpener(kernel32, kernel32);
+        ProcessOpener opener = new WindowsProcessOpener(kernel32);
         RawMemoryReader rawReader = new WindowsRawMemoryReader(opener, kernel32);
         reader = new MemoryReaderImpl(rawReader);
         Path testTargetPath = IntegrationTestConstants.getTestTargetUrlForWindows();

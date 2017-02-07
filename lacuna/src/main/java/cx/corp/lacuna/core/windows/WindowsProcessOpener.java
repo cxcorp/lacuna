@@ -11,7 +11,11 @@ public class WindowsProcessOpener implements ProcessOpener {
     private final OpenProcess openProcess;
     private final CloseHandle closeHandle;
 
-    public WindowsProcessOpener(OpenProcess openProcess, CloseHandle closeHandle) {
+    public <T extends OpenProcess & CloseHandle> WindowsProcessOpener(T processOpenerAndHandleCloser) {
+        this(processOpenerAndHandleCloser, processOpenerAndHandleCloser);
+    }
+
+    WindowsProcessOpener(OpenProcess openProcess, CloseHandle closeHandle) {
         if (openProcess == null || closeHandle == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
         }
