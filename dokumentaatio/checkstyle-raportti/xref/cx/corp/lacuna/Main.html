@@ -13,153 +13,145 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> com.sun.jna.Native;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> com.sun.jna.Platform;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.MemoryReader;
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.domain.NativeProcess;
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.serialization.Boolean8Serializer;
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.serialization.Int32Serializer;
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.serialization.TypeSerializer;
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.serialization.TypeSerializers;
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.serialization.TypeSerializersImpl;
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.NativeProcessCollector;
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.NativeProcessEnumerator;
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.PidEnumerator;
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.linux.FileMemoryProvider;
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.linux.LinuxConstants;
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.linux.LinuxMemoryReader;
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.linux.LinuxNativeProcessEnumerator;
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.ProcessDescriptionGetter;
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.ProcessOpener;
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.ProcessOwnerGetter;
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.WindowsNativeProcessCollector;
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.winapi.WinApiProcessDescriptionGetter;
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.winapi.WinApiProcessOpener;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.winapi.WinApiProcessOwnerGetter;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.WindowsMemoryReader;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.WindowsNativeProcessEnumerator;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.winapi.WinApiPidEnumerator;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.winapi.Advapi32;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.winapi.CamelToPascalCaseFunctionMapper;
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.winapi.Kernel32;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.winapi.Psapi;
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> java.nio.file.Path;
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> java.nio.file.Paths;
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> java.util.Arrays;
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> java.util.HashMap;
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> java.util.List;
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> java.util.Optional;
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">import</strong> java.util.Scanner;
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../cx/corp/lacuna/Main.html">Main</a> {
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.NativeProcessEnumeratorImpl;
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.RawMemoryReader;
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.domain.NativeProcess;
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.linux.LinuxNativeProcessCollector;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.linux.LinuxPidEnumerator;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.NativeProcessCollector;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.NativeProcessEnumerator;
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.PidEnumerator;
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.linux.FileMemoryProvider;
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.linux.LinuxConstants;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.linux.LinuxRawMemoryReader;
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.ProcessDescriptionGetter;
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.ProcessOpener;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.ProcessOwnerGetter;
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.WindowsNativeProcessCollector;
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.WindowsProcessDescriptionGetter;
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.WindowsProcessOpener;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.WindowsProcessOwnerGetter;
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.MemoryReaderImpl;
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.WindowsPidEnumerator;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.WindowsRawMemoryReader;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.winapi.Advapi32;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.winapi.CamelToPascalCaseFunctionMapper;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.winapi.Kernel32;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> cx.corp.lacuna.core.windows.winapi.Psapi;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> java.nio.file.Path;
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> java.nio.file.Paths;
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> java.util.HashMap;
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> java.util.Optional;
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> java.util.Scanner;
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../cx/corp/lacuna/Main.html">Main</a> {
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a href="../../../cx/corp/lacuna/core/NativeProcessEnumerator.html">NativeProcessEnumerator</a> processEnumerator;
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a href="../../../cx/corp/lacuna/core/MemoryReader.html">MemoryReader</a> memoryReader;
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a href="../../../cx/corp/lacuna/core/NativeProcessEnumerator.html">NativeProcessEnumerator</a> processEnumerator;
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a href="../../../cx/corp/lacuna/core/MemoryReader.html">MemoryReader</a> memoryReader;
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a href="../../../cx/corp/lacuna/core/serialization/TypeSerializers.html">TypeSerializers</a> typeSerializers;
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>          setupPlatformSpecificStuff();
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>          setupSerializers();
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>  
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          List&lt;NativeProcess&gt; processes = processEnumerator.getProcesses();
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">for</strong> (NativeProcess proc : processes) {
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>              System.out.printf(
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>                      <span class="jxr_string">"%-5d    %-8s    %s%n"</span>,
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>                      proc.getPid(),
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>                      proc.getOwner(),
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>                      proc.getDescription());
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>          }
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>  
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>          Scanner scanner = <strong class="jxr_keyword">new</strong> Scanner(System.in);
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>          System.out.print(<span class="jxr_string">"Enter target PID: "</span>);
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>          <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> targetPid = scanner.nextInt();
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          setupPlatformSpecificStuff();
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>  
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>          List&lt;NativeProcess&gt; processes = processEnumerator.getProcesses();
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">for</strong> (NativeProcess proc : processes) {
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>              System.out.printf(
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>                      <span class="jxr_string">"%-5d    %-8s    %s%n"</span>,
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>                      proc.getPid(),
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>                      proc.getOwner(),
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>                      proc.getDescription());
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>          }
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>  
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          Scanner scanner = <strong class="jxr_keyword">new</strong> Scanner(System.in);
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>          System.out.print(<span class="jxr_string">"Enter target PID: "</span>);
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> targetPid = scanner.nextInt();
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>  
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>          Optional&lt;NativeProcess&gt; proc = processes
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>                  .stream()
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>                  .filter(p -&gt; p.getPid() == targetPid)
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>                  .findFirst();
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>          Optional&lt;NativeProcess&gt; proc = processes
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>                  .stream()
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>                  .filter(p -&gt; p.getPid() == targetPid)
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>                  .findFirst();
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>          <strong class="jxr_keyword">if</strong> (!proc.isPresent()) {
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>              System.out.println(<span class="jxr_string">"Process "</span> + targetPid +  <span class="jxr_string">" not found!"</span>);
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>              <strong class="jxr_keyword">return</strong>;
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          }
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>          <strong class="jxr_keyword">if</strong> (!proc.isPresent()) {
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>              System.out.println(<span class="jxr_string">"Process "</span> + targetPid +  <span class="jxr_string">" not found!"</span>);
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>              <strong class="jxr_keyword">return</strong>;
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          }
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>          System.out.print(<span class="jxr_string">"Enter target offset: 0x"</span>);
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>          <strong class="jxr_keyword">int</strong> offset = scanner.nextInt(16);
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>          System.out.print(<span class="jxr_string">"How many bytes to read? 0x"</span>);
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">int</strong> count = scanner.nextInt(16);
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>          System.out.print(<span class="jxr_string">"Enter target offset: 0x"</span>);
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">int</strong> offset = scanner.nextInt(16);
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>          System.out.print(<span class="jxr_string">"How many bytes to read? 0x"</span>);
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>          <strong class="jxr_keyword">int</strong> count = scanner.nextInt(16);
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>          byte[] bytes = memoryReader.read(
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>                  proc.get(),
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>                  offset,
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>                  count);
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>  
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>          byte[] bytes = memoryReader.read(
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>                  proc.get(),
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>                  offset,
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>                  count);
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>  
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>          <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; bytes.length; i++) {
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>              <strong class="jxr_keyword">if</strong> (i != 0 &amp;&amp; i % 16 == 0) {
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>                  System.out.println();
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>              }
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>              System.out.printf(<span class="jxr_string">"%02X "</span>, bytes[i]);
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>          }
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>          System.out.println();
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>  
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>          <strong class="jxr_keyword">if</strong> (bytes.length &gt;= 0x10) {
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>              TypeSerializer&lt;Integer&gt; intSerializer = typeSerializers.find(Integer.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>              byte[] firstInt = Arrays.copyOfRange(bytes, 0, 4);
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>             byte[] secondInt = Arrays.copyOfRange(bytes, 4, 8);
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>             System.out.println(<span class="jxr_string">"firstInt = "</span> + intSerializer.deserialize(firstInt));
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>             System.out.println(<span class="jxr_string">"secondInt = "</span> + intSerializer.deserialize(secondInt));
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>          <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; bytes.length; i++) {
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>              <strong class="jxr_keyword">if</strong> (i != 0 &amp;&amp; i % 16 == 0) {
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>                  System.out.println();
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>              }
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>              System.out.printf(<span class="jxr_string">"%02X "</span>, bytes[i]);
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>          }
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>  
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>          <strong class="jxr_keyword">if</strong> (count &gt;= 0x10) {
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>              <a href="../../../cx/corp/lacuna/core/domain/NativeProcess.html">NativeProcess</a> process = proc.get();
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>              System.out.println(memoryReader.readInt(process, offset + 0));
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>              System.out.println(memoryReader.readInt(process, offset + 4));
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>              System.out.println(memoryReader.readBoolean(process, offset + 8));
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>              System.out.println(memoryReader.readBoolean(process, offset + 9));
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>              System.out.println(memoryReader.readShort(process, offset + 10));
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>              System.out.println(memoryReader.readInt(process, offset + 12));
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>          }
+<a class="jxr_linenumber" name="L100" href="#L100">100</a> 
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>         System.out.println();
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>     }
 <a class="jxr_linenumber" name="L103" href="#L103">103</a> 
-<a class="jxr_linenumber" name="L104" href="#L104">104</a> 
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>             TypeSerializer&lt;Boolean&gt; boolSerializer = typeSerializers.find(Boolean.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>             byte[] firstBool = Arrays.copyOfRange(bytes, 8, 9);
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>             byte[] secondBool = Arrays.copyOfRange(bytes, 9, 10);
-<a class="jxr_linenumber" name="L108" href="#L108">108</a> 
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>             System.out.println(<span class="jxr_string">"firstBool = "</span> + boolSerializer.deserialize(firstBool));
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>             System.out.println(<span class="jxr_string">"secondBool = "</span> + boolSerializer.deserialize(secondBool));
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>         }
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>     }
-<a class="jxr_linenumber" name="L113" href="#L113">113</a> 
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> setupSerializers() {
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>         typeSerializers = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/serialization/TypeSerializersImpl.html">TypeSerializersImpl</a>();
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>         typeSerializers.register(Boolean.<strong class="jxr_keyword">class</strong>, <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/serialization/Boolean8Serializer.html">Boolean8Serializer</a>());
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>         typeSerializers.register(Integer.<strong class="jxr_keyword">class</strong>, <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/serialization/Int32Serializer.html">Int32Serializer</a>());
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>     }
-<a class="jxr_linenumber" name="L119" href="#L119">119</a> 
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> setupPlatformSpecificStuff() {
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>         <strong class="jxr_keyword">if</strong> (Platform.isWindows()) {
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>             setupForWindows();
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>             setupForLinux();
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>         }
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>     }
-<a class="jxr_linenumber" name="L127" href="#L127">127</a> 
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> setupForWindows() {
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>         Map&lt;String, Object&gt; options = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>         <em class="jxr_comment">// Use a mapper so that we can use Java-style function names in the interfaces</em>
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>         FunctionMapper nameMapper = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/windows/winapi/CamelToPascalCaseFunctionMapper.html">CamelToPascalCaseFunctionMapper</a>();
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>         options.put(Library.OPTION_FUNCTION_MAPPER, nameMapper);
-<a class="jxr_linenumber" name="L133" href="#L133">133</a> 
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>         <a href="../../../cx/corp/lacuna/core/windows/winapi/Kernel32.html">Kernel32</a> kernel = Native.loadLibrary(<span class="jxr_string">"Kernel32"</span>, Kernel32.<strong class="jxr_keyword">class</strong>, options);
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>         <a href="../../../cx/corp/lacuna/core/windows/winapi/Psapi.html">Psapi</a> psapi = Native.loadLibrary(<span class="jxr_string">"Psapi"</span>, Psapi.<strong class="jxr_keyword">class</strong>, options);
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>         <a href="../../../cx/corp/lacuna/core/windows/winapi/Advapi32.html">Advapi32</a> advapi = Native.loadLibrary(<span class="jxr_string">"Advapi32"</span>, Advapi32.<strong class="jxr_keyword">class</strong>, options);
-<a class="jxr_linenumber" name="L137" href="#L137">137</a> 
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>         <a href="../../../cx/corp/lacuna/core/windows/PidEnumerator.html">PidEnumerator</a> enumerator = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/windows/winapi/WinApiPidEnumerator.html">WinApiPidEnumerator</a>(psapi);
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>         <a href="../../../cx/corp/lacuna/core/windows/ProcessOpener.html">ProcessOpener</a> procOpener = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/windows/winapi/WinApiProcessOpener.html">WinApiProcessOpener</a>(kernel);
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>         <a href="../../../cx/corp/lacuna/core/windows/ProcessOwnerGetter.html">ProcessOwnerGetter</a> ownerGetter = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/windows/winapi/WinApiProcessOwnerGetter.html">WinApiProcessOwnerGetter</a>(advapi);
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>         <a href="../../../cx/corp/lacuna/core/windows/ProcessDescriptionGetter.html">ProcessDescriptionGetter</a> descriptionGetter = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/windows/winapi/WinApiProcessDescriptionGetter.html">WinApiProcessDescriptionGetter</a>(kernel);
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>         <a href="../../../cx/corp/lacuna/core/windows/NativeProcessCollector.html">NativeProcessCollector</a> collector =
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>             <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/windows/WindowsNativeProcessCollector.html">WindowsNativeProcessCollector</a>(procOpener, ownerGetter, descriptionGetter);
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>         processEnumerator = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/windows/WindowsNativeProcessEnumerator.html">WindowsNativeProcessEnumerator</a>(enumerator, collector);
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>         memoryReader = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/windows/WindowsMemoryReader.html">WindowsMemoryReader</a>(procOpener, kernel);
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>     }
-<a class="jxr_linenumber" name="L147" href="#L147">147</a> 
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> setupForLinux() {
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>         Path procRoot = LinuxConstants.DEFAULT_PROC_ROOT;
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>         processEnumerator = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/linux/LinuxNativeProcessEnumerator.html">LinuxNativeProcessEnumerator</a>(procRoot);
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>         <a href="../../../cx/corp/lacuna/core/linux/FileMemoryProvider.html">FileMemoryProvider</a> memProvider = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/linux/FileMemoryProvider.html">FileMemoryProvider</a>(Paths.get(<span class="jxr_string">"/proc"</span>), <span class="jxr_string">"mem"</span>);
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>         memoryReader = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/linux/LinuxMemoryReader.html">LinuxMemoryReader</a>(memProvider);
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>     }
-<a class="jxr_linenumber" name="L154" href="#L154">154</a> }
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> setupPlatformSpecificStuff() {
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>         <strong class="jxr_keyword">if</strong> (Platform.isWindows()) {
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>             setupForWindows();
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>             setupForLinux();
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>         }
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>     }
+<a class="jxr_linenumber" name="L111" href="#L111">111</a> 
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> setupForWindows() {
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         Map&lt;String, Object&gt; options = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>         <em class="jxr_comment">// Use a mapper so that we can use Java-style function names in the interfaces</em>
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>         FunctionMapper nameMapper = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/windows/winapi/CamelToPascalCaseFunctionMapper.html">CamelToPascalCaseFunctionMapper</a>();
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>         options.put(Library.OPTION_FUNCTION_MAPPER, nameMapper);
+<a class="jxr_linenumber" name="L117" href="#L117">117</a> 
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>         <a href="../../../cx/corp/lacuna/core/windows/winapi/Kernel32.html">Kernel32</a> kernel = Native.loadLibrary(<span class="jxr_string">"Kernel32"</span>, Kernel32.<strong class="jxr_keyword">class</strong>, options);
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>         <a href="../../../cx/corp/lacuna/core/windows/winapi/Psapi.html">Psapi</a> psapi = Native.loadLibrary(<span class="jxr_string">"Psapi"</span>, Psapi.<strong class="jxr_keyword">class</strong>, options);
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>         <a href="../../../cx/corp/lacuna/core/windows/winapi/Advapi32.html">Advapi32</a> advapi = Native.loadLibrary(<span class="jxr_string">"Advapi32"</span>, Advapi32.<strong class="jxr_keyword">class</strong>, options);
+<a class="jxr_linenumber" name="L121" href="#L121">121</a> 
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>         <a href="../../../cx/corp/lacuna/core/PidEnumerator.html">PidEnumerator</a> enumerator = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/windows/WindowsPidEnumerator.html">WindowsPidEnumerator</a>(psapi);
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>         <a href="../../../cx/corp/lacuna/core/windows/ProcessOpener.html">ProcessOpener</a> procOpener = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/windows/WindowsProcessOpener.html">WindowsProcessOpener</a>(kernel);
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>         <a href="../../../cx/corp/lacuna/core/windows/ProcessOwnerGetter.html">ProcessOwnerGetter</a> ownerGetter = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/windows/WindowsProcessOwnerGetter.html">WindowsProcessOwnerGetter</a>(advapi, kernel);
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>         <a href="../../../cx/corp/lacuna/core/windows/ProcessDescriptionGetter.html">ProcessDescriptionGetter</a> descriptionGetter = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/windows/WindowsProcessDescriptionGetter.html">WindowsProcessDescriptionGetter</a>(kernel);
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>         <a href="../../../cx/corp/lacuna/core/NativeProcessCollector.html">NativeProcessCollector</a> collector =
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>             <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/windows/WindowsNativeProcessCollector.html">WindowsNativeProcessCollector</a>(procOpener, ownerGetter, descriptionGetter);
+<a class="jxr_linenumber" name="L128" href="#L128">128</a> 
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>         processEnumerator = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/NativeProcessEnumeratorImpl.html">NativeProcessEnumeratorImpl</a>(enumerator, collector);
+<a class="jxr_linenumber" name="L130" href="#L130">130</a> 
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>         <a href="../../../cx/corp/lacuna/core/RawMemoryReader.html">RawMemoryReader</a> rawMemoryReader = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/windows/WindowsRawMemoryReader.html">WindowsRawMemoryReader</a>(procOpener, kernel);
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>         memoryReader = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/MemoryReaderImpl.html">MemoryReaderImpl</a>(rawMemoryReader);
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>     }
+<a class="jxr_linenumber" name="L134" href="#L134">134</a> 
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> setupForLinux() {
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>         Path procRoot = LinuxConstants.DEFAULT_PROC_ROOT;
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>         <a href="../../../cx/corp/lacuna/core/PidEnumerator.html">PidEnumerator</a> enumerator = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/linux/LinuxPidEnumerator.html">LinuxPidEnumerator</a>(procRoot);
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>         <a href="../../../cx/corp/lacuna/core/NativeProcessCollector.html">NativeProcessCollector</a> collector = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/linux/LinuxNativeProcessCollector.html">LinuxNativeProcessCollector</a>(procRoot);
+<a class="jxr_linenumber" name="L139" href="#L139">139</a> 
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>         processEnumerator = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/NativeProcessEnumeratorImpl.html">NativeProcessEnumeratorImpl</a>(enumerator, collector);
+<a class="jxr_linenumber" name="L141" href="#L141">141</a> 
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>         <a href="../../../cx/corp/lacuna/core/linux/FileMemoryProvider.html">FileMemoryProvider</a> memProvider = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/linux/FileMemoryProvider.html">FileMemoryProvider</a>(Paths.get(<span class="jxr_string">"/proc"</span>), <span class="jxr_string">"mem"</span>);
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>         <a href="../../../cx/corp/lacuna/core/RawMemoryReader.html">RawMemoryReader</a> rawMemoryReader = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/linux/LinuxRawMemoryReader.html">LinuxRawMemoryReader</a>(memProvider);
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>         memoryReader = <strong class="jxr_keyword">new</strong> <a href="../../../cx/corp/lacuna/core/MemoryReaderImpl.html">MemoryReaderImpl</a>(rawMemoryReader);
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>     }
+<a class="jxr_linenumber" name="L146" href="#L146">146</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2017. All rights reserved.</div>
