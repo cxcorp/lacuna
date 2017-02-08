@@ -51,18 +51,11 @@ package cx.corp.lacuna.core {
     RawMemoryReader ..> "1" NativeProcess : uses
     MemoryReader ..>  "1" NativeProcess : uses
     NativeProcessEnumerator ..> "0..*" NativeProcess : creates
-    
 }
 
 package cx.corp.lacuna.core.windows {
 
     package cx.corp.lacuna.core.windows.winapi {
-        interface Kernel32 {
-            {abstract} getProcessId(...) : int
-            {abstract} openProcess(...) : int
-            {abstract} queryFullProcessImageNameW(...) : boolean
-            {abstract} readProcessMemory(...) : boolean
-        }
         interface Advapi32 {
             {abstract} openProcessToken(...) : boolean
             {abstract} getTokenInformation(...) : boolean
@@ -71,6 +64,36 @@ package cx.corp.lacuna.core.windows {
         interface Psapi {
             {abstract} enumProcesses(...) : boolean
         }
+        
+        interface Kernel32 {
+            {abstract} closeHandle(...) : boolean
+            {abstract} openProcess(...) : int
+            {abstract} queryFullProcessImageNameW(...) : boolean
+            {abstract} readProcessMemory(...) : boolean
+            {abstract} getProcessId(int) : int
+        }
+        interface CloseHandle {
+            {abstract} closeHandle(...) : boolean
+        }
+        interface OpenProcess {
+            {abstract} openProcess(...) : int
+        }
+        interface QueryFullProcessImageName {
+            {abstract} queryFullProcessImageNameW(...) : boolean
+        }
+        interface ReadProcessMemory {
+            {abstract} readProcessMemory(...) : boolean
+        }
+        interface GetProcessId {
+            {abstract} getProcessId(int) : int
+        }
+        note bottom: Only used in integration testing
+        
+        CloseHandle <|.. Kernel32
+        OpenProcess <|.. Kernel32
+        QueryFullProcessImageName <|.. Kernel32
+        ReadProcessMemory <|.. Kernel32
+        GetProcessId <|.left. Kernel32
     }
     
     interface ProcessDescriptionGetter {
@@ -111,12 +134,15 @@ package cx.corp.lacuna.core.windows {
     ProcessOwnerGetter <|.. WindowsProcessOwnerGetter
     ProcessDescriptionGetter <|.. WindowsProcessDescriptionGetter
     
-    WindowsProcessOpener --> "1" Kernel32
-    WindowsProcessDescriptionGetter --> "1" Kernel32
+    WindowsProcessOpener --> "1" OpenProcess
+    WindowsProcessOpener --> "1" CloseHandle
+
+    WindowsProcessDescriptionGetter --> "1" QueryFullProcessImageName
     WindowsProcessOwnerGetter --> "1" Advapi32
+    WindowsProcessOwnerGetter --> "1" CloseHandle
     
     RawMemoryReader <|.. WindowsRawMemoryReader
-    WindowsRawMemoryReader --> "1" Kernel32
+    WindowsRawMemoryReader --> "1" ReadProcessMemory
 	WindowsRawMemoryReader --> "1" ProcessOpener
 }
 
