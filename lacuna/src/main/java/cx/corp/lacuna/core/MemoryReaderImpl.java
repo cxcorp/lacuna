@@ -1,12 +1,6 @@
 package cx.corp.lacuna.core;
 
-import com.sun.jna.Memory;
-import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.domain.NativeProcess;
-import cx.corp.lacuna.core.windows.ProcessOpenException;
-import cx.corp.lacuna.core.windows.ProcessOpener;
-import cx.corp.lacuna.core.windows.winapi.Kernel32;
-import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -28,56 +22,61 @@ public class MemoryReaderImpl implements MemoryReader {
 
     @Override
     public boolean readBoolean(NativeProcess process, int offset) {
-        byte readByte = rawMemoryReader.read(process, offset, 1).get();
+        byte readByte =
+            rawMemoryReader.read(process, offset, TypeSize.BOOLEAN.getSize()).get();
         return readByte != 0;
     }
 
     @Override
     public byte readByte(NativeProcess process, int offset) {
-        return rawMemoryReader.read(process, offset, 1).get();
+        return rawMemoryReader.read(process, offset, TypeSize.BYTE.getSize()).get();
     }
 
     @Override
-    public char readChar(NativeProcess process, int offset) {
-        return (char) rawMemoryReader.read(process, offset, 1).get();
+    public char readCharUTF8(NativeProcess process, int offset) {
+        return (char) rawMemoryReader.read(process, offset, TypeSize.CHAR_UTF8.getSize()).get();
     }
 
     @Override
-    public char readWChar(NativeProcess process, int offset) {
-        return rawMemoryReader.read(process, offset, 2).getChar();
+    public char readCharUTF16LE(NativeProcess process, int offset) {
+        return rawMemoryReader.read(process, offset, TypeSize.CHAR_UTF16LE.getSize()).getChar();
     }
 
     @Override
     public short readShort(NativeProcess process, int offset) {
-        return rawMemoryReader.read(process, offset, 2).getShort();
+        return rawMemoryReader.read(process, offset, TypeSize.SHORT.getSize()).getShort();
     }
 
     @Override
     public int readInt(NativeProcess process, int offset) {
-        return rawMemoryReader.read(process, offset, 4).getInt();
+        return rawMemoryReader.read(process, offset, TypeSize.INT.getSize()).getInt();
     }
 
     @Override
     public float readFloat(NativeProcess process, int offset) {
-        return rawMemoryReader.read(process, offset, 4).getFloat();
+        return rawMemoryReader.read(process, offset, TypeSize.FLOAT.getSize()).getFloat();
     }
 
     @Override
     public long readLong(NativeProcess process, int offset) {
-        return rawMemoryReader.read(process, offset, 8).getLong();
+        return rawMemoryReader.read(process, offset, TypeSize.LONG.getSize()).getLong();
     }
 
     @Override
     public double readDouble(NativeProcess process, int offset) {
-        return rawMemoryReader.read(process, offset, 8).getDouble();
+        return rawMemoryReader.read(process, offset, TypeSize.DOUBLE.getSize()).getDouble();
     }
 
     @Override
-    public String readString(NativeProcess process, int offset, int maxByteLength) {
-        byte[] buffer = new byte[maxByteLength];
+    public String readStringUTF8(NativeProcess process, int offset, int characterCount) {
+        if (characterCount < 1) {
+            throw new IllegalArgumentException("Cannot read strings shorter than 1 character!");
+        }
+
+        byte[] buffer = new byte[characterCount];
         int bytesRead = 0;
 
-        for (int i = 0; i < maxByteLength; i++) {
+        for (int i = 0; i < characterCount; i++) {
             byte readByte = readByte(process, offset + i);
             if (readByte == 0) {
                 // read until null character is met or maxLength is met
@@ -91,15 +90,17 @@ public class MemoryReaderImpl implements MemoryReader {
     }
 
     @Override
-    public String readWString(NativeProcess process, int offset, int maxByteLength) {
-        if (maxByteLength % 2 != 0) { // TODO: byte sizes to own file
-            throw new IllegalArgumentException("Maximum byte length must be divisible by the size of wchar!");
+    public String readStringUTF16LE(NativeProcess process, int offset, int characterCount) {
+        if (characterCount < 1) {
+            throw new IllegalArgumentException("Cannot read strings shorter than 1 character!");
         }
 
-        ByteBuffer buffer = ByteBuffer.allocate(maxByteLength);
+        final int charSize = TypeSize.CHAR_UTF16LE.getSize();
+        int totalByteSize = characterCount * charSize;
+        ByteBuffer buffer = ByteBuffer.allocate(totalByteSize);
 
-        for (int i = 0; i < maxByteLength; i++) {
-            short readShort = readShort(process, offset + (i * 2));
+        for (int i = 0; i < totalByteSize; i += charSize) {
+            short readShort = readShort(process, offset + i);
             if (readShort == 0) {
                 // read until null character is met or maxLength is met
                 break;
@@ -110,7 +111,7 @@ public class MemoryReaderImpl implements MemoryReader {
         buffer.flip();
         byte[] truncatedBuf = new byte[buffer.remaining()];
         buffer.get(truncatedBuf);
-        return new String(truncatedBuf, StandardCharsets.UTF_8);
+        return new String(truncatedBuf, StandardCharsets.UTF_16LE);
     }
 
     @Override
