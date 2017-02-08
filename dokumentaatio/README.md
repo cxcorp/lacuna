@@ -9,4 +9,4 @@
 
 ## Reports
 1. [checkstyle-report](https://htmlpreview.github.io/?https://github.com/cxcorp/lacuna/blob/master/dokumentaatio/checkstyle-raportti/checkstyle.html)
-2. [pit-report](https://htmlpreview.github.io/?https://raw.githubusercontent.com/cxcorp/lacuna/master/dokumentaatio/pit-raportti/201702062016/index.html)
+2. [pit-report](https://htmlpreview.github.io/?https://raw.githubusercontent.com/cxcorp/lacuna/master/dokumentaatio/pit-raportti/201702080341/index.html)

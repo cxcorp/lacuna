@@ -5,10 +5,6 @@ import cx.corp.lacuna.core.domain.NativeProcess;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-/**
- * {@inheritDoc}
- * Provides native process memory reading functionality on Windows platforms.
- */
 public class MemoryReaderImpl implements MemoryReader {
 
     private final RawMemoryReader rawMemoryReader;
