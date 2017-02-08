@@ -18,15 +18,15 @@ public interface MemoryReader {
      */
     boolean readBoolean(NativeProcess process, int offset); // 1-byte
     byte readByte(NativeProcess process, int offset); // 1-byte
-    char readChar(NativeProcess process, int offset); // 1-byte
-    char readWChar(NativeProcess process, int offset); // 2-byte, utf-16
+    char readCharUTF8(NativeProcess process, int offset); // 1-byte -- DOES NOT CONSIDER VARIABLE LENGTH ENCODING
+    char readCharUTF16LE(NativeProcess process, int offset); // 2-byte, utf-16 -- DOES NOT CONSIDER VARIABLE LENGTH ENCODING
     short readShort(NativeProcess process, int offset); // 2-byte
     int readInt(NativeProcess process, int offset); // 4-byte
     float readFloat(NativeProcess process, int offset); // 4-byte
     long readLong(NativeProcess process, int offset); // 8-byte
     double readDouble(NativeProcess process, int offset); // 8-byte
-    String readString(NativeProcess process, int offset, int maxByteLength); // until a null is met or maxlength met, utf-8
-    String readWString(NativeProcess process, int offset, int maxByteLength); // until a null is met or maxlength met, utf-16
+    String readStringUTF8(NativeProcess process, int offset, int characterCount); // until a null is met or maxlength met -- DOES NOT CONSIDER VARIABLE LENGTH ENCODING
+    String readStringUTF16LE(NativeProcess process, int offset, int characterCount); // until a null is met or maxlength met -- DOES NOT CONSIDER VARIABLE LENGTH ENCODING
 
     /**
      * Reads a region of memory of the specified {@link NativeProcess}.

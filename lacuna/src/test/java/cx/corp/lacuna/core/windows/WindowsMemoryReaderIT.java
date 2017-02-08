@@ -84,7 +84,7 @@ public class WindowsMemoryReaderIT {
             short readArg5 = reader.readShort(process, targetAddress + 10);
 
             int readArg6Pointer = reader.readInt(process, targetAddress + 12);
-            String readArg6 = reader.readString(process, readArg6Pointer, arg6.length());
+            String readArg6 = reader.readStringUTF8(process, readArg6Pointer, arg6.length());
 
             assertEquals(arg1, readArg1);
             assertEquals(arg2, readArg2);
