@@ -6,7 +6,7 @@ Program for reading and writing other programs' memory.
 Coursework for [Javalabra-2017-3](https://github.com/javaLabra/Javalabra2017-3).
 
 ## Current state
-Lacuna can currently dump the active process list and read a process' memory on both Windows and Linux. Serialization classes exist for serializing between byte array, boolean and integer.
+Lacuna can currently dump the active process list and read a process' memory on both Windows and Linux. Reading supports common primitive data types as well as arbitrary byte amounts.
 
 ![](http://i.imgur.com/ATN6vdf.png)
 
@@ -16,6 +16,11 @@ Tested platforms:
   - Microsoft Windows 10 Pro N (Build 14393)
 * Linux:
   - Ubuntu 16.04.1 LTS (Kernel 4.4.0-59-generic x86_64 GNU/Linux)
+  
+## Links
+* [**Javadoc**](https://htmlpreview.github.io/?https://github.com/cxcorp/lacuna/blob/master/javadoc/index.html)
+* [**Documentation**](https://github.com/cxcorp/lacuna/tree/master/dokumentaatio) (spec, diagrams, reports)
+* [**Trello**](https://trello.com/b/KGL8icHx/lacuna)
 
 ## Download
 See [**Releases**](https://github.com/cxcorp/lacuna/releases) for ready jars. Run with `java -jar lacuna-<VERSION>.jar`
@@ -30,11 +35,6 @@ For compilation instructions, see below.
 4. Compile and package the project: `mvn clean package`. This step generates the .jar file in the target/ directory.
   - You may optionally choose to skip running unit tests: `mvn clean package -DskipTests`
 5. Run Lacuna: `java -jar target/lacuna-<VERSION>.jar`
-
-## Links
-* [**Javadoc**](https://htmlpreview.github.io/?https://github.com/cxcorp/lacuna/blob/master/javadoc/index.html)
-* [**Documentation**](https://github.com/cxcorp/lacuna/tree/master/dokumentaatio) (spec, diagrams, reports)
-* [**Trello**](https://trello.com/b/KGL8icHx/lacuna)
 
 ## License
 Lacuna is licensed under the MIT License (Expat).
