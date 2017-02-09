@@ -3,6 +3,7 @@ package cx.corp.lacuna.core;
 import cx.corp.lacuna.core.domain.NativeProcess;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 
 public class MemoryReaderImpl implements MemoryReader {
@@ -94,6 +95,7 @@ public class MemoryReaderImpl implements MemoryReader {
         final int charSize = TypeSize.CHAR_UTF16LE.getSize();
         int totalByteSize = characterCount * charSize;
         ByteBuffer buffer = ByteBuffer.allocate(totalByteSize);
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
 
         for (int i = 0; i < totalByteSize; i += charSize) {
             short readShort = readShort(process, offset + i);
@@ -112,7 +114,6 @@ public class MemoryReaderImpl implements MemoryReader {
 
     @Override
     public byte[] read(NativeProcess process, int offset, int bytesToRead) {
-        validateArguments(process, offset);
         if (bytesToRead < 1) {
             throw new IllegalArgumentException("Number of bytes to read must be greater than zero");
         }
@@ -121,14 +122,5 @@ public class MemoryReaderImpl implements MemoryReader {
         byte[] ret = new byte[buffer.remaining()];
         buffer.get(ret);
         return ret;
-    }
-
-    private static void validateArguments(NativeProcess process, int offset) {
-        if (process == null) {
-            throw new IllegalArgumentException("process cannot be null");
-        }
-        if (offset < 0) {
-            throw new IllegalArgumentException("offset cannot be negative");
-        }
     }
 }
