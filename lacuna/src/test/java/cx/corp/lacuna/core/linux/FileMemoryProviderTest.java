@@ -1,34 +1,62 @@
 package cx.corp.lacuna.core.linux;
 
-import cx.corp.lacuna.core.domain.NativeProcess;
-import cx.corp.lacuna.core.domain.NativeProcessImpl;
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertFalse;
 
 public class FileMemoryProviderTest {
 
+    private FileSystem fs;
     private FileMemoryProvider provider;
+    private Path procRoot;
+    private Path relativeMemPath;
 
     @Before
     public void setUp() {
-        provider = new FileMemoryProvider(Paths.get("proc"), "mem");
+        fs = Jimfs.newFileSystem(Configuration.unix());
+        procRoot = fs.getPath("/proc");
+        relativeMemPath = fs.getPath("mem");
+        provider = new FileMemoryProvider(procRoot, relativeMemPath);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIfProcRootIsNull() {
-        new FileMemoryProvider(null, "");
+        new FileMemoryProvider(null, relativeMemPath);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsIfMemFileNameIsNull() {
-        new FileMemoryProvider(Paths.get("."), null);
+    public void constructorThrowsIfMemPathIsNull() {
+        new FileMemoryProvider(procRoot, null);
     }
 
     @Test(expected = IOException.class)
     public void openThrowsIfProcessMemFileDoesntExist() throws IOException {
-        provider.open(-1);
+        assertFalse(Files.exists(procRoot));
+        provider.open(123);
+    }
+
+    @Test
+    public void openOpensStreamToRightData() throws IOException {
+        Integer pid = 5567;
+        Path memFile = procRoot.resolve(pid.toString()).resolve(relativeMemPath);
+        byte[] inputData = {0, 1, 41, 51, 126, -41, -1, 42, 0, 0, -45};
+        Files.createDirectories(memFile.getParent());
+        Files.write(memFile, inputData);
+
+        InputStream stream = provider.open(pid);
+        byte[] readData = new byte[inputData.length];
+        stream.read(readData);
+
+        assertArrayEquals(inputData, readData);
     }
 }
