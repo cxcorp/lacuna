@@ -16,5 +16,5 @@ public class LinuxConstants {
 
     public static final Path DEFAULT_PROC_ROOT = Paths.get("/proc");
 
-    public static final Path PID_MAX_RELATIVE_PATH = Paths.get("sys/kernel/pid_max");
+    public static final Path DEFAULT_PID_MAX = Paths.get("/proc/sys/kernel/pid_max");
 }

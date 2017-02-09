@@ -15,10 +15,15 @@ import java.util.stream.Collectors;
 
 public class LinuxPidEnumerator implements PidEnumerator {
 
-    private final Path procRooot;
+    private final Path procRoot;
+    private final Path pathToPidMax;
 
-    public LinuxPidEnumerator(Path procRooot) {
-        this.procRooot = procRooot;
+    public LinuxPidEnumerator(Path procRoot, Path pathToPidMax) {
+        if (procRoot == null || pathToPidMax == null) {
+            throw new IllegalArgumentException("Arguments cannot be null!");
+        }
+        this.procRoot = procRoot;
+        this.pathToPidMax = pathToPidMax;
     }
 
     @Override
@@ -28,7 +33,7 @@ public class LinuxPidEnumerator implements PidEnumerator {
 
         try {
             // assumption: the used filter removes any non-integer files from the stream
-            return Files.find(procRooot, 1, filter)
+            return Files.find(procRoot, 1, filter)
                 .map(path -> Integer.parseUnsignedInt(path.getFileName().toString()))
                 .collect(Collectors.toList());
         } catch (IOException ex) {
@@ -38,8 +43,7 @@ public class LinuxPidEnumerator implements PidEnumerator {
 
     private int readPidMax() {
         try {
-            Path pidMaxPath = procRooot.resolve(LinuxConstants.PID_MAX_RELATIVE_PATH);
-            return new Scanner(pidMaxPath).nextInt();
+            return new Scanner(pathToPidMax).nextInt();
         } catch (IOException | NoSuchElementException ex) {
             return LinuxConstants.FALLBACK_PID_MAX;
         }

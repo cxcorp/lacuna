@@ -134,12 +134,14 @@ public class Main {
 
     private static void setupForLinux() {
         Path procRoot = LinuxConstants.DEFAULT_PROC_ROOT;
-        PidEnumerator enumerator = new LinuxPidEnumerator(procRoot);
+        PidEnumerator enumerator = new LinuxPidEnumerator(procRoot, LinuxConstants.DEFAULT_PID_MAX);
         NativeProcessCollector collector = new LinuxNativeProcessCollector(procRoot);
 
         processEnumerator = new NativeProcessEnumeratorImpl(enumerator, collector);
 
-        FileMemoryProvider memProvider = new FileMemoryProvider(Paths.get("/proc"), "mem");
+        FileMemoryProvider memProvider = new FileMemoryProvider(
+            Paths.get("/proc"),
+            Paths.get("mem"));
         RawMemoryReader rawMemoryReader = new LinuxRawMemoryReader(memProvider);
         memoryReader = new MemoryReaderImpl(rawMemoryReader);
     }
