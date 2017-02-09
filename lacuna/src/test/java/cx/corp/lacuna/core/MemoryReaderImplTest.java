@@ -5,13 +5,15 @@ import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -42,6 +44,53 @@ public class MemoryReaderImplTest {
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIfNullArgumentPassed() {
         new MemoryReaderImpl(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void readThrowsIfReadingZeroBytes() {
+        reader.read(process, 0, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void readThrowsIfReadingNegativeBytes() {
+        reader.read(process, 0, -151);
+    }
+
+    @Test
+    public void readReadsOneByte() {
+        byte[] source = new byte[]{123};
+        rawReader = new ByteArrayRawMemoryReader(source);
+
+        byte[] readBytes = reader.read(process, 0, source.length);
+
+        assertArrayEquals(source, readBytes);
+    }
+
+    @Test
+    public void readReadsManyBytes() {
+        byte[] source = new byte[0xFF];
+        for (int i = 0; i < source.length; i++) {
+            source[i] = (byte) i;
+        }
+        rawReader = new ByteArrayRawMemoryReader(source);
+
+        byte[] readBytes = reader.read(process, 0, source.length);
+
+        assertArrayEquals(source, readBytes);
+    }
+
+    @Test
+    public void readReadsBytesAtOffset() {
+        String text = "the quick brown fox jumps over the fence";
+        int offset = 10;
+        int length = 15;
+        byte[] source = text.getBytes(StandardCharsets.US_ASCII);
+        rawReader = new ByteArrayRawMemoryReader(source);
+
+        byte[] readBytes = reader.read(process, offset, length);
+
+        byte[] expected = text.substring(offset, offset + length).getBytes(StandardCharsets.US_ASCII);
+        assertArrayEquals(expected, readBytes);
     }
 
     @Test
@@ -376,20 +425,7 @@ public class MemoryReaderImplTest {
         for (int i = 0; i < source.length; i++) {
             source[i] = (byte) i;
         }
-        rawReader = new RawMemoryReader() {
-            int i = 0;
-
-            @Override
-            public ByteBuffer read(NativeProcess process, int offset, int bytesToRead) {
-                int index = nextIndex();
-                byte[] next = Arrays.copyOfRange(source, index, index + bytesToRead);
-                return toBuffer(next);
-            }
-
-            private int nextIndex() {
-                return i++;
-            }
-        };
+        rawReader = new ByteArrayRawMemoryReader(source);
 
         for (int i = 0; i < source.length; i++) {
             byte read = reader.readByte(process, i);
@@ -532,8 +568,18 @@ public class MemoryReaderImplTest {
     }
 
     @Test
-    public void readShortReads0xFFFFCorrectly() {
-        short expectedValue = (short) 0xFFFF;
+    public void readShortReadsMinusOneCorrectly() {
+        short expectedValue = -1;
+        rawReader = (p, o, b) -> shortToLittleEndianBuffer(expectedValue);
+
+        short result = reader.readShort(process, 0);
+
+        assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void readShortReadsOneCorrectly() {
+        short expectedValue = 1;
         rawReader = (p, o, b) -> shortToLittleEndianBuffer(expectedValue);
 
         short result = reader.readShort(process, 0);
@@ -555,17 +601,415 @@ public class MemoryReaderImplTest {
         assertEquals(expectedValue, result);
     }
 
-    // public void readInt...
+    @Test
+    public void readIntReadsCorrectly() {
+        int expectedValue = 0x7EFEAA5;
+        rawReader = (p, o, b) -> intToLittleEndianBuffer(expectedValue);
+
+        int result = reader.readInt(process, 0);
+
+        assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void readIntReadsOneCorrectly() {
+        int expectedValue = 1;
+        rawReader = (p, o, b) -> intToLittleEndianBuffer(expectedValue);
+
+        int result = reader.readInt(process, 0);
+
+        assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void readIntReadsZeroCorrectly() {
+        int expectedValue = 0;
+        rawReader = (p, o, b) -> intToLittleEndianBuffer(expectedValue);
+
+        int result = reader.readInt(process, 0);
+
+        assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void readIntReadsMaxSignedValueCorrectly() {
+        int expectedValue = Integer.MAX_VALUE;
+        rawReader = (p, o, b) -> intToLittleEndianBuffer(expectedValue);
+
+        int result = reader.readInt(process, 0);
+
+        assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void readIntReadsMinSignedValueCorrectly() {
+        int expectedValue = Integer.MIN_VALUE;
+        rawReader = (p, o, b) -> intToLittleEndianBuffer(expectedValue);
+
+        int result = reader.readInt(process, 0);
+
+        assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void readIntReadsMinusOneCorrectly() {
+        int expectedValue = -1;
+        rawReader = (p, o, b) -> intToLittleEndianBuffer(expectedValue);
+
+        int result = reader.readInt(process, 0);
+
+        assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void readIntReadsShortAtOffsetCorrectly() {
+        int expectedValue = 123456789;
+        int expectedOffset = 0x70000F;
+        rawReader = (p, offset, b) -> {
+            assertEquals(expectedOffset, offset);
+            return intToLittleEndianBuffer(expectedValue);
+        };
+
+        int result = reader.readInt(process, expectedOffset);
+
+        assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void readFloatReadsValueCorrectly() {
+        float expectedValue = 158.5f;
+        rawReader = (p, o, b) -> floatToLittleEndianBuffer(expectedValue);
+
+        float result = reader.readFloat(process, 0);
+
+        assertEquals(expectedValue, result, 0);
+    }
+
+    @Test
+    public void readFloatReadsOneCorrectly() {
+        float expectedValue = 1f;
+        rawReader = (p, o, b) -> floatToLittleEndianBuffer(expectedValue);
+
+        float result = reader.readFloat(process, 0);
+
+        assertEquals(expectedValue, result, 0);
+    }
+
+    @Test
+    public void readFloatReadsMinusOneCorrectly() {
+        float expectedValue = -1f;
+        rawReader = (p, o, b) -> floatToLittleEndianBuffer(expectedValue);
+
+        float result = reader.readFloat(process, 0);
+
+        assertEquals(expectedValue, result, 0);
+    }
+
+    @Test
+    public void readFloatReadsMinValueCorrectly() {
+        float expectedValue = Float.MIN_VALUE;
+        rawReader = (p, o, b) -> floatToLittleEndianBuffer(expectedValue);
+
+        float result = reader.readFloat(process, 0);
+
+        assertEquals(expectedValue, result, 0);
+    }
+
+    @Test
+    public void readFloatReadsMaxValueCorrectly() {
+        float expectedValue = Float.MAX_VALUE;
+        rawReader = (p, o, b) -> floatToLittleEndianBuffer(expectedValue);
+
+        float result = reader.readFloat(process, 0);
+
+        assertEquals(expectedValue, result, 0);
+    }
+
+    @Test
+    public void readLongReadsCorrectly() {
+        long expectedValue = 0xA7677F00F1234l;
+        rawReader = (p, o, b) -> longToLittleEndianBuffer(expectedValue);
+
+        long result = reader.readLong(process, 0);
+
+        assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void readLongReadsOneCorrectly() {
+        long expectedValue = 1L;
+        rawReader = (p, o, b) -> longToLittleEndianBuffer(expectedValue);
+
+        long result = reader.readLong(process, 0);
+
+        assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void readLongReadsMaxSignedValueCorrectly() {
+        long expectedValue = Long.MAX_VALUE;
+        rawReader = (p, o, b) -> longToLittleEndianBuffer(expectedValue);
+
+        long result = reader.readLong(process, 0);
+
+        assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void readLongReadsMinSignedValueCorrectly() {
+        long expectedValue = Long.MIN_VALUE;
+        rawReader = (p, o, b) -> longToLittleEndianBuffer(expectedValue);
+
+        long result = reader.readLong(process, 0);
+
+        assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void readLongReadsMinusOneCorrectly() {
+        long expectedValue = -1L;
+        rawReader = (p, o, b) -> longToLittleEndianBuffer(expectedValue);
+
+        long result = reader.readLong(process, 0);
+
+        assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void readLongReadsShortAtOffsetCorrectly() {
+        long expectedValue = 89128586921749L;
+        int expectedOffset = 0x51240BB;
+        rawReader = (p, offset, b) -> {
+            assertEquals(expectedOffset, offset);
+            return longToLittleEndianBuffer(expectedValue);
+        };
+
+        long result = reader.readLong(process, expectedOffset);
+
+        assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void readLongReadsZeroCorrectly() {
+        long expectedValue = 0L;
+        rawReader = (p, o, b) -> longToLittleEndianBuffer(expectedValue);
+
+        long result = reader.readLong(process, 0);
+
+        assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void readDoubleReadsValueCorrectly() {
+        double expectedValue = 51512.315125213d;
+        rawReader = (p, o, b) -> doubleToLittleEndianBuffer(expectedValue);
+
+        double result = reader.readDouble(process, 0);
+
+        assertEquals(expectedValue, result, 0);
+    }
+
+    @Test
+    public void readDoubleReadsOneCorrectly() {
+        double expectedValue = 1d;
+        rawReader = (p, o, b) -> doubleToLittleEndianBuffer(expectedValue);
+
+        double result = reader.readDouble(process, 0);
+
+        assertEquals(expectedValue, result, 0);
+    }
+
+    @Test
+    public void readDoubleReadsMinusOneCorrectly() {
+        double expectedValue = -1d;
+        rawReader = (p, o, b) -> doubleToLittleEndianBuffer(expectedValue);
+
+        double result = reader.readDouble(process, 0);
+
+        assertEquals(expectedValue, result, 0);
+    }
+
+    @Test
+    public void readDoubleReadsMinValueCorrectly() {
+        double expectedValue = Double.MIN_VALUE;
+        rawReader = (p, o, b) -> doubleToLittleEndianBuffer(expectedValue);
+
+        double result = reader.readDouble(process, 0);
+
+        assertEquals(expectedValue, result, 0);
+    }
+
+    @Test
+    public void readDoubleReadsMaxValueCorrectly() {
+        double expectedValue = Double.MAX_VALUE;
+        rawReader = (p, o, b) -> doubleToLittleEndianBuffer(expectedValue);
+
+        double result = reader.readDouble(process, 0);
+
+        assertEquals(expectedValue, result, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void readStringUTF8ThrowsIfTryingToReadZeroCharacters() {
+        reader.readStringUTF8(process, 0, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void readStringUTF8ThrowsIfTryingToReadNegativeAmountOfCharacters() {
+        reader.readStringUTF8(process, 0, -1512);
+    }
+
+    @Test
+    public void readStringUTF8StopsAtFirstNull() {
+        String textBeforeNull = "The quick brown fox";
+        String textAfterNull = "does a thing";
+        String text = textBeforeNull + '\0' + textAfterNull;
+        byte[] source = text.getBytes(StandardCharsets.UTF_8);
+        rawReader = new ByteArrayRawMemoryReader(source);
+
+        // try to read longer than null
+        String readString = reader.readStringUTF8(process, 0, textBeforeNull.length());
+        assertEquals(textBeforeNull, readString);
+    }
+
+    @Test
+    public void readStringUTF8ReadsFullNormalText() {
+        String text = "Liirum laarum lopsem dipsom\r\na bit of \ttabs ayyee.";
+        byte[] source = text.getBytes(StandardCharsets.UTF_8);
+        rawReader = new ByteArrayRawMemoryReader(source);
+
+        String readString = reader.readStringUTF8(process, 0, source.length);
+        assertEquals(text, readString);
+    }
+
+    @Test
+    public void readStringUTF8ReadsEmojiAsLongAsFullCodePointsAreRead() {
+        String text = "👌👀 good shit go౦ԁ sHit👌 thats ✔";
+        byte[] source = text.getBytes(StandardCharsets.UTF_8);
+        rawReader = new ByteArrayRawMemoryReader(source);
+
+        String readString = reader.readStringUTF8(process, 0, source.length);
+        assertEquals(text, readString);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void readStringUTF16LEThrowsIfTryingToReadZeroCharacters() {
+        reader.readStringUTF16LE(process, 0, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void readStringUTF16LEThrowsIfTryingToReadNegativeAmountOfCharacters() {
+        reader.readStringUTF16LE(process, 0, -1512);
+    }
+
+    @Test
+    public void readStringUTF16LEStopsAtFirstNull() {
+        String textBeforeNull = "The quick brown fox";
+        String textAfterNull = "does a thing";
+        String text = textBeforeNull + '\0' + textAfterNull;
+        byte[] source = text.getBytes(StandardCharsets.UTF_16LE);
+        rawReader = new ByteArrayRawMemoryReader(source);
+
+        String readString = reader.readStringUTF16LE(
+            process,
+            0,
+            source.length / TypeSize.CHAR_UTF16LE.getSize());
+        assertEquals(textBeforeNull, readString);
+    }
+
+    @Test
+    public void readStringUTF16LEReadsFullNormalText() {
+        String text = "Liirum laarum lopsem dipsom\r\na bit of \ttabs ayyee.";
+        byte[] source = text.getBytes(StandardCharsets.UTF_16LE);
+        rawReader = new ByteArrayRawMemoryReader(source);
+
+        // try to read longer than null
+        String readString = reader.readStringUTF16LE(
+            process,
+            0,
+            source.length / TypeSize.CHAR_UTF16LE.getSize());
+        assertEquals(text, readString);
+    }
+
+    @Test
+    public void readStringUTF16LEReadsEmojiAsLongAsFullCodePointsAreRead() {
+        String text = "👌👀 good shit go౦ԁ sHit👌 thats ✔";
+        byte[] source = text.getBytes(StandardCharsets.UTF_16LE);
+        rawReader = new ByteArrayRawMemoryReader(source);
+
+        // try to read longer than null
+        String readString = reader.readStringUTF16LE(
+            process,
+            0,
+            source.length / TypeSize.CHAR_UTF16LE.getSize());
+        assertEquals(text, readString);
+    }
 
     private static ByteBuffer toBuffer(byte... bytes) {
-        return ByteBuffer.wrap(bytes);
+        ByteBuffer wrap = ByteBuffer.wrap(bytes);
+        wrap.order(ByteOrder.LITTLE_ENDIAN);
+        return wrap;
+    }
+
+    private static ByteBuffer floatToLittleEndianBuffer(float value) {
+        ByteBuffer buf = ByteBuffer.allocate(TypeSize.FLOAT.getSize());
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        buf.putFloat(value);
+        buf.flip();
+        return buf;
+    }
+
+    private static ByteBuffer doubleToLittleEndianBuffer(double value) {
+        ByteBuffer buf = ByteBuffer.allocate(TypeSize.DOUBLE.getSize());
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        buf.putDouble(value);
+        buf.flip();
+        return buf;
+    }
+
+    private static ByteBuffer longToLittleEndianBuffer(long value) {
+        ByteBuffer buf = ByteBuffer.allocate(TypeSize.LONG.getSize());
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        buf.putLong(value);
+        buf.flip();
+        return buf;
+    }
+
+    private static ByteBuffer intToLittleEndianBuffer(int value) {
+        ByteBuffer buf = ByteBuffer.allocate(TypeSize.INT.getSize());
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        buf.putInt(value);
+        buf.flip();
+        return buf;
     }
 
     private static ByteBuffer shortToLittleEndianBuffer(short value) {
-        ByteBuffer buf = ByteBuffer.allocate(2);
+        ByteBuffer buf = ByteBuffer.allocate(TypeSize.SHORT.getSize());
         buf.order(ByteOrder.LITTLE_ENDIAN);
         buf.putShort(value);
         buf.flip();
         return buf;
+    }
+
+    private static class ByteArrayRawMemoryReader implements RawMemoryReader {
+        private final ByteArrayInputStream stream;
+        private int nextByteIndex;
+
+        public ByteArrayRawMemoryReader(byte[] source) {
+            stream = new ByteArrayInputStream(source);
+        }
+
+        @Override
+        public ByteBuffer read(NativeProcess process, int offset, int bytesToRead) {
+            stream.reset();
+            stream.skip(offset);
+            byte[] buffer = new byte[bytesToRead];
+            try {
+                stream.read(buffer);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return toBuffer(buffer);
+        }
     }
 }
