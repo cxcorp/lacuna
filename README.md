@@ -1,6 +1,6 @@
 # lacuna
 
-[![Travis Build Status](https://travis-ci.org/cxcorp/lacuna.svg?branch=master)](https://travis-ci.org/cxcorp/lacuna) [![Coverage Status](https://coveralls.io/repos/github/cxcorp/lacuna/badge.svg?branch=master)](https://coveralls.io/github/cxcorp/lacuna?branch=master)
+[![Travis Build Status](https://travis-ci.org/cxcorp/lacuna.svg?branch=master&updatecachepls=1)](https://travis-ci.org/cxcorp/lacuna) [![Coverage Status](https://coveralls.io/repos/github/cxcorp/lacuna/badge.svg?branch=master&updatecachepls=1)](https://coveralls.io/github/cxcorp/lacuna?branch=master)
 
 Program for reading and writing other programs' memory.
 Coursework for [Javalabra-2017-3](https://github.com/javaLabra/Javalabra2017-3).
@@ -37,5 +37,5 @@ For compilation instructions, see below.
 5. Run Lacuna: `java -jar target/lacuna-<VERSION>.jar`
 
 ## License
-Lacuna is licensed under the MIT License (Expat).
-See LICENSE.
+Lacuna is licensed under the MIT License (Expat). See LICENSE.
+Lacuna uses third party libraries that are distributed under their own terms (see LICENSE-3RD-PARTY).
