@@ -19,3 +19,4 @@ Päivä | Tunnit | Kuvaus
 4.2.2017 | 6h | UI suunnittelue.
 6.2.2016 | 9h | Tyyppien serialisaatio: 8-bit booleani ja 32-bit kokonaisluku. Testaus. Raporttien generointi. Komponenttitason refaktorointi. WindowsMemoryReader-luokan integraatiotestaus oikealla prosessilla.
 7.2.2016 | 9h | Komponenttitason refaktorointi. Testaus. Yleisien tietotyyppien lukemisen implementointi.
+8.2.2016 | 5h | Muistinlukijan testaus.
