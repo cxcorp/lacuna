@@ -34,6 +34,52 @@ public class MemoryReaderImplTest {
     private MemoryReaderImpl reader;
     private NativeProcess process;
 
+    private static ByteBuffer toBuffer(byte... bytes) {
+        ByteBuffer wrap = ByteBuffer.wrap(bytes);
+        wrap.order(ByteOrder.LITTLE_ENDIAN);
+        return wrap;
+    }
+
+    private static ByteBuffer floatToLittleEndianBuffer(float value) {
+        ByteBuffer buf = ByteBuffer.allocate(TypeSize.FLOAT.getSize());
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        buf.putFloat(value);
+        buf.flip();
+        return buf;
+    }
+
+    private static ByteBuffer doubleToLittleEndianBuffer(double value) {
+        ByteBuffer buf = ByteBuffer.allocate(TypeSize.DOUBLE.getSize());
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        buf.putDouble(value);
+        buf.flip();
+        return buf;
+    }
+
+    private static ByteBuffer longToLittleEndianBuffer(long value) {
+        ByteBuffer buf = ByteBuffer.allocate(TypeSize.LONG.getSize());
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        buf.putLong(value);
+        buf.flip();
+        return buf;
+    }
+
+    private static ByteBuffer intToLittleEndianBuffer(int value) {
+        ByteBuffer buf = ByteBuffer.allocate(TypeSize.INT.getSize());
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        buf.putInt(value);
+        buf.flip();
+        return buf;
+    }
+
+    private static ByteBuffer shortToLittleEndianBuffer(short value) {
+        ByteBuffer buf = ByteBuffer.allocate(TypeSize.SHORT.getSize());
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        buf.putShort(value);
+        buf.flip();
+        return buf;
+    }
+
     @Before
     public void setUp() {
         rawReader = null;
@@ -588,7 +634,7 @@ public class MemoryReaderImplTest {
     }
 
     @Test
-    public void readShortReadsShortAtOffsetCorrectly() {
+    public void readShortReadsValueAtOffsetCorrectly() {
         short expectedValue = 0x7EFE;
         int expectedOffset = 0x5E5E;
         rawReader = (p, offset, b) -> {
@@ -662,7 +708,7 @@ public class MemoryReaderImplTest {
     }
 
     @Test
-    public void readIntReadsShortAtOffsetCorrectly() {
+    public void readIntReadsValueAtOffsetCorrectly() {
         int expectedValue = 123456789;
         int expectedOffset = 0x70000F;
         rawReader = (p, offset, b) -> {
@@ -726,8 +772,22 @@ public class MemoryReaderImplTest {
     }
 
     @Test
+    public void readFloatReadsValueAtOffsetCorrectly() {
+        float expectedValue = 881924.5123f;
+        int expectedOffset = 0xFEFEFEFE;
+        rawReader = (p, offset, b) -> {
+            assertEquals(expectedOffset, offset);
+            return floatToLittleEndianBuffer(expectedValue);
+        };
+
+        float result = reader.readFloat(process, expectedOffset);
+
+        assertEquals(expectedValue, result, 0f);
+    }
+
+    @Test
     public void readLongReadsCorrectly() {
-        long expectedValue = 0xA7677F00F1234l;
+        long expectedValue = 0xA7677F00F1234L;
         rawReader = (p, o, b) -> longToLittleEndianBuffer(expectedValue);
 
         long result = reader.readLong(process, 0);
@@ -849,6 +909,20 @@ public class MemoryReaderImplTest {
         assertEquals(expectedValue, result, 0);
     }
 
+    @Test
+    public void readDoubleReadsValueAtOffsetCorrectly() {
+        double expectedValue = 1923951.15121323d;
+        int expectedOffset = 0xFEFEFEFE;
+        rawReader = (p, offset, b) -> {
+            assertEquals(expectedOffset, offset);
+            return doubleToLittleEndianBuffer(expectedValue);
+        };
+
+        double result = reader.readDouble(process, expectedOffset);
+
+        assertEquals(expectedValue, result, 0f);
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void readStringUTF8ThrowsIfTryingToReadZeroCharacters() {
         reader.readStringUTF8(process, 0, 0);
@@ -943,52 +1017,6 @@ public class MemoryReaderImplTest {
             0,
             source.length / TypeSize.CHAR_UTF16LE.getSize());
         assertEquals(text, readString);
-    }
-
-    private static ByteBuffer toBuffer(byte... bytes) {
-        ByteBuffer wrap = ByteBuffer.wrap(bytes);
-        wrap.order(ByteOrder.LITTLE_ENDIAN);
-        return wrap;
-    }
-
-    private static ByteBuffer floatToLittleEndianBuffer(float value) {
-        ByteBuffer buf = ByteBuffer.allocate(TypeSize.FLOAT.getSize());
-        buf.order(ByteOrder.LITTLE_ENDIAN);
-        buf.putFloat(value);
-        buf.flip();
-        return buf;
-    }
-
-    private static ByteBuffer doubleToLittleEndianBuffer(double value) {
-        ByteBuffer buf = ByteBuffer.allocate(TypeSize.DOUBLE.getSize());
-        buf.order(ByteOrder.LITTLE_ENDIAN);
-        buf.putDouble(value);
-        buf.flip();
-        return buf;
-    }
-
-    private static ByteBuffer longToLittleEndianBuffer(long value) {
-        ByteBuffer buf = ByteBuffer.allocate(TypeSize.LONG.getSize());
-        buf.order(ByteOrder.LITTLE_ENDIAN);
-        buf.putLong(value);
-        buf.flip();
-        return buf;
-    }
-
-    private static ByteBuffer intToLittleEndianBuffer(int value) {
-        ByteBuffer buf = ByteBuffer.allocate(TypeSize.INT.getSize());
-        buf.order(ByteOrder.LITTLE_ENDIAN);
-        buf.putInt(value);
-        buf.flip();
-        return buf;
-    }
-
-    private static ByteBuffer shortToLittleEndianBuffer(short value) {
-        ByteBuffer buf = ByteBuffer.allocate(TypeSize.SHORT.getSize());
-        buf.order(ByteOrder.LITTLE_ENDIAN);
-        buf.putShort(value);
-        buf.flip();
-        return buf;
     }
 
     private static class ByteArrayRawMemoryReader implements RawMemoryReader {
