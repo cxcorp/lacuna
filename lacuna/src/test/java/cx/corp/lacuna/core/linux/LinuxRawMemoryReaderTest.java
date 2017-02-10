@@ -44,11 +44,6 @@ public class LinuxRawMemoryReaderTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void readThrowsWhenReadingFromNegativeOffset() {
-        reader.read(process, -100, 123);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     public void readThrowsWhenReadingZeroBytes() {
         reader.read(process, 0, 0);
     }

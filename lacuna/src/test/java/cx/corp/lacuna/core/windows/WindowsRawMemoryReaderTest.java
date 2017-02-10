@@ -48,11 +48,6 @@ public class WindowsRawMemoryReaderTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void readThrowsIfOffsetIsNegative() {
-        reader.read(process, -100, 10);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     public void readThrowsIfReadNegativeBytes() {
         reader.read(process, 100, -100);
     }
