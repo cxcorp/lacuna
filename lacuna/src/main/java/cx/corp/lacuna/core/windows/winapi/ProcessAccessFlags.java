@@ -1,5 +1,10 @@
 package cx.corp.lacuna.core.windows.winapi;
 
+/**
+ * Contains Windows API process access right flags.
+ * @see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684880(v=vs.85).aspx">Process Security and Access Rights (Windows)</a>
+ * @see cx.corp.lacuna.core.windows.ProcessOpener
+ */
 public final class ProcessAccessFlags {
     public static final int ALL = 0x001F0FFF;
     public static final int TERMINATE = 0x00000001;

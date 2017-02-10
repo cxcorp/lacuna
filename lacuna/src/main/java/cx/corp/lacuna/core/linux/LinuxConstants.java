@@ -3,7 +3,13 @@ package cx.corp.lacuna.core.linux;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Contains constant values specific to the Linux platform.
+ */
 public class LinuxConstants {
+    /**
+     * Depicts the lowest possible process identifier value.
+     */
     public static final int LOWEST_LEGAL_PID = 1;
 
     /**
@@ -14,7 +20,13 @@ public class LinuxConstants {
      */
     public static final int FALLBACK_PID_MAX = 32768;
 
+    /**
+     * Default path to the process root directory on Linux platforms.
+     */
     public static final Path DEFAULT_PROC_ROOT = Paths.get("/proc");
 
+    /**
+     * Default path to the {@code pid_max} constant on Linux platforms.
+     */
     public static final Path DEFAULT_PID_MAX = Paths.get("/proc/sys/kernel/pid_max");
 }
