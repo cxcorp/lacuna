@@ -7,6 +7,12 @@ import com.sun.jna.Native;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Bootstraps Windows API proxy interfaces for use.
+ *
+ * <p>This class configures a function name mapper using {@link CamelToPascalCaseFunctionMapper}
+ * and lazily loads the native DLLs when called.
+ */
 public class WinApiBootstrapper {
 
     private final Map<String, Object> loadLibraryOptions;

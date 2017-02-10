@@ -1,14 +1,14 @@
 package cx.corp.lacuna.core.linux;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
+/**
+ * Provides access to a process's memory via the virtual {@code /proc/[pid]/mem} file.
+ */
 public class FileMemoryProvider implements MemoryProvider {
 
     private final Path procRoot;
@@ -22,6 +22,11 @@ public class FileMemoryProvider implements MemoryProvider {
         this.relativeMemFilePath = relativeMemFilePath;
     }
 
+    /**
+     * Opens a stream to the virtual {@code /proc/[pid]/mem} file.
+     * @param pid The ID of the process.
+     * @throws IOException if the stream cannot be opened.
+     */
     @Override
     public InputStream open(int pid) throws IOException {
         Path memFile = createPathToProcessMemoryFile(pid);

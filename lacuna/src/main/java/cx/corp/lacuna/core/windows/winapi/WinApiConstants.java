@@ -3,6 +3,9 @@ package cx.corp.lacuna.core.windows.winapi;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 
+/**
+ * Contains constant values specific to the Windows API.
+ */
 public final class WinApiConstants {
 
     /**
@@ -31,7 +34,7 @@ public final class WinApiConstants {
 
     /**
      * When used as the {@code dwFlags} parameter of
-     * {@link Kernel32#queryFullProcessImageNameW(int, int, char[], IntByReference)},
+     * {@link Kernel32#queryFullProcessImageNameW},
      * depicts that the output name should use the Win32 path format instead of the
      * native system path format.
      */
@@ -39,14 +42,14 @@ public final class WinApiConstants {
 
     /**
      * When used as the {@code desiredAccess} parameter of
-     * {@link Advapi32#openProcessToken(int, int, IntByReference)}, depicts that
+     * {@link Advapi32#openProcessToken}, depicts that
      * the callee is requesting rights to query an access token.
      */
     public static final int OPENPROCESSTOKEN_TOKEN_QUERY = 0x0008;
 
     /**
      * When used as the {@code TokenInformationClass} parameter of
-     * {@link Advapi32#getTokenInformation(int, int, Pointer, int, IntByReference)},
+     * {@link Advapi32#getTokenInformation},
      * depicts that the callee is requesting a TokenOwner struct.
      */
     public static final int GETTOKENINFORMATION_TOKENUSER = 1;
