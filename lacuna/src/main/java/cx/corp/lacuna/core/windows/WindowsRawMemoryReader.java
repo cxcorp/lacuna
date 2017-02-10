@@ -43,9 +43,6 @@ public class WindowsRawMemoryReader implements RawMemoryReader {
         if (process == null) {
             throw new IllegalArgumentException("Process cannot be null!");
         }
-        if (offset < 0) {
-            throw new IllegalArgumentException("Offset cannot be negative!");
-        }
         if (bytesToRead < 1) {
             throw new IllegalArgumentException("Cannot read fewer than 1 byte!");
         }

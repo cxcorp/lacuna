@@ -25,9 +25,6 @@ public class LinuxRawMemoryReader implements RawMemoryReader {
         if (process == null) {
             throw new IllegalArgumentException("Process cannot be null!");
         }
-        if (offset < 0) {
-            throw new IllegalArgumentException("Offset cannot be negative!");
-        }
         if (bytesToRead < 1) {
             throw new IllegalArgumentException("Cannot read fewer than 1 byte!");
         }
@@ -38,8 +35,9 @@ public class LinuxRawMemoryReader implements RawMemoryReader {
                 throw new MemoryReadException("MemoryProvider provided a null stream!");
             }
 
-            long skippedBytes = input.skip(offset);
-            if (offset != skippedBytes) {
+            long bytesToSkip = 0xFFFFFFFFL & offset;
+            long skippedBytes = input.skip(bytesToSkip); // interpret the offset as an unsigned value
+            if (skippedBytes != bytesToSkip) {
                 throw new MemoryReadException("Failed to seek to offset " + offset + "! Actually skipped " + skippedBytes + " bytes.");
             }
 

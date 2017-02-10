@@ -40,5 +40,5 @@ public interface MemoryReader {
      * @return The read bytes.
      * @throws MemoryReadException if reading the memory fails.
      */
-    byte[] read(NativeProcess process, int offset, int bytesToRead);
+    byte[] read(NativeProcess process, int offset, int bytesToRead) throws MemoryReadException;
 }
