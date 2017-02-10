@@ -65,15 +65,15 @@ public class MemoryReaderImpl implements MemoryReader {
     }
 
     @Override
-    public String readStringUTF8(NativeProcess process, int offset, int characterCount) {
-        if (characterCount < 1) {
+    public String readStringUTF8(NativeProcess process, int offset, int maxCodeUnitsToRead) {
+        if (maxCodeUnitsToRead < 1) {
             throw new IllegalArgumentException("Cannot read strings shorter than 1 character!");
         }
 
-        byte[] buffer = new byte[characterCount];
+        byte[] buffer = new byte[maxCodeUnitsToRead];
         int bytesRead = 0;
 
-        for (int i = 0; i < characterCount; i++) {
+        for (int i = 0; i < maxCodeUnitsToRead; i++) {
             byte readByte = readByte(process, offset + i);
             if (readByte == 0) {
                 // read until null character is met or maxLength is met
@@ -87,13 +87,13 @@ public class MemoryReaderImpl implements MemoryReader {
     }
 
     @Override
-    public String readStringUTF16LE(NativeProcess process, int offset, int characterCount) {
-        if (characterCount < 1) {
+    public String readStringUTF16LE(NativeProcess process, int offset, int maxCodeUnitsToRead) {
+        if (maxCodeUnitsToRead < 1) {
             throw new IllegalArgumentException("Cannot read strings shorter than 1 character!");
         }
 
         final int charSize = TypeSize.CHAR_UTF16LE.getSize();
-        int totalByteSize = characterCount * charSize;
+        int totalByteSize = maxCodeUnitsToRead * charSize;
         ByteBuffer buffer = ByteBuffer.allocate(totalByteSize);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
 
