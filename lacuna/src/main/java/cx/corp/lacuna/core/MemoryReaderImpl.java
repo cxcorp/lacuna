@@ -6,6 +6,10 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * {@inheritDoc}
+ * <p>Refer to the platform specific {@link RawMemoryReader} classes for notes on precautions.
+ */
 public class MemoryReaderImpl implements MemoryReader {
 
     private final RawMemoryReader rawMemoryReader;
