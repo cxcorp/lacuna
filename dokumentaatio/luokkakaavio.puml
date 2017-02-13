@@ -181,14 +181,16 @@ package cx.corp.lacuna.core.windows {
 }
 
 package cx.corp.lacuna.core.linux {
-    interface MemoryProvider {
-        {abstract} open(int) : InputOutputStream
+    interface ReadableMemoryProvider {
+        {abstract} openRead(int) : SeekableByteChannel
     }
+	interface WritableMemoryProvider {
+		{abstract} openWrite(int) : SeekableByteChannel
+	}
     class LinuxNativeProcessCollector
     class LinuxPidEnumerator
     class LinuxRawMemoryReader
-    class LinuxRawMemoryReader #Monochrome
-    note right: Upcoming
+    class LinuxRawMemoryWriter
     class ProcPathFilter
     class FileMemoryProvider
     
@@ -197,12 +199,13 @@ package cx.corp.lacuna.core.linux {
     
     LinuxPidEnumerator *-- ProcPathFilter
     
-    MemoryProvider <|.. FileMemoryProvider
+    ReadableMemoryProvider <|.. FileMemoryProvider
+	WritableMemoryProvider <|.. FileMemoryProvider
     
     RawMemoryReader <|.. LinuxRawMemoryReader
-    LinuxRawMemoryReader --> "1" MemoryProvider
+    LinuxRawMemoryReader --> "1" ReadableMemoryProvider
     RawMemoryWriter <|.. LinuxRawMemoryWriter
-    LinuxRawMemoryWriter --> "1" MemoryProvider
+    LinuxRawMemoryWriter --> "1" WritableMemoryProvider
 }
 
 @enduml
