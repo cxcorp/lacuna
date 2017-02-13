@@ -25,7 +25,7 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2017</copyright>
     <item>
-      <title>File: 45,
+      <title>File: 53,
              Errors: 0,
              Warnings: 0,
              Infos: 0
@@ -46,20 +46,6 @@ under the License.
           <tbody>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.ProcessEnumerationException.java">cx/corp/lacuna/core/ProcessEnumerationException.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.domain.NativeProcessImpl.java">cx/corp/lacuna/core/domain/NativeProcessImpl.java</a>
                 </td>
                 <td>
@@ -75,6 +61,370 @@ under the License.
                           <tr>
                 <td>
                   <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.SystemErrorCode.java">cx/corp/lacuna/core/windows/winapi/SystemErrorCode.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.GetProcessId.java">cx/corp/lacuna/core/windows/winapi/GetProcessId.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags.java">cx/corp/lacuna/core/windows/winapi/ProcessAccessFlags.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.ProcessDescriptionGetter.java">cx/corp/lacuna/core/windows/ProcessDescriptionGetter.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.linux.LinuxPidEnumerator.java">cx/corp/lacuna/core/linux/LinuxPidEnumerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.ProcessOpener.java">cx/corp/lacuna/core/windows/ProcessOpener.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.WriteProcessMemory.java">cx/corp/lacuna/core/windows/winapi/WriteProcessMemory.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.ReadProcessMemory.java">cx/corp/lacuna/core/windows/winapi/ReadProcessMemory.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.Kernel32.java">cx/corp/lacuna/core/windows/winapi/Kernel32.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.Main.java">cx/corp/lacuna/Main.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.OpenProcess.java">cx/corp/lacuna/core/windows/winapi/OpenProcess.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.WindowsNativeProcessCollector.java">cx/corp/lacuna/core/windows/WindowsNativeProcessCollector.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.WinApiConstants.java">cx/corp/lacuna/core/windows/winapi/WinApiConstants.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.NativeProcessCollector.java">cx/corp/lacuna/core/NativeProcessCollector.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.WindowsPidEnumerator.java">cx/corp/lacuna/core/windows/WindowsPidEnumerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.MemoryAccessException.java">cx/corp/lacuna/core/MemoryAccessException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.WindowsRawMemoryReader.java">cx/corp/lacuna/core/windows/WindowsRawMemoryReader.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.WindowsProcessOwnerGetter.java">cx/corp/lacuna/core/windows/WindowsProcessOwnerGetter.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.linux.LinuxRawMemoryReader.java">cx/corp/lacuna/core/linux/LinuxRawMemoryReader.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.ProcessOpenException.java">cx/corp/lacuna/core/windows/ProcessOpenException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.WindowsProcessDescriptionGetter.java">cx/corp/lacuna/core/windows/WindowsProcessDescriptionGetter.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.linux.FileMemoryProvider.java">cx/corp/lacuna/core/linux/FileMemoryProvider.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.linux.LinuxConstants.java">cx/corp/lacuna/core/linux/LinuxConstants.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.ProcessHandle.java">cx/corp/lacuna/core/windows/ProcessHandle.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.ProcessEnumerationException.java">cx/corp/lacuna/core/ProcessEnumerationException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.RawMemoryWriter.java">cx/corp/lacuna/core/RawMemoryWriter.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.MemoryWriter.java">cx/corp/lacuna/core/MemoryWriter.java</a>
                 </td>
                 <td>
                   0
@@ -144,35 +494,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.GetProcessId.java">cx/corp/lacuna/core/windows/winapi/GetProcessId.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags.java">cx/corp/lacuna/core/windows/winapi/ProcessAccessFlags.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.ProcessDescriptionGetter.java">cx/corp/lacuna/core/windows/ProcessDescriptionGetter.java</a>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.linux.WritableMemoryProvider.java">cx/corp/lacuna/core/linux/WritableMemoryProvider.java</a>
                 </td>
                 <td>
                   0
@@ -200,35 +522,21 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.linux.LinuxPidEnumerator.java">cx/corp/lacuna/core/linux/LinuxPidEnumerator.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.ProcessOpener.java">cx/corp/lacuna/core/windows/ProcessOpener.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.CamelToPascalCaseFunctionMapper.java">cx/corp/lacuna/core/windows/winapi/CamelToPascalCaseFunctionMapper.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.linux.ReadableMemoryProvider.java">cx/corp/lacuna/core/linux/ReadableMemoryProvider.java</a>
                 </td>
                 <td>
                   0
@@ -270,77 +578,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.ReadProcessMemory.java">cx/corp/lacuna/core/windows/winapi/ReadProcessMemory.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.Kernel32.java">cx/corp/lacuna/core/windows/winapi/Kernel32.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.QueryFullProcessImageName.java">cx/corp/lacuna/core/windows/winapi/QueryFullProcessImageName.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.Main.java">cx/corp/lacuna/Main.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.OpenProcess.java">cx/corp/lacuna/core/windows/winapi/OpenProcess.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.WindowsNativeProcessCollector.java">cx/corp/lacuna/core/windows/WindowsNativeProcessCollector.java</a>
                 </td>
                 <td>
                   0
@@ -368,20 +606,6 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.WinApiConstants.java">cx/corp/lacuna/core/windows/winapi/WinApiConstants.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.CloseHandle.java">cx/corp/lacuna/core/windows/winapi/CloseHandle.java</a>
                 </td>
                 <td>
@@ -396,7 +620,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.NativeProcessCollector.java">cx/corp/lacuna/core/NativeProcessCollector.java</a>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.WindowsRawMemoryWriter.java">cx/corp/lacuna/core/windows/WindowsRawMemoryWriter.java</a>
                 </td>
                 <td>
                   0
@@ -410,7 +634,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.WindowsPidEnumerator.java">cx/corp/lacuna/core/windows/WindowsPidEnumerator.java</a>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.linux.LinuxRawMemoryWriter.java">cx/corp/lacuna/core/linux/LinuxRawMemoryWriter.java</a>
                 </td>
                 <td>
                   0
@@ -438,49 +662,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.WindowsRawMemoryReader.java">cx/corp/lacuna/core/windows/WindowsRawMemoryReader.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.ProcessOwnerGetter.java">cx/corp/lacuna/core/windows/ProcessOwnerGetter.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.WindowsProcessOwnerGetter.java">cx/corp/lacuna/core/windows/WindowsProcessOwnerGetter.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.linux.LinuxRawMemoryReader.java">cx/corp/lacuna/core/linux/LinuxRawMemoryReader.java</a>
                 </td>
                 <td>
                   0
@@ -522,35 +704,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.linux.MemoryProvider.java">cx/corp/lacuna/core/linux/MemoryProvider.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.MemoryReadException.java">cx/corp/lacuna/core/MemoryReadException.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.ProcessOpenException.java">cx/corp/lacuna/core/windows/ProcessOpenException.java</a>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.MemoryWriterImpl.java">cx/corp/lacuna/core/MemoryWriterImpl.java</a>
                 </td>
                 <td>
                   0
@@ -565,34 +719,6 @@ under the License.
                           <tr>
                 <td>
                   <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.NativeProcessEnumeratorImpl.java">cx/corp/lacuna/core/NativeProcessEnumeratorImpl.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.WindowsProcessDescriptionGetter.java">cx/corp/lacuna/core/windows/WindowsProcessDescriptionGetter.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.linux.FileMemoryProvider.java">cx/corp/lacuna/core/linux/FileMemoryProvider.java</a>
                 </td>
                 <td>
                   0
@@ -648,21 +774,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.linux.LinuxConstants.java">cx/corp/lacuna/core/linux/LinuxConstants.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.ProcessHandle.java">cx/corp/lacuna/core/windows/ProcessHandle.java</a>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.presenter.MainWindowPresenter.java">cx/corp/lacuna/ui/presenter/MainWindowPresenter.java</a>
                 </td>
                 <td>
                   0

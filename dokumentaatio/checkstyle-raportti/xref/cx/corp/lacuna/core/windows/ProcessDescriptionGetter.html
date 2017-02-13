@@ -10,10 +10,20 @@
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> java.util.Optional;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   @FunctionalInterface
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../../cx/corp/lacuna/core/windows/ProcessDescriptionGetter.html">ProcessDescriptionGetter</a> {
-<a class="jxr_linenumber" name="L7" href="#L7">7</a>       Optional&lt;String&gt; get(<a href="../../../../../cx/corp/lacuna/core/windows/ProcessHandle.html">ProcessHandle</a> processHandle);
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   }
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment"> * Provides functionality for getting the description of a native process.</em>
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * @see ProcessOpener</em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> * @see ProcessOwnerGetter</em>
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  @FunctionalInterface
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../../cx/corp/lacuna/core/windows/ProcessDescriptionGetter.html">ProcessDescriptionGetter</a> {
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment">     * Gets the description of the specified process, or {@link Optional#empty()} if getting fails.</em>
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment">     * @param processHandle Handle to the process.</em>
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment">     * @return The description of the process, or {@link Optional#empty()} if getting fails.</em>
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>      Optional&lt;String&gt; get(<a href="../../../../../cx/corp/lacuna/core/windows/ProcessHandle.html">ProcessHandle</a> processHandle);
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2017. All rights reserved.</div>
