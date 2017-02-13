@@ -1,14 +1,14 @@
 # lacuna
 
-[![Travis Build Status](https://travis-ci.org/cxcorp/lacuna.svg?branch=master&updatecachepls=1)](https://travis-ci.org/cxcorp/lacuna) [![Coverage Status](https://coveralls.io/repos/github/cxcorp/lacuna/badge.svg?branch=master&updatecachepls=1)](https://coveralls.io/github/cxcorp/lacuna?branch=master)
+[![Travis Build Status](https://travis-ci.org/cxcorp/lacuna.svg?branch=master&updatecachepls=2)](https://travis-ci.org/cxcorp/lacuna) [![Coverage Status](https://coveralls.io/repos/github/cxcorp/lacuna/badge.svg?branch=master&updatecachepls=2)](https://coveralls.io/github/cxcorp/lacuna?branch=master)
 
 Program for reading and writing other programs' memory.
 Coursework for [Javalabra-2017-3](https://github.com/javaLabra/Javalabra2017-3).
 
 ## Current state
-Lacuna can currently dump the active process list and read a process' memory on both Windows and Linux. Reading supports common primitive data types as well as arbitrary byte amounts.
+Lacuna can currently dump the active process list and read a process' memory on both Windows and Linux. Reading supports common primitive data types as well as arbitrary byte amounts. Writing memory is supported on Windows.
 
-![](http://i.imgur.com/ATN6vdf.png)
+![](http://i.imgur.com/PMrn1BA.png)
 
 Tested platforms:
 * Windows:
