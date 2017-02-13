@@ -20,3 +20,5 @@ Päivä | Tunnit | Kuvaus
 6.2.2016 | 9h | Tyyppien serialisaatio: 8-bit booleani ja 32-bit kokonaisluku. Testaus. Raporttien generointi. Komponenttitason refaktorointi. WindowsMemoryReader-luokan integraatiotestaus oikealla prosessilla.
 7.2.2016 | 9h | Komponenttitason refaktorointi. Testaus. Yleisien tietotyyppien lukemisen implementointi.
 8.2.2016 | 7h | Muistinlukijan testaus. Linux-luokkien testaus virtuaalisella tiedostojärjestelmällä.
+12.2.2016 | 5h | Muistinkirjoittamisen implementointi abstraktilla tasolla.
+13.2.2016 | 4h | Muistinkirjoittamisen implementointi Windowsilla.
