@@ -13,6 +13,7 @@ public interface Kernel32 extends
     OpenProcess,
     QueryFullProcessImageName,
     GetProcessId,
-    ReadProcessMemory {
+    ReadProcessMemory,
+    WriteProcessMemory {
 
 }
