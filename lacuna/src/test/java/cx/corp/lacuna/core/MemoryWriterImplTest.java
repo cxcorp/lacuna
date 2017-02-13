@@ -80,11 +80,11 @@ public class MemoryWriterImplTest {
 
     @Test
     public void writeBooleanWritesToCorrectOffset() {
-        final int targetOFfset = 0xBADF00D;
+        final int targetOffset = 0xBADF00D;
         rawWriter = (p, offset, b) -> {
-            assertEquals(targetOFfset, offset);
+            assertEquals(targetOffset, offset);
         };
-        writer.writeBoolean(process, targetOFfset, false);
+        writer.writeBoolean(process, targetOffset, false);
     }
 
     @Test
@@ -114,11 +114,11 @@ public class MemoryWriterImplTest {
 
     @Test
     public void writeByteWritesToCorrectOffset() {
-        final int targetOFfset = 0xBADF00D;
+        final int targetOffset = 0xBADF00D;
         rawWriter = (p, offset, b) -> {
-            assertEquals(targetOFfset, offset);
+            assertEquals(targetOffset, offset);
         };
-        writer.writeByte(process, targetOFfset, (byte) 1);
+        writer.writeByte(process, targetOffset, (byte) 1);
     }
 
     @Test
@@ -161,11 +161,11 @@ public class MemoryWriterImplTest {
 
     @Test
     public void writeCharWritesToCorrectOffset() {
-        final int targetOFfset = 0xBADF00D;
+        final int targetOffset = 0xBADF00D;
         rawWriter = (p, offset, b) -> {
-            assertEquals(targetOFfset, offset);
+            assertEquals(targetOffset, offset);
         };
-        writer.writeCharUTF8(process, targetOFfset, 'a');
+        writer.writeCharUTF8(process, targetOffset, 'a');
     }
 
     @Test
@@ -182,11 +182,11 @@ public class MemoryWriterImplTest {
 
     @Test
     public void writeCharUTF16WritesToRightOffset() {
-        final int targetOFfset = 0xBADF00D;
+        final int targetOffset = 0xBADF00D;
         rawWriter = (p, offset, b) -> {
-            assertEquals(targetOFfset, offset);
+            assertEquals(targetOffset, offset);
         };
-        writer.writeCharUTF16LE(process, targetOFfset, 'z');
+        writer.writeCharUTF16LE(process, targetOffset, 'z');
     }
 
     @Test
@@ -197,7 +197,7 @@ public class MemoryWriterImplTest {
     }
 
     @Test
-    public void writeShortWritesOneCorrectlyInLittleEndian() {
+    public void writeShortWritesOneCorrectly() {
         writer.writeShort(process, 0, (short) 1);
         byte[] expected = {1, 0}; // little endian
         assertArrayEquals(expected, rawByteWriter.getBytes());
@@ -231,19 +231,291 @@ public class MemoryWriterImplTest {
         assertArrayEquals(expected, rawByteWriter.getBytes());
     }
 
-    // int
+    @Test
+    public void writeShortWritesToCorrectOffset() {
+        final int targetOffset = 0xBADF00D;
+        rawWriter = (p, offset, b) -> {
+            assertEquals(targetOffset, offset);
+        };
+        writer.writeShort(process, targetOffset, (short) 1584);
+    }
 
-    // float
+    @Test
+    public void writeIntWritesZeroCorrectly() {
+        writer.writeInt(process, 0, 0);
+        byte[] expected = {0, 0, 0, 0};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
 
-    // long
+    @Test
+    public void writeIntWritesOneCorrectly() {
+        writer.writeInt(process, 0, 1);
+        byte[] expected = {1, 0, 0, 0};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
 
-    // double
+    @Test
+    public void writeIntWritesMinusOneCorrectly() {
+        writer.writeInt(process, 0, -1);
+        byte[] expected = {-1, -1, -1, -1};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
 
-    // utf-8 string
+    @Test
+    public void writeIntWritesCorrectly() {
+        writer.writeInt(process, 0, 12581239);
+        byte[] expected = {0x77, (byte) 0xF9, (byte) 0xBF, 0};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
 
-    // utf-16le string
+    @Test
+    public void writeIntWritesMaxSignedIntCorrectly() {
+        writer.writeInt(process, 0, Integer.MAX_VALUE);
+        byte[] expected = {-1, -1, -1, 0x7F};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
 
-    // bytes
+    @Test
+    public void writeIntWritesMinSignedIntCorrectly() {
+        writer.writeInt(process, 0, Integer.MIN_VALUE);
+        byte[] expected = {0, 0, 0, (byte) 0x80};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeIntWritesToCorrectOffset() {
+        final int targetOffset = 0xBADF00D;
+        rawWriter = (p, offset, b) -> {
+            assertEquals(targetOffset, offset);
+        };
+        writer.writeInt(process, targetOffset, 51923918);
+    }
+
+    @Test
+    public void writeLongWritesZeroCorrectly() {
+        writer.writeLong(process, 0, 0);
+        byte[] expected = {0, 0, 0, 0, 0, 0, 0, 0};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeLongWritesOneCorrectly() {
+        writer.writeLong(process, 0, 1);
+        byte[] expected = {1, 0, 0, 0, 0, 0, 0, 0};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeLongWritesMinusOneCorrectly() {
+        writer.writeLong(process, 0, -1);
+        byte[] expected = {-1, -1, -1, -1, -1, -1, -1, -1};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeLongWritesCorrectly() {
+        writer.writeLong(process, 0, 941825812485729141L);
+        byte[] expected = {0x75, 0x6B, (byte) 0x81, 0x21, (byte) 0x96, 0x09, 0x12, 0x0D};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeLongWritesMaxSignedLongCorrectly() {
+        writer.writeLong(process, 0, Long.MAX_VALUE);
+        byte[] expected = {-1, -1, -1, -1, -1, -1, -1, 0x7F};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeLongWritesMinSignedLongCorrectly() {
+        writer.writeLong(process, 0, Long.MIN_VALUE);
+        byte[] expected = {0, 0, 0, 0, 0, 0, 0, (byte) 0x80};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeLongWritesToCorrectOffset() {
+        final int targetOffset = 0xBADF00D;
+        rawWriter = (p, offset, b) -> {
+            assertEquals(targetOffset, offset);
+        };
+        writer.writeLong(process, targetOffset, 1239121924301245L);
+    }
+
+    @Test
+    public void writeFloatWritesCorrectly() {
+        writer.writeFloat(process, 0, 5123.412f);
+        byte[] expected = {0x4C, 0x1B, (byte) 0xA0, 0x45};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeFloatWritesZeroCorrectly() {
+        writer.writeFloat(process, 0, 0f);
+        byte[] expected = {0, 0, 0, 0};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeFloatWritesToCorrectOffset() {
+        final int targetOffset = 0xBADF00D;
+        rawWriter = (p, offset, b) -> {
+            assertEquals(targetOffset, offset);
+        };
+        writer.writeFloat(process, targetOffset, 1234f);
+    }
+
+    @Test
+    public void writeDoubleWritesCorrectly() {
+        writer.writeDouble(process, 0, 2342.5125161243454d);
+        byte[] expected = {0x79, 0x71, (byte) 0x83, 0x68, 0x06, 0x4D, (byte) 0xA2, 0x40};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeDoubleWritesZeroCorrectly() {
+        writer.writeDouble(process, 0, 0d);
+        byte[] expected = {0, 0, 0, 0, 0, 0, 0, 0};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeDoubleWritesToCorrectOffset() {
+        final int targetOffset = 0xBADF00D;
+        rawWriter = (p, offset, b) -> {
+            assertEquals(targetOffset, offset);
+        };
+        writer.writeDouble(process, targetOffset, 12315239d);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void writeStringUTF8ThrowsIfWritingEmptyString() {
+        writer.writeStringUTF8(process, 0, "");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void writeStringUTF8ThrowsIfWritingNullString() {
+        writer.writeStringUTF8(process, 0, null);
+    }
+
+    @Test
+    public void writeStringUTF8WritesAsciiRangeString() {
+        String source = "Quick 12345 toasters Ran m-,.-,.<>(={}}[7L'^\" ayy lmao";
+        writer.writeStringUTF8(process, 0, source);
+        assertArrayEquals(source.getBytes(StandardCharsets.UTF_8), rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeStringWritesStringWithNulls() {
+        String source = "a\u0000y";
+        writer.writeStringUTF8(process, 0, source);
+        byte[] expected = {'a', 0, 'y'};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeStringWritesEmojiAndOtherMultiByteChars() {
+        String source = "ß߷ကＮ😂";
+        writer.writeStringUTF8(process, 0, source);
+        byte[] expected = {-61, -97, -33, -73, -31, -128, -128, -17, -68, -82, -16, -97, -104, -126};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeStringWritesToCorrectOffset() {
+        final int targetOffset = 0xBADF00D;
+        rawWriter = (p, offset, b) -> {
+            assertEquals(targetOffset, offset);
+        };
+        writer.writeStringUTF8(process, targetOffset, "ayy lmao");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void writeStringUTF16ThrowsIfStringIsEmpty() {
+        writer.writeStringUTF16LE(process, 0, "");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void writeStringUTF16ThrowsIfStringIsNull() {
+        writer.writeStringUTF16LE(process, 0, null);
+    }
+
+    @Test
+    public void writeStringUTF16WritesAsciiRangeString() {
+        String source = "Quick 12345 toasters Ran m-,.-,.<>(={}}[7L'^\" ayy lmao";
+        writer.writeStringUTF16LE(process, 0, source);
+        assertArrayEquals(source.getBytes(StandardCharsets.UTF_16LE), rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeStringUTF16WritesStringWithNulls() {
+        String source = "a\u0000y";
+        writer.writeStringUTF16LE(process, 0, source);
+        byte[] expected = {'a', 0, 0, 0, 'y', 0};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeStringUTF16WritesEmojiAndOtherMultiCodeUnitChars() {
+        String source = "ß߷ကＮ😂";
+        writer.writeStringUTF16LE(process, 0, source);
+        byte[] expected = {-33, 0, -9, 7, 0, 16, 46, -1, 61, -40, 2, -34};
+        assertArrayEquals(expected, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeStringUTF16LEWritesToCorrectOffset() {
+        final int targetOffset = 0xBADF00D;
+        rawWriter = (p, offset, b) -> {
+            assertEquals(targetOffset, offset);
+        };
+        writer.writeStringUTF16LE(process, targetOffset, "ayy lmao");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void writeThrowsIfEmptyArrayPassed() {
+        writer.write(process, 0, new byte[0]);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void writeThrowsIfNullArrayPassed() {
+        writer.write(process, 0, null);
+    }
+
+    @Test
+    public void writeWritesOneByte() {
+        byte[] data = {123};
+        writer.write(process, 0, data);
+        assertArrayEquals(data, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeWritesSubsequentBytesCorrectly() {
+        byte[] wholeData = {1, 2, 3, 4, 5};
+        for (int i = 0; i < wholeData.length; i++) {
+            writer.write(process, i, new byte[]{wholeData[i]});
+        }
+        assertArrayEquals(wholeData, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeWritesBiggerPileOfData() {
+        byte[] data = new byte[4096 * 2 * 2];
+        for (int i = 0; i < data.length; i++) {
+            data[i] = (byte) (i % 0xFF);
+        }
+        writer.write(process, 0, data);
+        assertArrayEquals(data, rawByteWriter.getBytes());
+    }
+
+    @Test
+    public void writeWritesToCorrectOffset() {
+        final int targetOffset = 0xBADF00D;
+        rawWriter = (p, offset, b) -> {
+            assertEquals(targetOffset, offset);
+        };
+        writer.write(process, targetOffset, new byte[]{123, 5, 91});
+    }
 
     private static class ByteArrayRawMemoryWriter implements RawMemoryWriter {
 

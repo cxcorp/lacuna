@@ -72,7 +72,7 @@ public class MemoryWriterImpl implements MemoryWriter {
     }
 
     @Override
-    public void readLong(NativeProcess process, int offset, long value) throws MemoryAccessException {
+    public void writeLong(NativeProcess process, int offset, long value) throws MemoryAccessException {
         ByteBuffer buffer = createLEBuffer(TypeSize.LONG.getSize());
         buffer.putLong(value);
         writer.write(process, offset, buffer.array());
@@ -87,18 +87,27 @@ public class MemoryWriterImpl implements MemoryWriter {
 
     @Override
     public void writeStringUTF8(NativeProcess process, int offset, String value) throws MemoryAccessException {
+        if (value.length() < 1) {
+            throw new IllegalArgumentException("Cannot write empty string!");
+        }
         byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
         writer.write(process, offset, bytes);
     }
 
     @Override
     public void writeStringUTF16LE(NativeProcess process, int offset, String value) throws MemoryAccessException {
+        if (value.length() < 1) {
+            throw new IllegalArgumentException("Cannot write empty string!");
+        }
         byte[] bytes = value.getBytes(StandardCharsets.UTF_16LE);
         writer.write(process, offset, bytes);
     }
 
     @Override
     public void write(NativeProcess process, int offset, byte[] values) throws MemoryAccessException {
+        if (values.length < 1) {
+            throw new IllegalArgumentException("Cannot write empty array!");
+        }
         writer.write(process, offset, values);
     }
 
