@@ -15,16 +15,31 @@ package cx.corp.lacuna.core {
         {abstract} read(NativeProcess, int, int) : byte[]
         {abstract} readBoolean(NativeProcess, int) : boolean
         {abstract} readByte(NativeProcess, int) : byte
-        {abstract} readChar(NativeProcess, int) : char
-        {abstract} readWChar(NativeProcess, int) : char
+        {abstract} readCharUTF8(NativeProcess, int) : char
+        {abstract} readCharUTF16LE(NativeProcess, int) : char
         {abstract} readShort(NativeProcess, int) : short
         {abstract} readInt(NativeProcess, int) : int
         {abstract} readFloat(NativeProcess, int) : float
         {abstract} readLong(NativeProcess, int) : long
         {abstract} readDouble(NativeProcess, int) : double
-        {abstract} readString(NativeProcess, int, int) : String
-        {abstract} readWString(NativeProcess, int, int) : String
+        {abstract} readStringUTF8(NativeProcess, int, int) : String
+        {abstract} readStringUTF16LE(NativeProcess, int, int) : String
     }
+    interface MemoryWriter {
+        {abstract} write(NativeProcess, int, byte[])
+        {abstract} writeBoolean(NativeProcess, int, boolean)
+        {abstract} writeByte(NativeProcess, int, byte)
+        {abstract} writeCharUTF8(NativeProcess, int, char)
+        {abstract} writeCharUTF16LE(NativeProcess, int, char)
+        {abstract} writeShort(NativeProcess, int, short)
+        {abstract} writeInt(NativeProcess, int, int)
+        {abstract} writeFloat(NativeProcess, int, float)
+        {abstract} writeLong(NativeProcess, int, long)
+        {abstract} writeDouble(NativeProcess, int, double)
+        {abstract} writeStringUTF8(NativeProcess, int, String)
+        {abstract} writeStringUTF16LE(NativeProcess, int, String)
+    }
+
     interface NativeProcessEnumerator {
         {abstract} getProcesses() : List<NativeProcess>
     }
@@ -37,8 +52,12 @@ package cx.corp.lacuna.core {
     interface RawMemoryReader {
         {abstract} read(NativeProcess, int, int) : ByteBuffer
     }
+    interface RawMemoryWriter {
+        {abstract} write(NativeProcess, int, byte[])
+    }
     
     class MemoryReaderImpl
+    class MemoryWriterImpl
     class NativeProcessEnumeratorImpl
     
     NativeProcessEnumerator <|.. NativeProcessEnumeratorImpl
@@ -48,8 +67,13 @@ package cx.corp.lacuna.core {
     MemoryReader <|.. MemoryReaderImpl
     MemoryReaderImpl --> "1" RawMemoryReader
     
-    RawMemoryReader ..> "1" NativeProcess : uses
+    MemoryWriter <|.. MemoryWriterImpl
+    MemoryWriterImpl --> "1" RawMemoryWriter
+    
+    ' RawMemoryReader ..> "1" NativeProcess : uses
+    ' RawMemoryWriter ..> "1" NativeProcess : uses
     MemoryReader ..>  "1" NativeProcess : uses
+    MemoryWriter ..>  "1" NativeProcess : uses
     NativeProcessEnumerator ..> "0..*" NativeProcess : creates
 }
 
@@ -70,6 +94,7 @@ package cx.corp.lacuna.core.windows {
             {abstract} openProcess(...) : int
             {abstract} queryFullProcessImageNameW(...) : boolean
             {abstract} readProcessMemory(...) : boolean
+            {abstract} writeProcessMemory(...) : boolean
             {abstract} getProcessId(int) : int
         }
         interface CloseHandle {
@@ -84,11 +109,15 @@ package cx.corp.lacuna.core.windows {
         interface ReadProcessMemory {
             {abstract} readProcessMemory(...) : boolean
         }
+        interface WriteProcessMemory {
+            {abstract} writeProcessMemory(...) : boolean
+        }
         interface GetProcessId {
             {abstract} getProcessId(int) : int
         }
         note bottom: Only used in integration testing
         
+        WriteProcessMemory <|.. Kernel32
         CloseHandle <|.. Kernel32
         OpenProcess <|.. Kernel32
         QueryFullProcessImageName <|.. Kernel32
@@ -110,6 +139,7 @@ package cx.corp.lacuna.core.windows {
     }
     
     class WindowsRawMemoryReader
+    class WindowsRawMemoryWriter
     class WindowsNativeProcessCollector
     class WindowsPidEnumerator
     
@@ -143,16 +173,22 @@ package cx.corp.lacuna.core.windows {
     
     RawMemoryReader <|.. WindowsRawMemoryReader
     WindowsRawMemoryReader --> "1" ReadProcessMemory
-	WindowsRawMemoryReader --> "1" ProcessOpener
+    WindowsRawMemoryReader --> "1" ProcessOpener
+    
+    RawMemoryWriter <|.. WindowsRawMemoryWriter
+    WindowsRawMemoryWriter --> "1" WriteProcessMemory
+    WindowsRawMemoryWriter --> "1" ProcessOpener
 }
 
 package cx.corp.lacuna.core.linux {
     interface MemoryProvider {
-        {abstract} open(int) : InputStream
+        {abstract} open(int) : InputOutputStream
     }
     class LinuxNativeProcessCollector
     class LinuxPidEnumerator
     class LinuxRawMemoryReader
+    class LinuxRawMemoryReader #Monochrome
+    note right: Upcoming
     class ProcPathFilter
     class FileMemoryProvider
     
@@ -165,6 +201,8 @@ package cx.corp.lacuna.core.linux {
     
     RawMemoryReader <|.. LinuxRawMemoryReader
     LinuxRawMemoryReader --> "1" MemoryProvider
+    RawMemoryWriter <|.. LinuxRawMemoryWriter
+    LinuxRawMemoryWriter --> "1" MemoryProvider
 }
 
 @enduml
