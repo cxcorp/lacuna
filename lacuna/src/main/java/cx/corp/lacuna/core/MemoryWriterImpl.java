@@ -5,7 +5,6 @@ import cx.corp.lacuna.core.domain.NativeProcess;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
-import java.util.function.Consumer;
 
 public class MemoryWriterImpl implements MemoryWriter {
 

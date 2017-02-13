@@ -393,6 +393,13 @@ public class MemoryWriterImplTest {
         writer.writeStringUTF8(process, 0, "");
     }
 
+    @Test
+    public void writeStringUTF8WritesOneCharStringCorrectly() {
+        String source = "a";
+        writer.writeStringUTF8(process, 0, source);
+        assertArrayEquals(new byte[]{'a'}, rawByteWriter.getBytes());
+    }
+
     @Test(expected = NullPointerException.class)
     public void writeStringUTF8ThrowsIfWritingNullString() {
         writer.writeStringUTF8(process, 0, null);
@@ -433,6 +440,13 @@ public class MemoryWriterImplTest {
     @Test(expected = IllegalArgumentException.class)
     public void writeStringUTF16ThrowsIfStringIsEmpty() {
         writer.writeStringUTF16LE(process, 0, "");
+    }
+
+    @Test
+    public void writeStringUTF16WritesOneCharStringCorrectly() {
+        String source = "a";
+        writer.writeStringUTF16LE(process, 0, source);
+        assertArrayEquals(new byte[]{'a', 0}, rawByteWriter.getBytes());
     }
 
     @Test(expected = NullPointerException.class)
