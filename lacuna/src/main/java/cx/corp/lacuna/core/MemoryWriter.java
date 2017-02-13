@@ -126,7 +126,7 @@ public interface MemoryWriter {
      * @throws NullPointerException  if {@code process} is null.
      * @cx.littleendian
      */
-    void readLong(NativeProcess process, int offset, long value) throws MemoryAccessException;
+    void writeLong(NativeProcess process, int offset, long value) throws MemoryAccessException;
 
     /**
      * Writes an 64-bit IEEE 754 double precision floating point value
