@@ -6,7 +6,7 @@ Program for reading and writing other programs' memory.
 Coursework for [Javalabra-2017-3](https://github.com/javaLabra/Javalabra2017-3).
 
 ## Current state
-Lacuna can currently dump the active process list and read a process' memory on both Windows and Linux. Reading supports common primitive data types as well as arbitrary byte amounts. Writing memory is supported on Windows.
+Lacuna can currently dump the active process list, as well as read and write a process' memory on both Windows and Linux.
 
 ![](http://i.imgur.com/PMrn1BA.png)
 

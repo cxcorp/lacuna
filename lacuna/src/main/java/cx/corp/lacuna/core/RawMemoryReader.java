@@ -18,7 +18,8 @@ public interface RawMemoryReader {
      * @param bytesToRead The amount of bytes to read.
      * @return The read bytes.
      * @throws MemoryAccessException if reading fails due to, for example, an
-     *                             access violation or insufficient rights.
+     *                               access violation or insufficient rights, or
+     *                               if the read request was only partially completed.
      * @throws NullPointerException if {@code process} is null.
      * @throws IllegalArgumentException if {@code bytesToRead} is negative.
      */
