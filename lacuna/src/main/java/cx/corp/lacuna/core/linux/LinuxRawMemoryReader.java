@@ -5,20 +5,20 @@ import cx.corp.lacuna.core.RawMemoryReader;
 import cx.corp.lacuna.core.domain.NativeProcess;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.channels.SeekableByteChannel;
 
 
 public class LinuxRawMemoryReader implements RawMemoryReader {
 
-    private final MemoryProvider memoryProvider;
+    private final ReadableMemoryProvider readableMemoryProvider;
 
-    public LinuxRawMemoryReader(MemoryProvider memoryProvider) {
-        if (memoryProvider == null) {
-            throw new IllegalArgumentException("Argument cannot be null");
+    public LinuxRawMemoryReader(ReadableMemoryProvider readableMemoryProvider) {
+        if (readableMemoryProvider == null) {
+            throw new IllegalArgumentException("Memory provider cannot be null");
         }
-        this.memoryProvider = memoryProvider;
+        this.readableMemoryProvider = readableMemoryProvider;
     }
 
     @Override
@@ -31,26 +31,23 @@ public class LinuxRawMemoryReader implements RawMemoryReader {
         }
 
         ByteBuffer buffer = ByteBuffer.allocate(bytesToRead);
-        try (InputStream input = memoryProvider.open(process.getPid())) {
-            if (input == null) {
-                throw new MemoryAccessException("MemoryProvider provided a null stream!");
-            }
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
+        try (SeekableByteChannel input = readableMemoryProvider.openRead(process.getPid())) {
 
-            long bytesToSkip = 0xFFFFFFFFL & offset;
-            long skippedBytes = input.skip(bytesToSkip); // interpret the offset as an unsigned value
-            if (skippedBytes != bytesToSkip) {
-                throw new MemoryAccessException("Failed to seek to offset " + offset + "! Actually skipped " + skippedBytes + " bytes.");
-            }
+            long bytesToSkip = 0xFFFFFFFFL & offset; // interpret the offset as an unsigned value
+            input.position(bytesToSkip);
 
-            // write directly to ByteBuffer's backing array
-            int bytesRead = input.read(buffer.array(), 0, bytesToRead);
-
+            int bytesRead = input.read(buffer);
             if (bytesRead == -1) {
-                throw new MemoryAccessException("Reading process memory failed!");
+                // SeekableByteChannel.position sets position even if it goes out of bounds,
+                // but any subsequent reads or writes will return EOF
+                throw new MemoryAccessException("Reading process memory failed! Reached end of memory!");
+            }
+            if (bytesRead != bytesToRead) {
+                throw new MemoryAccessException("Only " + bytesRead + " bytes out of " + bytesToRead + " could be read!");
             }
 
-            buffer.order(ByteOrder.LITTLE_ENDIAN);
-            buffer.limit(bytesRead);
+            buffer.flip();
             return buffer;
         } catch (IOException ex) {
             throw new MemoryAccessException("Reading process memory failed, see getCause()!", ex);

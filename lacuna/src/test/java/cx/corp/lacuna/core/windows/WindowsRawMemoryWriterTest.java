@@ -115,4 +115,16 @@ public class WindowsRawMemoryWriterTest {
         };
         writer.write(process, 0, expectedData);
     }
+
+    @Test
+    public void writeWritesOneByteCorrectly() {
+        byte[] expectedData = {1};
+        opener.setOpenReturnValue(handle);
+        opener.doNotThrowExceptionOnOpen();
+        writeProcessMemory = (h, o, data, n, b) -> {
+            assertArrayEquals(expectedData, data);
+            return true;
+        };
+        writer.write(process, 0, expectedData);
+    }
 }
