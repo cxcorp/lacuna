@@ -1,6 +1,6 @@
 package cx.corp.lacuna.core.linux;
 
-import cx.corp.lacuna.core.MemoryReadException;
+import cx.corp.lacuna.core.MemoryAccessException;
 import cx.corp.lacuna.core.RawMemoryReader;
 import cx.corp.lacuna.core.domain.NativeProcess;
 
@@ -33,27 +33,27 @@ public class LinuxRawMemoryReader implements RawMemoryReader {
         ByteBuffer buffer = ByteBuffer.allocate(bytesToRead);
         try (InputStream input = memoryProvider.open(process.getPid())) {
             if (input == null) {
-                throw new MemoryReadException("MemoryProvider provided a null stream!");
+                throw new MemoryAccessException("MemoryProvider provided a null stream!");
             }
 
             long bytesToSkip = 0xFFFFFFFFL & offset;
             long skippedBytes = input.skip(bytesToSkip); // interpret the offset as an unsigned value
             if (skippedBytes != bytesToSkip) {
-                throw new MemoryReadException("Failed to seek to offset " + offset + "! Actually skipped " + skippedBytes + " bytes.");
+                throw new MemoryAccessException("Failed to seek to offset " + offset + "! Actually skipped " + skippedBytes + " bytes.");
             }
 
             // write directly to ByteBuffer's backing array
             int bytesRead = input.read(buffer.array(), 0, bytesToRead);
 
             if (bytesRead == -1) {
-                throw new MemoryReadException("Reading process memory failed!");
+                throw new MemoryAccessException("Reading process memory failed!");
             }
 
             buffer.order(ByteOrder.LITTLE_ENDIAN);
             buffer.limit(bytesRead);
             return buffer;
         } catch (IOException ex) {
-            throw new MemoryReadException("Reading process memory failed, see getCause()!", ex);
+            throw new MemoryAccessException("Reading process memory failed, see getCause()!", ex);
         }
     }
 }

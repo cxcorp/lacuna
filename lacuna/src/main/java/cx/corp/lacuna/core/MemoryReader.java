@@ -17,11 +17,11 @@ public interface MemoryReader {
      * @param process The native process whose memory to read.
      * @param offset  The memory address offset to read from.
      * @return True if the read byte is nonzero, otherwise false.
-     * @throws MemoryReadException if reading fails due to, for example, an
-     *                             access violation or insufficient rights.
-     * @throws NullPointerException if {@code process} is null.
+     * @throws MemoryAccessException if reading fails due to, for example, an
+     *                               access violation or insufficient rights.
+     * @throws NullPointerException  if {@code process} is null.
      */
-    boolean readBoolean(NativeProcess process, int offset) throws MemoryReadException;
+    boolean readBoolean(NativeProcess process, int offset) throws MemoryAccessException;
 
     /**
      * Reads a byte from the specified offset.
@@ -29,29 +29,29 @@ public interface MemoryReader {
      * @param process The native process whose memory to read.
      * @param offset  The memory address offset to read from.
      * @return The read value.
-     * @throws MemoryReadException if reading fails due to, for example, an
-     *                             access violation or insufficient rights.
-     * @throws NullPointerException if {@code process} is null.
+     * @throws MemoryAccessException if reading fails due to, for example, an
+     *                               access violation or insufficient rights.
+     * @throws NullPointerException  if {@code process} is null.
      */
-    byte readByte(NativeProcess process, int offset) throws MemoryReadException;
+    byte readByte(NativeProcess process, int offset) throws MemoryAccessException;
 
     /**
      * Reads a byte from the specified offset and decodes the data using UTF-8.
-     *
+     * <p>
      * <p>Notice that this method only cannot read multi-byte UTF-8 code points.
      * To read more than one byte at a time, see {@link #readStringUTF8(NativeProcess, int, int)}.
      *
      * @param process The native process whose memory to read.
      * @param offset  The memory address offset to read from.
      * @return The decoded byte.
-     * @throws MemoryReadException if reading fails due to, for example, an
-     *                             access violation or insufficient rights.
-     * @throws NullPointerException if {@code process} is null.
+     * @throws MemoryAccessException if reading fails due to, for example, an
+     *                               access violation or insufficient rights.
+     * @throws NullPointerException  if {@code process} is null.
      * @see #readCharUTF16LE
      * @see #readStringUTF8
      * @see #readStringUTF16LE
      */
-    char readCharUTF8(NativeProcess process, int offset) throws MemoryReadException;
+    char readCharUTF8(NativeProcess process, int offset) throws MemoryAccessException;
 
     /**
      * Reads two bytes from the specified offset and decodes the data using
@@ -60,14 +60,14 @@ public interface MemoryReader {
      * @param process The native process whose memory to read.
      * @param offset  The memory address offset to read from.
      * @return The decoded value.
-     * @throws MemoryReadException if reading fails due to, for example, an
-     *                             access violation or insufficient rights.
-     * @throws NullPointerException if {@code process} is null.
+     * @throws MemoryAccessException if reading fails due to, for example, an
+     *                               access violation or insufficient rights.
+     * @throws NullPointerException  if {@code process} is null.
      * @see #readCharUTF8
      * @see #readStringUTF16LE
      * @see #readStringUTF8
      */
-    char readCharUTF16LE(NativeProcess process, int offset) throws MemoryReadException;
+    char readCharUTF16LE(NativeProcess process, int offset) throws MemoryAccessException;
 
     /**
      * Reads two bytes from the specified offset and
@@ -76,12 +76,12 @@ public interface MemoryReader {
      * @param process The native process whose memory to read.
      * @param offset  The memory address offset to read from.
      * @return The read value.
-     * @throws MemoryReadException if reading fails due to, for example, an
-     *                             access violation or insufficient rights.
-     * @throws NullPointerException if {@code process} is null.
+     * @throws MemoryAccessException if reading fails due to, for example, an
+     *                               access violation or insufficient rights.
+     * @throws NullPointerException  if {@code process} is null.
      * @cx.littleendian
      */
-    short readShort(NativeProcess process, int offset) throws MemoryReadException;
+    short readShort(NativeProcess process, int offset) throws MemoryAccessException;
 
     /**
      * Reads four bytes from the specified offset and
@@ -90,12 +90,12 @@ public interface MemoryReader {
      * @param process The native process whose memory to read.
      * @param offset  The memory address offset to read from.
      * @return The read value.
-     * @throws MemoryReadException if reading fails due to, for example, an
-     *                             access violation or insufficient rights.
-     * @throws NullPointerException if {@code process} is null.
+     * @throws MemoryAccessException if reading fails due to, for example, an
+     *                               access violation or insufficient rights.
+     * @throws NullPointerException  if {@code process} is null.
      * @cx.littleendian
      */
-    int readInt(NativeProcess process, int offset) throws MemoryReadException;
+    int readInt(NativeProcess process, int offset) throws MemoryAccessException;
 
     /**
      * Reads four bytes from the specified offset and constructs
@@ -104,12 +104,12 @@ public interface MemoryReader {
      * @param process The native process whose memory to read.
      * @param offset  The memory address offset to read from.
      * @return The read value.
-     * @throws MemoryReadException if reading fails due to, for example, an
-     *                             access violation or insufficient rights.
-     * @throws NullPointerException if {@code process} is null.
+     * @throws MemoryAccessException if reading fails due to, for example, an
+     *                               access violation or insufficient rights.
+     * @throws NullPointerException  if {@code process} is null.
      * @cx.littleendian
      */
-    float readFloat(NativeProcess process, int offset) throws MemoryReadException;
+    float readFloat(NativeProcess process, int offset) throws MemoryAccessException;
 
     /**
      * Reads eight bytes from the specified offset and
@@ -118,12 +118,12 @@ public interface MemoryReader {
      * @param process The native process whose memory to read.
      * @param offset  The memory address offset to read from.
      * @return The read value.
-     * @throws MemoryReadException if reading fails due to, for example, an
-     *                             access violation or insufficient rights.
-     * @throws NullPointerException if {@code process} is null.
+     * @throws MemoryAccessException if reading fails due to, for example, an
+     *                               access violation or insufficient rights.
+     * @throws NullPointerException  if {@code process} is null.
      * @cx.littleendian
      */
-    long readLong(NativeProcess process, int offset) throws MemoryReadException;
+    long readLong(NativeProcess process, int offset) throws MemoryAccessException;
 
     /**
      * Reads eight bytes from the specified offset and constructs
@@ -132,18 +132,18 @@ public interface MemoryReader {
      * @param process The native process whose memory to read.
      * @param offset  The memory address offset to read from.
      * @return The read value.
-     * @throws MemoryReadException if reading fails due to, for example, an
-     *                             access violation or insufficient rights.
-     * @throws NullPointerException if {@code process} is null.
+     * @throws MemoryAccessException if reading fails due to, for example, an
+     *                               access violation or insufficient rights.
+     * @throws NullPointerException  if {@code process} is null.
      * @cx.littleendian
      */
-    double readDouble(NativeProcess process, int offset) throws MemoryReadException;
+    double readDouble(NativeProcess process, int offset) throws MemoryAccessException;
 
     /**
      * Reads 8-bit UTF-8 code units from the specified offset until either
      * a null character or the specified limit is met, then constructs a String
      * from the data.
-     *
+     * <p>
      * <p>Notice that UTF-8 is a variable length character encoding, in which
      * Unicode code points higher than U+007F are encoded with two to four 8-bit
      * code units. This method does not synchronize reads to read a full code point,
@@ -155,17 +155,17 @@ public interface MemoryReader {
      * @param offset             The memory address offset to read from.
      * @param maxCodeUnitsToRead The maximum amount of 8-bit code units to read.
      * @return A non-null String consisting of the read characters.
-     * @throws MemoryReadException if reading fails due to, for example, an
-     *                             access violation or insufficient rights.
-     * @throws NullPointerException if {@code process} is null.
+     * @throws MemoryAccessException if reading fails due to, for example, an
+     *                               access violation or insufficient rights.
+     * @throws NullPointerException  if {@code process} is null.
      */
-    String readStringUTF8(NativeProcess process, int offset, int maxCodeUnitsToRead) throws MemoryReadException;
+    String readStringUTF8(NativeProcess process, int offset, int maxCodeUnitsToRead) throws MemoryAccessException;
 
     /**
      * Reads two-byte UTF-16 little-endian code units from the specified offset
      * until either a null character or the specified limit is met, then
      * constructs a String from the data.
-     *
+     * <p>
      * <p>Notice that UTF-16 is a variable length character encoding, in which
      * Unicode code points higher than U+10000 are encoded as two 16-bit surrogate pairs.
      * This method does not synchronize reads to read a full code point, so reads
@@ -177,15 +177,15 @@ public interface MemoryReader {
      * @param offset             The memory address offset to read from.
      * @param maxCodeUnitsToRead The maximum amount of 16-bit code units to read.
      * @return A non-null String consisting of the read characters.
-     * @throws MemoryReadException if reading fails due to, for example, an
-     *                             access violation or insufficient rights.
-     * @throws NullPointerException if {@code process} is null.
+     * @throws MemoryAccessException if reading fails due to, for example, an
+     *                               access violation or insufficient rights.
+     * @throws NullPointerException  if {@code process} is null.
      */
-    String readStringUTF16LE(NativeProcess process, int offset, int maxCodeUnitsToRead) throws MemoryReadException;
+    String readStringUTF16LE(NativeProcess process, int offset, int maxCodeUnitsToRead) throws MemoryAccessException;
 
     /**
      * Reads a region of memory from the specified offset.
-     *
+     * <p>
      * <p>This method may return a byte array with fewer elements than {@code bytesToRead}.
      * The return value will always be a non-null byte array with a length between
      * {@code 0} and {@code bytesToRead}.
@@ -194,10 +194,10 @@ public interface MemoryReader {
      * @param offset      The memory address offset to read from.
      * @param bytesToRead The amount of bytes to read, starting from the {@code offset}.
      * @return The read bytes.
-     * @throws MemoryReadException if reading fails due to, for example, an
-     *                             access violation or insufficient rights.
-     * @throws NullPointerException if {@code process} is null.
-     * @throws NullPointerException if {@code process} is null.
+     * @throws MemoryAccessException if reading fails due to, for example, an
+     *                               access violation or insufficient rights.
+     * @throws NullPointerException  if {@code process} is null.
+     * @throws NullPointerException  if {@code process} is null.
      */
-    byte[] read(NativeProcess process, int offset, int bytesToRead) throws MemoryReadException;
+    byte[] read(NativeProcess process, int offset, int bytesToRead) throws MemoryAccessException;
 }

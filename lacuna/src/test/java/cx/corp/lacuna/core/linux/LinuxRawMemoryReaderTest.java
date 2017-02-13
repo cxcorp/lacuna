@@ -1,6 +1,6 @@
 package cx.corp.lacuna.core.linux;
 
-import cx.corp.lacuna.core.MemoryReadException;
+import cx.corp.lacuna.core.MemoryAccessException;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import org.junit.Before;
@@ -48,7 +48,7 @@ public class LinuxRawMemoryReaderTest {
         reader.read(process, 0, 0);
     }
 
-    @Test(expected = MemoryReadException.class)
+    @Test(expected = MemoryAccessException.class)
     public void readThrowsWhenReadingFromOutOfBoundsOffset() {
         int bytesInSource = 1;
         int offsetOverSource = 123;
@@ -58,7 +58,7 @@ public class LinuxRawMemoryReaderTest {
         reader.read(process, offsetOverSource, bytesInSource);
     }
 
-    @Test(expected = MemoryReadException.class)
+    @Test(expected = MemoryAccessException.class)
     public void readThrowsIfAnExceptionOccursWhenOpeningMemoryProvider() {
         memoryProvider = process -> {
             throw new IOException();
@@ -67,14 +67,14 @@ public class LinuxRawMemoryReaderTest {
         reader.read(process, 0, 1);
     }
 
-    @Test(expected = MemoryReadException.class)
+    @Test(expected = MemoryAccessException.class)
     public void readThrowsIfMemoryProviderReturnsNullStream() {
         memoryProvider = process -> null;
 
         reader.read(process, 0, 123);
     }
 
-    @Test(expected = MemoryReadException.class)
+    @Test(expected = MemoryAccessException.class)
     public void readThrowsIfProvidedStreamCannotBeSkipped() {
         memoryProvider = proc -> new InputStream() {
             @Override
@@ -91,7 +91,7 @@ public class LinuxRawMemoryReaderTest {
         reader.read(process, 10, 1);
     }
 
-    @Test(expected = MemoryReadException.class)
+    @Test(expected = MemoryAccessException.class)
     public void readThrowsIfProvidedStreamReadFails() {
         memoryProvider = proc -> new InputStream() {
             @Override
