@@ -5,3 +5,4 @@ cx.corp.lacuna.core.linux
 cx.corp.lacuna.core.windows
 cx.corp.lacuna.core.windows.winapi
 cx.corp.lacuna.ui
+cx.corp.lacuna.ui.presenter

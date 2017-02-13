@@ -10,10 +10,17 @@
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> java.util.List;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   @FunctionalInterface
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../cx/corp/lacuna/core/PidEnumerator.html">PidEnumerator</a> {
-<a class="jxr_linenumber" name="L7" href="#L7">7</a>       List&lt;Integer&gt; getPids() <strong class="jxr_keyword">throws</strong> ProcessEnumerationException;
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   }
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment"> * Provides functionality for fetching a list of all of the running processes'</em>
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * identifiers.</em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * &lt;p&gt;Users are encouraged to use {@link NativeProcessEnumerator} if</em>
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> * process details such as owner name or command line are needed.</em>
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> * @see NativeProcessEnumerator</em>
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../cx/corp/lacuna/core/PidEnumerator.html">PidEnumerator</a> {
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>      List&lt;Integer&gt; getPids() <strong class="jxr_keyword">throws</strong> ProcessEnumerationException;
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2017. All rights reserved.</div>

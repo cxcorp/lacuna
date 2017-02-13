@@ -7,11 +7,14 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 public class FileMemoryProviderTest {
@@ -42,21 +45,22 @@ public class FileMemoryProviderTest {
     @Test(expected = IOException.class)
     public void openThrowsIfProcessMemFileDoesntExist() throws IOException {
         assertFalse(Files.exists(procRoot));
-        provider.open(123);
+        provider.openRead(123);
     }
 
     @Test
-    public void openOpensStreamToRightData() throws IOException {
+    public void providesRightData() throws IOException {
         Integer pid = 5567;
         Path memFile = procRoot.resolve(pid.toString()).resolve(relativeMemPath);
         byte[] inputData = {0, 1, 41, 51, 126, -41, -1, 42, 0, 0, -45};
         Files.createDirectories(memFile.getParent());
         Files.write(memFile, inputData);
 
-        InputStream stream = provider.open(pid);
-        byte[] readData = new byte[inputData.length];
-        stream.read(readData);
+        SeekableByteChannel stream = provider.openRead(pid);
+        ByteBuffer readBuffer = ByteBuffer.allocate(inputData.length);
+        int bytesRead = stream.read(readBuffer);
 
-        assertArrayEquals(inputData, readData);
+        assertEquals(inputData.length, bytesRead);
+        assertArrayEquals(inputData, readBuffer.array());
     }
 }

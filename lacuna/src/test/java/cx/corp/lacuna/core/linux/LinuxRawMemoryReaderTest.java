@@ -1,36 +1,56 @@
 package cx.corp.lacuna.core.linux;
 
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
 import cx.corp.lacuna.core.MemoryAccessException;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class LinuxRawMemoryReaderTest {
 
     private LinuxRawMemoryReader reader;
-    private MemoryProvider memoryProvider;
+    private ReadableMemoryProvider readableMemoryProvider;
     private NativeProcess process;
+    private FileSystem fs;
+    private Path tempFile;
 
     @Before
     public void setUp() {
-        // capture the local memoryProvider via a closure so we can change it in the unit tests
-        MemoryProvider proxyProvider = pid -> memoryProvider.open(pid);
+        fs = Jimfs.newFileSystem(Configuration.unix());
+        tempFile = fs.getPath("tempfile");
+        readableMemoryProvider = pid -> Files.newByteChannel(tempFile, StandardOpenOption.READ);
+        // capture the local readableMemoryProvider via a closure so we can change it in the unit tests
+        ReadableMemoryProvider proxyProvider = pid -> readableMemoryProvider.openRead(pid);
         reader = new LinuxRawMemoryReader(proxyProvider);
         process = new NativeProcessImpl();
         process.setPid(123);
         process.setDescription("ayy");
         process.setOwner("lmao");
+    }
+
+    @After
+    public void tearDown() {
+        if (fs != null) {
+            try {
+                fs.close();
+            } catch (IOException e) {
+            }
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -49,18 +69,18 @@ public class LinuxRawMemoryReaderTest {
     }
 
     @Test(expected = MemoryAccessException.class)
-    public void readThrowsWhenReadingFromOutOfBoundsOffset() {
+    public void readThrowsWhenReadingFromOutOfBoundsOffset() throws IOException {
         int bytesInSource = 1;
         int offsetOverSource = 123;
         byte[] sourceBytes = new byte[bytesInSource];
-        memoryProvider = process -> new ByteArrayInputStream(sourceBytes);
+        Files.write(tempFile, sourceBytes);
 
         reader.read(process, offsetOverSource, bytesInSource);
     }
 
     @Test(expected = MemoryAccessException.class)
     public void readThrowsIfAnExceptionOccursWhenOpeningMemoryProvider() {
-        memoryProvider = process -> {
+        readableMemoryProvider = process -> {
             throw new IOException();
         };
 
@@ -68,55 +88,37 @@ public class LinuxRawMemoryReaderTest {
     }
 
     @Test(expected = MemoryAccessException.class)
-    public void readThrowsIfMemoryProviderReturnsNullStream() {
-        memoryProvider = process -> null;
+    public void readThrowsIfReadCanOnlyBeCompletedPartially() throws IOException {
+        byte[] data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+        Files.write(tempFile, data);
 
-        reader.read(process, 0, 123);
-    }
-
-    @Test(expected = MemoryAccessException.class)
-    public void readThrowsIfProvidedStreamCannotBeSkipped() {
-        memoryProvider = proc -> new InputStream() {
-            @Override
-            public int read() throws IOException {
-                return 0;
-            }
-
-            @Override
-            public long skip(long n) {
-                return -1; // -1 = fail
-            }
-        };
-
-        reader.read(process, 10, 1);
-    }
-
-    @Test(expected = MemoryAccessException.class)
-    public void readThrowsIfProvidedStreamReadFails() {
-        memoryProvider = proc -> new InputStream() {
-            @Override
-            public int read() throws IOException {
-                return 0;
-            }
-
-            @Override
-            public int read(byte[] buf, int off, int len) {
-                return -1; // fail
-            }
-
-            @Override
-            public long skip(long n) {
-                return n;
-            }
-        };
-
-        reader.read(process, 10, 1);
+        reader.read(process, data.length - 5, data.length);
     }
 
     @Test
-    public void readCorrectlyReadsAllBytesFromStart() {
-        byte[] memoryBytes = generateRandomBytes(16);
-        memoryProvider = p -> new ByteArrayInputStream(memoryBytes);
+    public void readCorrectlyReadsOneByteFromStart() throws IOException {
+        byte[] data = generateRandomBytes(123);
+        Files.write(tempFile, data);
+
+        ByteBuffer buffer = reader.read(process, 0, 1);
+        assertEquals(1, buffer.limit());
+        assertEquals(data[0], buffer.get());
+    }
+
+    @Test
+    public void readCorrectlyReadsLastByte() throws IOException {
+        byte[] data = generateRandomBytes(4096 * 2 * 2);
+        Files.write(tempFile, data);
+
+        ByteBuffer buffer = reader.read(process, data.length - 1, 1);
+        assertEquals(1, buffer.limit());
+        assertEquals(data[data.length - 1], buffer.get());
+    }
+
+    @Test
+    public void readCorrectlyReadsAllBytesFromStartToEnd() throws IOException {
+        byte[] memoryBytes = generateRandomBytes(4096 * 16);
+        Files.write(tempFile, memoryBytes);
 
         ByteBuffer readBuffer = reader.read(process, 0, memoryBytes.length);
         byte[] readBytes = new byte[readBuffer.remaining()];
@@ -126,9 +128,9 @@ public class LinuxRawMemoryReaderTest {
     }
 
     @Test
-    public void readCorrectlyReadsSegmentOfBytesAtOffset() {
+    public void readCorrectlyReadsSegmentOfBytesAtOffset() throws IOException {
         byte[] memoryBytes = generateRandomBytes(16);
-        memoryProvider = p -> new ByteArrayInputStream(memoryBytes);
+        Files.write(tempFile, memoryBytes);
         int offset = 10;
         byte[] expected = Arrays.copyOfRange(memoryBytes, offset, memoryBytes.length);
 

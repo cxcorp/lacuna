@@ -21,4 +21,4 @@ Päivä | Tunnit | Kuvaus
 7.2.2016 | 9h | Komponenttitason refaktorointi. Testaus. Yleisien tietotyyppien lukemisen implementointi.
 8.2.2016 | 7h | Muistinlukijan testaus. Linux-luokkien testaus virtuaalisella tiedostojärjestelmällä.
 12.2.2016 | 5h | Muistinkirjoittamisen implementointi abstraktilla tasolla.
-13.2.2016 | 4h | Muistinkirjoittamisen implementointi Windowsilla.
+13.2.2016 | 7h | Muistinkirjoittamisen implementointi Windowsilla ja Linuxilla. Linux-juttujen testaus.
