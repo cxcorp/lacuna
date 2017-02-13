@@ -3,7 +3,7 @@ package cx.corp.lacuna.core.windows;
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.ptr.IntByReference;
-import cx.corp.lacuna.core.MemoryReadException;
+import cx.corp.lacuna.core.MemoryAccessException;
 import cx.corp.lacuna.core.RawMemoryReader;
 import cx.corp.lacuna.core.MemoryReaderImpl;
 import cx.corp.lacuna.core.domain.NativeProcess;
@@ -39,7 +39,7 @@ public class WindowsRawMemoryReader implements RawMemoryReader {
 
     @Override
     public ByteBuffer read(NativeProcess process, int offset, int bytesToRead) {
-        //throws ProcessOpenException, MemoryReadException {
+        //throws ProcessOpenException, MemoryAccessException {
         if (process == null) {
             throw new IllegalArgumentException("Process cannot be null!");
         }
@@ -72,7 +72,7 @@ public class WindowsRawMemoryReader implements RawMemoryReader {
                 // it ultimately calls the natively implemented Native.read method.
                 // This is a bit of a doomsday defensive programming scenario so not sure
                 // how to unit test this one.
-                throw new MemoryReadException(
+                throw new MemoryAccessException(
                     "An error occurred while reading memory. Use getCause() to get the cause.",
                     err);
             }
@@ -82,7 +82,7 @@ public class WindowsRawMemoryReader implements RawMemoryReader {
         }
     }
 
-    private MemoryReadException createReadExceptionFromErrorCode(int nativeError) {
+    private MemoryAccessException createReadExceptionFromErrorCode(int nativeError) {
         SystemErrorCode error = SystemErrorCode.fromId(nativeError);
         String message;
         if (error == null) {
@@ -90,6 +90,6 @@ public class WindowsRawMemoryReader implements RawMemoryReader {
         } else {
             message = error.toString();
         }
-        return new MemoryReadException(message);
+        return new MemoryAccessException(message);
     }
 }

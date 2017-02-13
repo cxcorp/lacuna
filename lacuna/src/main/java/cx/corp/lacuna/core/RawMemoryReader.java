@@ -17,10 +17,10 @@ public interface RawMemoryReader {
      *               values are allowed.
      * @param bytesToRead The amount of bytes to read.
      * @return The read bytes.
-     * @throws MemoryReadException if reading fails due to, for example, an
+     * @throws MemoryAccessException if reading fails due to, for example, an
      *                             access violation or insufficient rights.
      * @throws NullPointerException if {@code process} is null.
      * @throws IllegalArgumentException if {@code bytesToRead} is negative.
      */
-    ByteBuffer read(NativeProcess process, int offset, int bytesToRead);
+    ByteBuffer read(NativeProcess process, int offset, int bytesToRead) throws MemoryAccessException;
 }

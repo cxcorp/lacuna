@@ -1,7 +1,7 @@
 package cx.corp.lacuna.core.windows;
 
 import com.sun.jna.Native;
-import cx.corp.lacuna.core.MemoryReadException;
+import cx.corp.lacuna.core.MemoryAccessException;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import cx.corp.lacuna.core.windows.winapi.ReadProcessMemory;
@@ -62,7 +62,7 @@ public class WindowsRawMemoryReaderTest {
         reader.read(process, 0, 123);
     }
 
-    @Test(expected = MemoryReadException.class)
+    @Test(expected = MemoryAccessException.class)
     public void readThrowsIfReadingFails() {
         processOpener = (pid, flags) -> new MockProcessHandle(123);
         process.setPid(321);
@@ -73,7 +73,7 @@ public class WindowsRawMemoryReaderTest {
         reader.read(process, 0, 16);
     }
 
-    @Test(expected = MemoryReadException.class)
+    @Test(expected = MemoryAccessException.class)
     public void readThrowsIfUnexpectedSystemErrorOccurs() {
         processOpener = (pid, flags) -> new MockProcessHandle(123);
         process.setPid(456);
