@@ -20,6 +20,7 @@ import cx.corp.lacuna.core.linux.LinuxConstants;
 import cx.corp.lacuna.core.linux.LinuxNativeProcessCollector;
 import cx.corp.lacuna.core.linux.LinuxPidEnumerator;
 import cx.corp.lacuna.core.linux.LinuxRawMemoryReader;
+import cx.corp.lacuna.core.linux.LinuxRawMemoryWriter;
 import cx.corp.lacuna.core.windows.ProcessDescriptionGetter;
 import cx.corp.lacuna.core.windows.ProcessOpener;
 import cx.corp.lacuna.core.windows.ProcessOwnerGetter;
@@ -194,7 +195,11 @@ public class Main {
         FileMemoryProvider memProvider = new FileMemoryProvider(
             Paths.get("/proc"),
             Paths.get("mem"));
+
         RawMemoryReader rawMemoryReader = new LinuxRawMemoryReader(memProvider);
         memoryReader = new MemoryReaderImpl(rawMemoryReader);
+
+        RawMemoryWriter rawMemoryWriter = new LinuxRawMemoryWriter(memProvider);
+        memoryWriter = new MemoryWriterImpl(rawMemoryWriter);
     }
 }
