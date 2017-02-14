@@ -11,13 +11,12 @@ public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
     private final TokenUserFinder tokenUserFinder;
     private final TokenOwnerNameFinder tokenOwnerFinder;
 
-    public WindowsProcessOwnerGetter(Advapi32 advapi, CloseHandle handleCloser) {
-        if (advapi == null || handleCloser == null) {
-            throw new IllegalArgumentException("Arguments cannot be null!");
-        }
-        tokenOpener = new ProcessTokenOpener(advapi, handleCloser);
-        tokenUserFinder = new TokenUserFinder(advapi);
-        tokenOwnerFinder = new TokenOwnerNameFinder(advapi);
+    public WindowsProcessOwnerGetter(ProcessTokenOpener tokenOpener,
+                                     TokenUserFinder userFinder,
+                                     TokenOwnerNameFinder nameFinder) {
+        this.tokenOpener = tokenOpener;
+        this.tokenUserFinder = userFinder;
+        this.tokenOwnerFinder = nameFinder;
     }
 
     @Override

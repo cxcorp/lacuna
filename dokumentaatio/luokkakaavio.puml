@@ -116,6 +116,7 @@ package cx.corp.lacuna.core.windows {
             {abstract} getProcessId(int) : int
         }
         note bottom: Only used in integration testing
+        interface Advapi32.TokenUser
         
         WriteProcessMemory <|.. Kernel32
         CloseHandle <|.. Kernel32
@@ -134,14 +135,30 @@ package cx.corp.lacuna.core.windows {
     interface ProcessHandle <<AutoCloseable>> {
         {abstract} getNativeHandle() : int
     }
+    interface ProcessToken <<AutoCloseable>> {
+        {abstract} getToken() : int
+    }
     interface ProcessOpener {
         {abstract} open(int, int) : ProcessHandle
+    }
+    class ProcessTokenOpener {
+        openToken(ProcessHandle) : ProcessToken
+    }
+    class TokenUserFinder {
+        findTokenUser(ProcessToken) : Advapi32.TokenUser
+    }
+    class TokenOwnerNameFinder {
+        getUserName(Advapi32.TokenUser) : String
     }
     
     class WindowsRawMemoryReader
     class WindowsRawMemoryWriter
     class WindowsNativeProcessCollector
     class WindowsPidEnumerator
+    
+    WindowsRawMemoryReader -[hidden]> WindowsRawMemoryWriter
+    WindowsRawMemoryWriter -[hidden]> WindowsNativeProcessCollector
+    WindowsNativeProcessCollector -[hidden]>WindowsPidEnumerator
     
     class WindowsProcessDescriptionGetter
     class WindowsProcessOpener
@@ -164,12 +181,25 @@ package cx.corp.lacuna.core.windows {
     ProcessOwnerGetter <|.. WindowsProcessOwnerGetter
     ProcessDescriptionGetter <|.. WindowsProcessDescriptionGetter
     
+    ProcessTokenOpener --> "1" Advapi32
+    ProcessTokenOpener --> "1" CloseHandle
+    ' ProcessTokenOpener ..> "1" ProcessHandle
+    ProcessTokenOpener ..> ProcessToken : creates
+    TokenUserFinder --> "1" Advapi32
+    TokenUserFinder ..> ProcessToken : uses
+    TokenUserFinder ..> Advapi32.TokenUser : creates
+    TokenOwnerNameFinder --> "1" Advapi32
+    TokenOwnerNameFinder ..> Advapi32.TokenUser : uses
+    
     WindowsProcessOpener --> "1" OpenProcess
     WindowsProcessOpener --> "1" CloseHandle
 
     WindowsProcessDescriptionGetter --> "1" QueryFullProcessImageName
-    WindowsProcessOwnerGetter --> "1" Advapi32
-    WindowsProcessOwnerGetter --> "1" CloseHandle
+    ' WindowsProcessOwnerGetter --> "1" Advapi32
+    ' WindowsProcessOwnerGetter --> "1" CloseHandle
+    WindowsProcessOwnerGetter --> "1" ProcessTokenOpener
+    WindowsProcessOwnerGetter --> "1" TokenUserFinder
+    WindowsProcessOwnerGetter --> "1" TokenOwnerNameFinder
     
     RawMemoryReader <|.. WindowsRawMemoryReader
     WindowsRawMemoryReader --> "1" ReadProcessMemory
@@ -184,9 +214,10 @@ package cx.corp.lacuna.core.linux {
     interface ReadableMemoryProvider {
         {abstract} openRead(int) : SeekableByteChannel
     }
-	interface WritableMemoryProvider {
-		{abstract} openWrite(int) : SeekableByteChannel
-	}
+    interface WritableMemoryProvider {
+        {abstract} openWrite(int) : SeekableByteChannel
+    }
+    class CmdlineFileParser
     class LinuxNativeProcessCollector
     class LinuxPidEnumerator
     class LinuxRawMemoryReader
@@ -197,10 +228,12 @@ package cx.corp.lacuna.core.linux {
     NativeProcessCollector <|.. LinuxNativeProcessCollector
     PidEnumerator <|.. LinuxPidEnumerator
     
+    LinuxNativeProcessCollector *-- CmdlineFileParser
+    
     LinuxPidEnumerator *-- ProcPathFilter
     
     ReadableMemoryProvider <|.. FileMemoryProvider
-	WritableMemoryProvider <|.. FileMemoryProvider
+    WritableMemoryProvider <|.. FileMemoryProvider
     
     RawMemoryReader <|.. LinuxRawMemoryReader
     LinuxRawMemoryReader --> "1" ReadableMemoryProvider
