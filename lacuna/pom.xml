@@ -137,6 +137,10 @@
                         <exclude>**/cx/corp/lacuna/Main.class</exclude>
                         <exclude>**/cx/corp/lacuna/ui/*.class</exclude>
                         <exclude>**/cx/corp/lacuna/ui/**/*.class</exclude>
+                        <exclude>**/cx/corp/lacuna/**/*Exception.class</exclude>
+                        <exclude>**/cx/corp/lacuna/core/linux/LinuxConstants.class</exclude>
+                        <exclude>**/cx/corp/lacuna/core/windows/winapi/WinApiConstants.class</exclude>
+                        <exclude>**/cx/corp/lacuna/core/windows/winapi/ProcessAccessFlags.class</exclude>
                     </excludes>
                 </configuration>
             </plugin>
