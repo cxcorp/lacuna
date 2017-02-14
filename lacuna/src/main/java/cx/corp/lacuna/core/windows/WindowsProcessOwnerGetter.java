@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
 
+    private final ProcessTokenOpener tokenOpener;
     private final Advapi32 advapi;
     private final CloseHandle handleCloser;
 
@@ -21,6 +22,7 @@ public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
         }
         this.advapi = advapi;
         this.handleCloser = handleCloser;
+        tokenOpener = new ProcessTokenOpener(advapi, handleCloser);
     }
 
     @Override
@@ -29,22 +31,12 @@ public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
             throw new IllegalArgumentException("processHandle cannot be null!");
         }
 
-        Optional<Integer> token = getProcessToken(processHandle.getNativeHandle());
-        try {
-            return token.flatMap(this::getTokenUser).flatMap(this::getUserName);
-        } finally {
-            token.ifPresent(handleCloser::closeHandle);
+        try (ProcessToken token = tokenOpener.openToken(processHandle)) {
+            return getTokenUser(token.getToken()).flatMap(this::getUserName);
+        } catch (TokenOpenException ex) {
+            // loggerino
+            return Optional.empty();
         }
-    }
-
-    private Optional<Integer> getProcessToken(int processHandle) {
-        IntByReference token = new IntByReference(0);
-        boolean success =
-            advapi.openProcessToken(
-                processHandle,
-                WinApiConstants.OPENPROCESSTOKEN_TOKEN_QUERY,
-                token);
-        return success ? Optional.of(token.getValue()) : Optional.empty();
     }
 
     private Optional<Advapi32.TokenUser> getTokenUser(int processToken) {
