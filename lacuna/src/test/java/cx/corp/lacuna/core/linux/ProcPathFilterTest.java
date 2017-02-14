@@ -1,7 +1,5 @@
 package cx.corp.lacuna.core.linux;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,22 +7,24 @@ import org.junit.runners.Parameterized;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 @RunWith(Parameterized.class)
 public class ProcPathFilterTest {
 
+    @Parameterized.Parameter
+    public int pidMax;
+    private ProcPathFilter procPathFilter;
+
     @Parameterized.Parameters(name = "{index}: pid_max = {0}")
     public static Object[] data() {
-        return new Object[] {
+        return new Object[]{
             10,
             LinuxConstants.FALLBACK_PID_MAX,
             1 << 22 // pid_max can be as high as PID_MAX_LIMIT (2^22)
         };
     }
-
-    @Parameterized.Parameter
-    public int pidMax;
-
-    private ProcPathFilter procPathFilter;
 
     @Before
     public void setUp() {

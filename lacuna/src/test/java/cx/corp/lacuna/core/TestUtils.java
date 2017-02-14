@@ -1,5 +1,7 @@
 package cx.corp.lacuna.core;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public final class TestUtils {
 
     // O(n^2), don't care enough
@@ -19,5 +21,11 @@ public final class TestUtils {
             }
         }
         return false;
+    }
+
+    public static byte[] generateRandomBytes(int count) {
+        byte[] buf = new byte[count];
+        ThreadLocalRandom.current().nextBytes(buf);
+        return buf;
     }
 }

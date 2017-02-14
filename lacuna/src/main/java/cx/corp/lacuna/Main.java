@@ -192,9 +192,7 @@ public class Main {
 
         processEnumerator = new NativeProcessEnumeratorImpl(enumerator, collector);
 
-        FileMemoryProvider memProvider = new FileMemoryProvider(
-            Paths.get("/proc"),
-            Paths.get("mem"));
+        FileMemoryProvider memProvider = new FileMemoryProvider(Paths.get("/proc"));
 
         RawMemoryReader rawMemoryReader = new LinuxRawMemoryReader(memProvider);
         memoryReader = new MemoryReaderImpl(rawMemoryReader);

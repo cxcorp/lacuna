@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 public class NativeProcessImplTest {
@@ -101,5 +102,26 @@ public class NativeProcessImplTest {
         NativeProcessImpl a = new NativeProcessImpl(123, "yuss", "boii");
         NativeProcessImpl b = new NativeProcessImpl(123, "yuss", "boii");
         assertEquals(a.hashCode(), b.hashCode());
+    }
+
+    @Test
+    public void hashCodeDiffersWhenPidDiffers() {
+        NativeProcessImpl a = new NativeProcessImpl(6712, "yuss", "boii");
+        NativeProcessImpl b = new NativeProcessImpl(8233, "yuss", "boii");
+        assertNotEquals(a.hashCode(), b.hashCode());
+    }
+
+    @Test
+    public void hashCodeDiffersWhenOwnerDiffers() {
+        NativeProcessImpl a = new NativeProcessImpl(6712, "yuss", "owner not home");
+        NativeProcessImpl b = new NativeProcessImpl(6712, "yuss", "boii");
+        assertNotEquals(a.hashCode(), b.hashCode());
+    }
+
+    @Test
+    public void hashCodeDiffersWhenDescriptionDiffers() {
+        NativeProcessImpl a = new NativeProcessImpl(6712, "doge", "boii");
+        NativeProcessImpl b = new NativeProcessImpl(6712, "woof woof", "boii");
+        assertNotEquals(a.hashCode(), b.hashCode());
     }
 }
