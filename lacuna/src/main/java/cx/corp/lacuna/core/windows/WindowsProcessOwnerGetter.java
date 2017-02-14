@@ -1,6 +1,5 @@
 package cx.corp.lacuna.core.windows;
 
-import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.windows.winapi.Advapi32;
@@ -13,6 +12,7 @@ import java.util.Optional;
 public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
 
     private final ProcessTokenOpener tokenOpener;
+    private final TokenUserFinder tokenUserFinder;
     private final Advapi32 advapi;
     private final CloseHandle handleCloser;
 
@@ -23,6 +23,7 @@ public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
         this.advapi = advapi;
         this.handleCloser = handleCloser;
         tokenOpener = new ProcessTokenOpener(advapi, handleCloser);
+        tokenUserFinder = new TokenUserFinder(advapi);
     }
 
     @Override
@@ -32,39 +33,17 @@ public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
         }
 
         try (ProcessToken token = tokenOpener.openToken(processHandle)) {
-            return getTokenUser(token.getToken()).flatMap(this::getUserName);
+            return tokenUserFinder.findTokenUser(token).flatMap(this::getUserName);
         } catch (TokenOpenException ex) {
             // loggerino
             return Optional.empty();
         }
     }
 
-    private Optional<Advapi32.TokenUser> getTokenUser(int processToken) {
-        // First find out how big of a buffer we need, then get the information
-        // with a properly sized buffer.
-        return getTokenInfoBufferLength(processToken)
-            .flatMap(bufLen -> lookupTokenUser(processToken, bufLen));
-    }
-
     private Optional<String> getUserName(Advapi32.TokenUser user) {
         // includes null terminator!
         return getUsernameBufferLength(user)
             .flatMap(bufLen -> lookupTokenUserName(user, bufLen));
-    }
-
-    private Optional<Integer> getTokenInfoBufferLength(int processToken) {
-        IntByReference bytesNeeded = new IntByReference(0);
-        boolean success =
-            advapi.getTokenInformation(
-                processToken,
-                WinApiConstants.GETTOKENINFORMATION_TOKENUSER,
-                null,
-                0,
-                bytesNeeded);
-
-        return !success && callFailedBecauseBufferWasTooSmall()
-            ? Optional.of(bytesNeeded.getValue())
-            : Optional.empty();
     }
 
     private Optional<Integer> getUsernameBufferLength(Advapi32.TokenUser user) {
@@ -89,32 +68,6 @@ public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
 
     private boolean callFailedBecauseBufferWasTooSmall() {
         return Native.getLastError() == SystemErrorCode.INSUFFICIENT_BUFFER.getSystemErrorId();
-    }
-
-    private Optional<Advapi32.TokenUser> lookupTokenUser(int token, int infoBufferLength) {
-        Memory memory = new Memory(infoBufferLength);
-        IntByReference bufferLen = new IntByReference(infoBufferLength);
-        boolean success =
-            advapi.getTokenInformation(
-                token,
-                WinApiConstants.GETTOKENINFORMATION_TOKENUSER,
-                memory,
-                (int) memory.size(),
-                bufferLen);
-
-        if (!success) {
-            return Optional.empty();
-        }
-
-        try {
-            Advapi32.TokenUser user = new Advapi32.TokenUser(memory);
-            return Optional.of(user);
-        } catch (Error | Exception ex) {
-            return Optional.empty();
-        } finally {
-            // clean up token
-            handleCloser.closeHandle(token);
-        }
     }
 
     private Optional<String> lookupTokenUserName(Advapi32.TokenUser user, int nameBufferLenWithNullTerminator) {
