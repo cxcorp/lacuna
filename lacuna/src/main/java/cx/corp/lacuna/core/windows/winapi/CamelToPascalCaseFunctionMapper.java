@@ -15,6 +15,9 @@ public class CamelToPascalCaseFunctionMapper implements FunctionMapper {
     }
 
     private static String capitalizeFirstLetter(String string) {
+        if (string.length() == 1) {
+            return string.toUpperCase();
+        }
         return string.substring(0, 1).toUpperCase() + string.substring(1);
     }
 }
