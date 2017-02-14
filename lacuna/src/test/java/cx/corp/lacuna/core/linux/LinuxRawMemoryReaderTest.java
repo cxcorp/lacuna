@@ -3,6 +3,7 @@ package cx.corp.lacuna.core.linux;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import cx.corp.lacuna.core.MemoryAccessException;
+import cx.corp.lacuna.core.TestUtils;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import org.junit.After;
@@ -16,7 +17,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -97,7 +97,7 @@ public class LinuxRawMemoryReaderTest {
 
     @Test
     public void readCorrectlyReadsOneByteFromStart() throws IOException {
-        byte[] data = generateRandomBytes(123);
+        byte[] data = TestUtils.generateRandomBytes(123);
         Files.write(tempFile, data);
 
         ByteBuffer buffer = reader.read(process, 0, 1);
@@ -107,7 +107,7 @@ public class LinuxRawMemoryReaderTest {
 
     @Test
     public void readCorrectlyReadsLastByte() throws IOException {
-        byte[] data = generateRandomBytes(4096 * 2 * 2);
+        byte[] data = TestUtils.generateRandomBytes(4096 * 2 * 2);
         Files.write(tempFile, data);
 
         ByteBuffer buffer = reader.read(process, data.length - 1, 1);
@@ -117,7 +117,7 @@ public class LinuxRawMemoryReaderTest {
 
     @Test
     public void readCorrectlyReadsAllBytesFromStartToEnd() throws IOException {
-        byte[] memoryBytes = generateRandomBytes(4096 * 16);
+        byte[] memoryBytes = TestUtils.generateRandomBytes(4096 * 16);
         Files.write(tempFile, memoryBytes);
 
         ByteBuffer readBuffer = reader.read(process, 0, memoryBytes.length);
@@ -129,7 +129,7 @@ public class LinuxRawMemoryReaderTest {
 
     @Test
     public void readCorrectlyReadsSegmentOfBytesAtOffset() throws IOException {
-        byte[] memoryBytes = generateRandomBytes(16);
+        byte[] memoryBytes = TestUtils.generateRandomBytes(16);
         Files.write(tempFile, memoryBytes);
         int offset = 10;
         byte[] expected = Arrays.copyOfRange(memoryBytes, offset, memoryBytes.length);
@@ -142,11 +142,5 @@ public class LinuxRawMemoryReaderTest {
         readBuffer.get(readBytes);
 
         assertArrayEquals(expected, readBytes);
-    }
-
-    private byte[] generateRandomBytes(int count) {
-        byte[] buf = new byte[count];
-        ThreadLocalRandom.current().nextBytes(buf);
-        return buf;
     }
 }
