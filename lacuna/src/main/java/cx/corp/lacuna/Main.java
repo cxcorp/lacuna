@@ -24,6 +24,9 @@ import cx.corp.lacuna.core.linux.LinuxRawMemoryWriter;
 import cx.corp.lacuna.core.windows.ProcessDescriptionGetter;
 import cx.corp.lacuna.core.windows.ProcessOpener;
 import cx.corp.lacuna.core.windows.ProcessOwnerGetter;
+import cx.corp.lacuna.core.windows.ProcessTokenOpener;
+import cx.corp.lacuna.core.windows.TokenOwnerNameFinder;
+import cx.corp.lacuna.core.windows.TokenUserFinder;
 import cx.corp.lacuna.core.windows.WindowsNativeProcessCollector;
 import cx.corp.lacuna.core.windows.WindowsPidEnumerator;
 import cx.corp.lacuna.core.windows.WindowsProcessDescriptionGetter;
@@ -171,7 +174,12 @@ public class Main {
 
         PidEnumerator enumerator = new WindowsPidEnumerator(psapi);
         ProcessOpener procOpener = new WindowsProcessOpener(kernel);
-        ProcessOwnerGetter ownerGetter = new WindowsProcessOwnerGetter(advapi, kernel);
+
+        ProcessOwnerGetter ownerGetter = new WindowsProcessOwnerGetter(
+            new ProcessTokenOpener(advapi, kernel),
+            new TokenUserFinder(advapi),
+            new TokenOwnerNameFinder(advapi)
+        );
         ProcessDescriptionGetter descriptionGetter = new WindowsProcessDescriptionGetter(kernel);
         NativeProcessCollector collector =
             new WindowsNativeProcessCollector(procOpener, ownerGetter, descriptionGetter);
