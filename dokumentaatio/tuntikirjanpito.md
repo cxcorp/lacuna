@@ -22,3 +22,5 @@ Päivä | Tunnit | Kuvaus
 8.2.2016 | 7h | Muistinlukijan testaus. Linux-luokkien testaus virtuaalisella tiedostojärjestelmällä.
 12.2.2016 | 5h | Muistinkirjoittamisen implementointi abstraktilla tasolla.
 13.2.2016 | 7h | Muistinkirjoittamisen implementointi Windowsilla ja Linuxilla. Linux-juttujen testaus.
+14.2.2017 | 5h | Uudelleenstrukturointia.
+
