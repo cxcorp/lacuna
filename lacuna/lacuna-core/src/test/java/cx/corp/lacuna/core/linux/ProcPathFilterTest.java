@@ -54,7 +54,7 @@ public class ProcPathFilterTest {
         String[] illegalNames = {
             "/proc/sys/kernel",
             "/",
-            "..",
+            "src/main",
             "-ölok",
             "1241abc",
             "asb5123",
