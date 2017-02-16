@@ -3,25 +3,43 @@ import { Link, IndexLink } from 'react-router';
 import './Sidebar.css';
 
 const Sidebar = () => (
-    <div className='sidebar__nav'>
+    <nav className='sidebar'>
         <NavigationList>
-            <NavigationLink to='/' isIndex={true}>Dashboard</NavigationLink>
-            <NavigationLink to='/processes'>Processes</NavigationLink>
+            <NavigationSectionItem to='/' name='Dashboard'>
+                <NavigationLinkItem to='/processes'>Processes</NavigationLinkItem>
+            </NavigationSectionItem>
         </NavigationList>
-    </div>
+    </nav>
 );
 
 const NavigationList = ({children}) => (
-    <ul className='navigationlist'>
+    <ul className='navigation_list'>
         {children}
     </ul>
 );
 
-const NavigationLink = ({to, children, isIndex}) => (
-    <li className='navigationlist__link'>
-        {isIndex
-            ? <IndexLink to={to} activeClassName='active_link'><span>{children}</span></IndexLink>
-            : <Link to={to} activeClassName='active_link'><span>{children}</span></Link>}
+const NavigationSectionItem = ({to, name, children}) => (
+    <li className='navigation_section_item'>
+        <IndexLink to={to}
+                   activeClassName='navigation_section_item__link--active_link'
+                   className='navigation_section_item__link'
+                   >
+            <span>{name}</span>
+        </IndexLink>
+        <ul className='navigation_section_item__list'>
+            {children}
+        </ul>
+    </li>
+);
+
+const NavigationLinkItem = ({to, children}) => (
+    <li className='navigation_link_item'>
+        <Link to={to}
+              className='navigation_link_item__link'
+              activeClassName='navigation_link_item__link--active_link'
+              >
+            <span>{children}</span>
+        </Link>
     </li>
 );
 

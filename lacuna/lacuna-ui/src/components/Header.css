@@ -26,3 +26,16 @@
   margin: 0;
   letter-spacing: 0;
 }
+
+.navigation__title__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.navigation__title__link:visited {
+  color: inherit;
+}
+
+.navigation__title__link:active {
+  color: inherit;
+}
