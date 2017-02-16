@@ -1,0 +1,25 @@
+.baseview {
+    background: #eee;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 0.05em;
+    color: #222;
+    transition: 100ms ease-out;
+}
+
+.baseview__title {
+    padding: 1.3em 1.6em;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(230, 230, 230, 0.1);
+}
+
+.baseview__title__text {
+    font-weight: 400;
+    color: #515151;
+    font-size: 1.75em;
+    margin: 0;
+}
+
+.baseview__content {
+    padding: 1.3em 1.6em;
+    border-top: 1px solid rgba(230, 230, 230, 0.1);
+}

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import Navigation from './Navigation';
-import './styles/App.css';
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
+import './App.css';
 
 class App extends Component {
   render() {
     return (
       <div className='app'>
-        <Navigation />
+        <Header />
+        <Sidebar />
         <div className='app__container'>
           {this.props.children}
         </div>
