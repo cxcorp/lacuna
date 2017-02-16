@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import BaseView from './BaseView';
+import './Processes.css';
 
 class Processes extends Component {
     render() {
         return (
-            <div>
-                proces
-            </div>
+            <BaseView title='Processes'>
+            proc
+            </BaseView>
         );
     }
 }
