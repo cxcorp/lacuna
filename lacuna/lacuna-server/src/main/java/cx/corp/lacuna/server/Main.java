@@ -1,26 +1,67 @@
 package cx.corp.lacuna.server;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import cx.corp.lacuna.core.Lacuna;
+import cx.corp.lacuna.core.MemoryReader;
+import cx.corp.lacuna.core.NativeProcessCollector;
+import cx.corp.lacuna.core.NativeProcessEnumerator;
+import cx.corp.lacuna.core.domain.NativeProcess;
 
 import static spark.Spark.*;
 
-public class Main {
-
+public final class Main {
     private static Gson gson;
 
     public static void main(String... args) {
-        gson = new Gson();
+        gson = new GsonBuilder().setPrettyPrinting().create();
+        NativeProcessEnumerator processEnumerator = Lacuna.getNativeProcessEnumerator();
+        NativeProcessCollector processCollector = Lacuna.getNativeProcessCollector();
+        MemoryReader memoryReader = Lacuna.getMemoryReader();
 
         port(8080);
 
-        before((req, res) -> {
+        exception(Exception.class, ((exception, request, response) -> {
+            exception.printStackTrace();
+        }));
+
+        webSocket("/processes/memory", ProcessMemoryWebSocketHandler.class);
+
+        after((req, res) -> {
             res.header("Content-Type", "application/json; charset=utf-8");
+            res.header("Content-Encoding", "gzip");
         });
 
-        get("/", (req, res) -> {
-            return "ayy";
+        get("/processes", (req, res) -> {
+            return Result.success(processEnumerator.getProcesses());
         }, gson::toJson);
 
+        get("/processes/:pid", (req, res) -> {
+            Integer pid = Integer.parseInt(req.params("pid"));
+            return Result.success(processCollector.collect(pid));
+        }, gson::toJson);
+
+        /*get("/processes/:pid/memory", (req, res) -> {
+            Integer pid = Integer.parseInt(req.params("pid"));
+            Integer offset = Integer.parseInt(req.queryParams("offset"), 16);
+            NativeProcess process = processCollector.collect(pid);
+
+            Object result = null;
+            switch (req.queryParams("mode")) {
+                case "int":
+                    result = memoryReader.readInt(process, offset);
+                    break;
+            }
+
+            return Result.success(result);
+        }, gson::toJson);*/
+
+        get("*", (req, res) -> {
+            res.status(500);
+            return Result.error("Not found");
+        }, gson::toJson);
+
+        init();
         System.out.println("Server started on port 8080");
     }
 }
