@@ -77,14 +77,13 @@ public class ProcessMemoryWebSocketHandler {
                 int readMemory = memoryReader.readInt(new NativeProcessImpl(
                     request.getPid(), null, null
                 ), request.getOffset());
+                Any value = Any.pack(Int32Value.newBuilder().setValue(readMemory).build());
 
-                ReadResponse response = ReadResponse.newBuilder()
+                return ReadResponse.newBuilder()
                     .setStatus(StatusCode.OK)
                     .setRequest(request)
-                    .setData(Any.pack(Int32Value.newBuilder().setValue(readMemory).build()))
+                    .setData(value)
                     .build();
-
-                break;
             case FLOAT:
                 break;
             case LONG:

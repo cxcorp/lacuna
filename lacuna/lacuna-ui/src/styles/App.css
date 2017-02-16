@@ -1,0 +1,11 @@
+.app {
+  font-size: 16px;
+  padding-top: 3.25em;
+  text-align: center;
+}
+
+.app__container {
+  display: inline-block;
+  width: 66em;
+  margin: 0 auto;
+}
