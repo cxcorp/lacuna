@@ -40,7 +40,7 @@ import java.util.Map;
  * bootstraps are provided.
  *
  * <p>The members are initialized in the following manner:
- * <table>
+ * <table summary="Members other than NativeProcessCollector are initialized with *Impl classes.">
  *     <tr><th>Type</th><th>Description</th></tr>
  *     <tr>
  *         <td>MemoryReader</td>
@@ -202,7 +202,7 @@ public final class LacunaBootstrap {
     }
 
     @FunctionalInterface
-    protected interface PlatformDetector {
+    interface PlatformDetector {
         boolean isWindows();
     }
 }
