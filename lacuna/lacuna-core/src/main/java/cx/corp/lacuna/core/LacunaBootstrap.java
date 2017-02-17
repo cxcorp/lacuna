@@ -3,6 +3,7 @@ package cx.corp.lacuna.core;
 import com.sun.jna.FunctionMapper;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
+import com.sun.jna.Platform;
 import cx.corp.lacuna.core.linux.FileMemoryProvider;
 import cx.corp.lacuna.core.linux.LinuxConstants;
 import cx.corp.lacuna.core.linux.LinuxNativeProcessCollector;
@@ -32,6 +33,50 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Provides easy access to the main Lacuna classes, bootstrapped to the
+ * correct platform. Contains static factory methods for creating new
+ * instances for specific and auto-detected platforms. Windows and Linux
+ * bootstraps are provided.
+ *
+ * <p>The members are initialized in the following manner:
+ * <table>
+ *     <tr><th>Type</th><th>Description</th></tr>
+ *     <tr>
+ *         <td>MemoryReader</td>
+ *         <td>
+ *             A new {@link MemoryReaderImpl} instance with a
+ *             platform-specific {@link RawMemoryReader}
+ *         </td>
+ *     </tr>
+ *     <tr>
+ *         <td>MemoryWriter</td>
+ *         <td>
+ *             A new {@link MemoryWriterImpl} instance with a
+ *             platform-specific {@link RawMemoryWriter}
+ *         </td>
+ *     </tr>
+ *     <tr>
+ *         <td>NativeProcessEnumerator</td>
+ *         <td>
+ *             A new {@link NativeProcessEnumeratorImpl} instance with
+ *             platform-specific {@link PidEnumerator} and
+ *             {@link NativeProcessCollector} instances
+ *         </td>
+ *     </tr>
+ *     <tr>
+ *         <td>NativeProcessCollector</td>
+ *         <td>
+ *             A new platform-specific {@link NativeProcessCollector}
+ *         </td>
+ *     </tr>
+ * </table>
+ *
+ * @see MemoryReader
+ * @see MemoryWriter
+ * @see NativeProcessEnumerator
+ * @see NativeProcessCollector
+ */
 public final class LacunaBootstrap {
 
     private final MemoryReader memoryReader;
@@ -49,17 +94,36 @@ public final class LacunaBootstrap {
         this.nativeProcessCollector = nativeProcessCollector;
     }
 
+    /**
+     * Gets a new {@link LacunaBootstrap} instance for the current platform.
+     *
+     * <p>Platform detection is handled with the JNA library's {@link Platform} class
+     * in the following manner: if the current platform is a Windows platform,
+     * {@link #forWindows()} is called, otherwise {@link #forLinux()} is called.
+     * @return a new {@link LacunaBootstrap} instance bootstrapped for Windows if
+     * the current platform is Windows, otherwise an instance bootstrapped for
+     * Linux is returned.
+     */
+    public static LacunaBootstrap forCurrentPlatform() {
+        return forDetectedPlatform(Platform::isWindows);
+    }
+
+    static LacunaBootstrap forDetectedPlatform(PlatformDetector detector) {
+        return detector.isWindows() ? forWindows() : forLinux();
+    }
+
+    /**
+     * Gets a new {@link LacunaBootstrap} instance for the Linux platform.
+     * @return a new instance bootstrapped for the Linux platform.
+     */
     public static LacunaBootstrap forLinux() {
         Path procRoot = LinuxConstants.DEFAULT_PROC_ROOT;
         PidEnumerator enumerator = new LinuxPidEnumerator(procRoot, LinuxConstants.DEFAULT_PID_MAX);
         NativeProcessCollector collector = new LinuxNativeProcessCollector(procRoot);
-
         NativeProcessEnumerator processEnumerator = new NativeProcessEnumeratorImpl(enumerator, collector);
-
         FileMemoryProvider memProvider = new FileMemoryProvider(Paths.get("/proc"));
         RawMemoryReader rawMemoryReader = new LinuxRawMemoryReader(memProvider);
         MemoryReader memoryReader = new MemoryReaderImpl(rawMemoryReader);
-
         RawMemoryWriter rawMemoryWriter = new LinuxRawMemoryWriter(memProvider);
         MemoryWriter memoryWriter = new MemoryWriterImpl(rawMemoryWriter);
 
@@ -71,6 +135,10 @@ public final class LacunaBootstrap {
         );
     }
 
+    /**
+     * Gets a new {@link LacunaBootstrap} instance for the Windows platform.
+     * @return a new instance bootstrapped for the Windows platform.
+     */
     public static LacunaBootstrap forWindows() {
         Map<String, Object> options = new HashMap<>();
         // Use a mapper so that we can use Java-style function names in the interfaces
@@ -122,5 +190,10 @@ public final class LacunaBootstrap {
 
     public NativeProcessCollector getNativeProcessCollector() {
         return nativeProcessCollector;
+    }
+
+    @FunctionalInterface
+    protected interface PlatformDetector {
+        boolean isWindows();
     }
 }

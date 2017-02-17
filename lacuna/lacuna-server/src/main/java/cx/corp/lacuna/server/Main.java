@@ -2,22 +2,23 @@ package cx.corp.lacuna.server;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import cx.corp.lacuna.core.Lacuna;
+import cx.corp.lacuna.core.LacunaBootstrap;
 import cx.corp.lacuna.core.MemoryReader;
 import cx.corp.lacuna.core.NativeProcessCollector;
 import cx.corp.lacuna.core.NativeProcessEnumerator;
-import cx.corp.lacuna.core.domain.NativeProcess;
 
 import static spark.Spark.*;
 
 public final class Main {
+    private static LacunaBootstrap lacuna;
     private static Gson gson;
 
     public static void main(String... args) {
+        lacuna = LacunaBootstrap.forCurrentPlatform();
         gson = new GsonBuilder().setPrettyPrinting().create();
-        NativeProcessEnumerator processEnumerator = Lacuna.getNativeProcessEnumerator();
-        NativeProcessCollector processCollector = Lacuna.getNativeProcessCollector();
-        MemoryReader memoryReader = Lacuna.getMemoryReader();
+        NativeProcessEnumerator processEnumerator = lacuna.getNativeProcessEnumerator();
+        NativeProcessCollector processCollector = lacuna.getNativeProcessCollector();
+        MemoryReader memoryReader = lacuna.getMemoryReader();
 
         port(8080);
 

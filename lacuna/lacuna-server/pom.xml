@@ -5,7 +5,7 @@
     <parent>
         <artifactId>lacuna</artifactId>
         <groupId>cx.corp</groupId>
-        <version>0.1.4</version>
+        <version>0.1.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -41,7 +41,7 @@
         <dependency>
             <groupId>cx.corp</groupId>
             <artifactId>lacuna-core</artifactId>
-            <version>0.1.4</version>
+            <version>0.1.5-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

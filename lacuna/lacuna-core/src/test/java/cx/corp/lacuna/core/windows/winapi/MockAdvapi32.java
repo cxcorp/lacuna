@@ -5,10 +5,13 @@ import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class MockAdvapi32 implements Advapi32 {
 
+    private List<Integer> openProcessTokenPassedHandles = new ArrayList<Integer>();
     private boolean openProcessTokenReturnValue = false;
     private int openProcessTokenTokenHandle = 0;
     private boolean getTokenInformationReturnValue = false;
@@ -21,6 +24,10 @@ public class MockAdvapi32 implements Advapi32 {
 
     public void setOpenProcessTokenTokenHandle(int openProcessTokenTokenHandle) {
         this.openProcessTokenTokenHandle = openProcessTokenTokenHandle;
+    }
+
+    public List<Integer> getOpenProcessTokenPassedHandles() {
+        return openProcessTokenPassedHandles;
     }
 
     public void setGetTokenInformationReturnValue(boolean getTokenInformationReturnValue) {
@@ -37,6 +44,7 @@ public class MockAdvapi32 implements Advapi32 {
 
     @Override
     public boolean openProcessToken(int processHandle, int desiredAccess, IntByReference tokenHandle) {
+        openProcessTokenPassedHandles.add(processHandle);
         if (!openProcessTokenReturnValue) {
             return false;
         }
