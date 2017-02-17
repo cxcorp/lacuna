@@ -37,6 +37,7 @@
 .navigation_link_item__link,
 .navigation_section_item__link {
   width: 100%;
+  color: #EEE;
   display: inline-block;
   text-decoration: none;
   transition: 100ms ease-in-out;

@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { InfoBox } from './NotificationBox';
 import LoadingDots from './LoadingDots';
 import './ProcessList.css';
 
-const ProcessList = ({processes}) => {
+const ProcessList = ({processes, pidMemoryPathGetter}) => {
     if (!processes) {
         return (
             <InfoBox className='process_list__loading'>
@@ -12,8 +12,9 @@ const ProcessList = ({processes}) => {
             </InfoBox>
         );
     }
-
-    const tableRows = processes.map(p => <ProcessListItem key={p.pid} process={p} />);
+    console.group('items');
+    const tableRows = processes.map(p => <ProcessListItem key={p.pid} process={p} linkGetter={pidMemoryPathGetter} />);
+    console.groupEnd();
     tableRows.reverse();
     return (
         <table className='process_list'>
@@ -32,12 +33,13 @@ const ProcessList = ({processes}) => {
     );
 };
 
-const ProcessListItem = ({process}) => (
+const ProcessListItem = ({process, linkGetter}) => {
+    return (
     <tr className='process_list_item'>
-        <td>{process.pid}</td>
+        <td>{linkGetter(process.pid)}</td>
         <td>{process.owner}</td>
         <td>{process.description}</td>
     </tr>
-);
+)};
 
 export default ProcessList;
