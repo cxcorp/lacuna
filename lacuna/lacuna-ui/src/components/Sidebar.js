@@ -7,6 +7,7 @@ const Sidebar = () => (
         <NavigationList>
             <NavigationSectionItem to='/' name='Dashboard'>
                 <NavigationLinkItem to='/processes'>Processes</NavigationLinkItem>
+                <NavigationLinkItem to='/memory'>Memory</NavigationLinkItem>
             </NavigationSectionItem>
         </NavigationList>
     </nav>

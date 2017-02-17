@@ -7,7 +7,6 @@ class Processes extends Component {
     render() {
         return (
             <BaseView title='Processes'>
-                <p className='processes__subtitle'>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                 <ProcessListContainer />
             </BaseView>
         );

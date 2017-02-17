@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import Util from '../util/Util';
+import React from 'react';
 import './NotificationBox.css';
 
 const NotificationBox = ({color, symbol, children}) => {

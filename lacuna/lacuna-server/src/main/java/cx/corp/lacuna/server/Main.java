@@ -33,11 +33,12 @@ public final class Main {
         });
 
         get("/processes", (req, res) -> {
-            Thread.sleep(5000);
+            Thread.sleep(1000);
             return Result.success(processEnumerator.getProcesses());
         }, gson::toJson);
 
         get("/processes/:pid", (req, res) -> {
+            Thread.sleep(1000);
             Integer pid = Integer.parseInt(req.params("pid"));
             return Result.success(processCollector.collect(pid));
         }, gson::toJson);
