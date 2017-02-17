@@ -3,7 +3,6 @@ package cx.corp.lacuna.core;
 import com.sun.jna.FunctionMapper;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
-import com.sun.jna.Platform;
 import cx.corp.lacuna.core.linux.FileMemoryProvider;
 import cx.corp.lacuna.core.linux.LinuxConstants;
 import cx.corp.lacuna.core.linux.LinuxNativeProcessCollector;
@@ -33,46 +32,46 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Lacuna {
-    private static MemoryReader memoryReader;
-    private static MemoryWriter memoryWriter;
-    private static NativeProcessEnumerator nativeProcessEnumerator;
-    private static NativeProcessCollector nativeProcessCollector;
-    private static PidEnumerator pidEnumerator;
+public final class LacunaBootstrap {
 
-    static {
-        bootstrap();
+    private final MemoryReader memoryReader;
+    private final MemoryWriter memoryWriter;
+    private final NativeProcessEnumerator nativeProcessEnumerator;
+    private final NativeProcessCollector nativeProcessCollector;
+
+    private LacunaBootstrap(MemoryReader memoryReader,
+                           MemoryWriter memoryWriter,
+                           NativeProcessEnumerator nativeProcessEnumerator,
+                           NativeProcessCollector nativeProcessCollector) {
+        this.memoryReader = memoryReader;
+        this.memoryWriter = memoryWriter;
+        this.nativeProcessEnumerator = nativeProcessEnumerator;
+        this.nativeProcessCollector = nativeProcessCollector;
     }
 
-    public static MemoryReader getMemoryReader() {
-        return memoryReader;
+    public static LacunaBootstrap forLinux() {
+        Path procRoot = LinuxConstants.DEFAULT_PROC_ROOT;
+        PidEnumerator enumerator = new LinuxPidEnumerator(procRoot, LinuxConstants.DEFAULT_PID_MAX);
+        NativeProcessCollector collector = new LinuxNativeProcessCollector(procRoot);
+
+        NativeProcessEnumerator processEnumerator = new NativeProcessEnumeratorImpl(enumerator, collector);
+
+        FileMemoryProvider memProvider = new FileMemoryProvider(Paths.get("/proc"));
+        RawMemoryReader rawMemoryReader = new LinuxRawMemoryReader(memProvider);
+        MemoryReader memoryReader = new MemoryReaderImpl(rawMemoryReader);
+
+        RawMemoryWriter rawMemoryWriter = new LinuxRawMemoryWriter(memProvider);
+        MemoryWriter memoryWriter = new MemoryWriterImpl(rawMemoryWriter);
+
+        return new LacunaBootstrap(
+            memoryReader,
+            memoryWriter,
+            processEnumerator,
+            collector
+        );
     }
 
-    public static MemoryWriter getMemoryWriter() {
-        return memoryWriter;
-    }
-
-    public static NativeProcessEnumerator getNativeProcessEnumerator() {
-        return nativeProcessEnumerator;
-    }
-
-    public static NativeProcessCollector getNativeProcessCollector() {
-        return nativeProcessCollector;
-    }
-
-    public static PidEnumerator getPidEnumerator() {
-        return pidEnumerator;
-    }
-
-    private static void bootstrap() {
-        if (Platform.isWindows()) {
-            setupForWindows();
-        } else {
-            setupForLinux();
-        }
-    }
-
-    private static void setupForWindows() {
+    public static LacunaBootstrap forWindows() {
         Map<String, Object> options = new HashMap<>();
         // Use a mapper so that we can use Java-style function names in the interfaces
         FunctionMapper nameMapper = new CamelToPascalCaseFunctionMapper();
@@ -82,7 +81,6 @@ public class Lacuna {
         Psapi psapi = Native.loadLibrary("Psapi", Psapi.class, options);
         Advapi32 advapi = Native.loadLibrary("Advapi32", Advapi32.class, options);
 
-        pidEnumerator = new WindowsPidEnumerator(psapi);
         ProcessOpener procOpener = new WindowsProcessOpener(kernel);
 
         ProcessOwnerGetter ownerGetter = new WindowsProcessOwnerGetter(
@@ -91,31 +89,38 @@ public class Lacuna {
             new TokenOwnerNameFinder(advapi)
         );
         ProcessDescriptionGetter descriptionGetter = new WindowsProcessDescriptionGetter(kernel);
-        nativeProcessCollector =
+        NativeProcessCollector collector =
             new WindowsNativeProcessCollector(procOpener, ownerGetter, descriptionGetter);
 
-        nativeProcessEnumerator = new NativeProcessEnumeratorImpl(pidEnumerator, nativeProcessCollector);
+        PidEnumerator enumerator = new WindowsPidEnumerator(psapi);
+        NativeProcessEnumerator processEnumerator = new NativeProcessEnumeratorImpl(enumerator, collector);
 
         RawMemoryReader rawMemoryReader = new WindowsRawMemoryReader(procOpener, kernel);
-        memoryReader = new MemoryReaderImpl(rawMemoryReader);
+        MemoryReader memoryReader = new MemoryReaderImpl(rawMemoryReader);
 
         RawMemoryWriter rawWriter = new WindowsRawMemoryWriter(procOpener, kernel);
-        memoryWriter = new MemoryWriterImpl(rawWriter);
+        MemoryWriter memoryWriter = new MemoryWriterImpl(rawWriter);
+        return new LacunaBootstrap(
+            memoryReader,
+            memoryWriter,
+            processEnumerator,
+            collector
+        );
     }
 
-    private static void setupForLinux() {
-        Path procRoot = LinuxConstants.DEFAULT_PROC_ROOT;
-        pidEnumerator = new LinuxPidEnumerator(procRoot, LinuxConstants.DEFAULT_PID_MAX);
-        nativeProcessCollector = new LinuxNativeProcessCollector(procRoot);
+    public MemoryReader getMemoryReader() {
+        return memoryReader;
+    }
 
-        nativeProcessEnumerator = new NativeProcessEnumeratorImpl(pidEnumerator, nativeProcessCollector);
+    public MemoryWriter getMemoryWriter() {
+        return memoryWriter;
+    }
 
-        FileMemoryProvider memProvider = new FileMemoryProvider(Paths.get("/proc"));
+    public NativeProcessEnumerator getNativeProcessEnumerator() {
+        return nativeProcessEnumerator;
+    }
 
-        RawMemoryReader rawMemoryReader = new LinuxRawMemoryReader(memProvider);
-        memoryReader = new MemoryReaderImpl(rawMemoryReader);
-
-        RawMemoryWriter rawMemoryWriter = new LinuxRawMemoryWriter(memProvider);
-        memoryWriter = new MemoryWriterImpl(rawMemoryWriter);
+    public NativeProcessCollector getNativeProcessCollector() {
+        return nativeProcessCollector;
     }
 }
