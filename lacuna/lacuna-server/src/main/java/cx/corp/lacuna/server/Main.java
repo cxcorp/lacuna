@@ -33,6 +33,7 @@ public final class Main {
         });
 
         get("/processes", (req, res) -> {
+            Thread.sleep(5000);
             return Result.success(processEnumerator.getProcesses());
         }, gson::toJson);
 
