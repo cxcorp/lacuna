@@ -1,0 +1,73 @@
+@startuml
+
+actor User
+
+participant "LacunaBootstrap" as LacunaBootstrapStatic << Static >>
+
+User -> LacunaBootstrapStatic : forCurrentPlatform()
+activate LacunaBootstrapStatic
+LacunaBootstrapStatic -> LacunaBootstrap : new
+activate LacunaBootstrap
+LacunaBootstrapStatic <-- LacunaBootstrap
+deactivate LacunaBootstrap
+User <-- LacunaBootstrapStatic : bootstrap
+deactivate LacunaBootstrapStatic
+
+User -> LacunaBootstrap : getMemoryWriter()
+activate LacunaBootstrap
+User <-- LacunaBootstrap : writer
+deactivate LacunaBootstrap
+
+participant MemoryWriter << MemoryWriterImpl >>
+User -> MemoryWriter : writeInt(process, offset)
+activate MemoryWriter
+
+MemoryWriter -> ByteBuffer : putInt(value)
+activate ByteBuffer
+MemoryWriter -> ByteBuffer : array()
+MemoryWriter <-- ByteBuffer : data
+deactivate ByteBuffer
+participant RawMemoryWriter << WindowsRawMemoryWriter >>
+MemoryWriter -> RawMemoryWriter : write(process, offset, data)
+
+activate RawMemoryWriter
+RawMemoryWriter -> NativeProcess : process.getPid()
+activate NativeProcess
+RawMemoryWriter <-- NativeProcess : pid
+deactivate NativeProcess
+
+participant ProcessOpener << WindowsProcessOpener >>
+RawMemoryWriter -> ProcessOpener : open(pid, FLAGS_WRITEMEMORY)
+activate ProcessOpener
+participant OpenProcess << Kernel32 >>
+ProcessOpener -> OpenProcess : openProcess(flags, false, pid)
+activate OpenProcess
+OpenProcess ->] : (native code)
+OpenProcess <--] : nativeHandle
+ProcessOpener <-- OpenProcess : nativeHandle
+deactivate OpenProcess
+ProcessOpener -> WinApiProcessHandle : new(nativeHandle)
+activate WinApiProcessHandle
+ProcessOpener <-- WinApiProcessHandle : handle
+deactivate WinApiProcessHandle
+RawMemoryWriter <-- ProcessOpener : handle
+deactivate ProcessOpener
+
+RawMemoryWriter -> WinApiProcessHandle : getNativeHandle()
+activate WinApiProcessHandle
+RawMemoryWriter <-- WinApiProcessHandle : nativeHandle
+deactivate WinApiProcessHandle
+
+participant WriteProcessMemory << Kernel32 >>
+RawMemoryWriter -> WriteProcessMemory : writeProcessMemory
+activate WriteProcessMemory
+WriteProcessMemory ->] : (native code)
+WriteProcessMemory <--] : success
+RawMemoryWriter <-- WriteProcessMemory : success
+deactivate WriteProcessMemory
+
+deactivate RawMemoryWriter
+
+deactivate MemoryWriter
+
+@enduml
