@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="lacuna" target="1.8" />
+      <module name="lacuna" target="1.5" />
       <module name="lacuna-core" target="1.8" />
       <module name="lacuna-server" target="1.8" />
     </bytecodeTargetLevel>

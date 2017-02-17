@@ -120,35 +120,6 @@
                     <configLocation>checkstyle.xml</configLocation>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-                <version>4.3.0</version>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.8</version>
-                <executions>
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludes>
-                        <exclude>**/cx/corp/lacuna/Main.class</exclude>
-                        <exclude>**/cx/corp/lacuna/ui/*.class</exclude>
-                        <exclude>**/cx/corp/lacuna/ui/**/*.class</exclude>
-                        <exclude>**/cx/corp/lacuna/**/*Exception.class</exclude>
-                        <exclude>**/cx/corp/lacuna/core/linux/LinuxConstants.class</exclude>
-                        <exclude>**/cx/corp/lacuna/core/windows/winapi/WinApiConstants.class</exclude>
-                        <exclude>**/cx/corp/lacuna/core/windows/winapi/ProcessAccessFlags.class</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 

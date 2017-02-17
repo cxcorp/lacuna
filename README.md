@@ -1,6 +1,6 @@
 # lacuna
 
-[![Travis Build Status](https://travis-ci.org/cxcorp/lacuna.svg?branch=master&updatecachepls=2)](https://travis-ci.org/cxcorp/lacuna) [![Coverage Status](https://coveralls.io/repos/github/cxcorp/lacuna/badge.svg?branch=master&updatecachepls=2)](https://coveralls.io/github/cxcorp/lacuna?branch=master)
+[![Travis Build Status](https://travis-ci.org/cxcorp/lacuna.svg?branch=master&updatecachepls=2)](https://travis-ci.org/cxcorp/lacuna)
 
 Program for reading and writing other programs' memory.
 Coursework for [Javalabra-2017-3](https://github.com/javaLabra/Javalabra2017-3).
