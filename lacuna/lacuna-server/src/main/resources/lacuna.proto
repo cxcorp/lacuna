@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+
+option java_multiple_files = true;
+option java_package = "cx.corp.lacuna.server.data";
+
+enum DataType {
+	BUFFER = 0;
+	BOOLEAN = 1;
+	BYTE = 2;
+	CHAR_UTF8 = 3;
+	CHAR_UTF16 = 4;
+	SHORT = 5;
+	INT = 6;
+	FLOAT = 7;
+	LONG = 8;
+	DOUBLE = 9;
+	STRING_UTF8 = 10;
+	STRING_UTF16 = 11;
+}
+
+enum StatusCode {
+	OK = 0;
+	ERROR = 1;
+}
+
+message ReadRequest {
+	int32 pid = 1;
+	DataType request_type = 2;
+	int32 offset = 3;
+	google.protobuf.Any data = 4;
+}
+
+message ReadResponse {
+	StatusCode status = 1;
+	ReadRequest request = 2;
+	google.protobuf.Any data = 3;
+}

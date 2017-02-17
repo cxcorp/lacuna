@@ -11,6 +11,16 @@ package cx.corp.lacuna.core.domain {
 }
 
 package cx.corp.lacuna.core {
+	class LacunaBootstrap {
+		{static} forLinux() : LacunaBootstrap
+		{static} forWindows() : LacunaBootstrap
+		{static} forCurrentPlatform() : LacunaBootstrap
+		getMemoryReader() : MemoryReader
+		getMemoryWriter() : MemoryWriter
+		getNativeProcessEnumerator() : NativeProcessEnumerator
+		getNativeProcessCollector() : NativeProcessCollector
+	}
+	
     interface MemoryReader {
         {abstract} read(NativeProcess, int, int) : byte[]
         {abstract} readBoolean(NativeProcess, int) : boolean
@@ -55,6 +65,11 @@ package cx.corp.lacuna.core {
     interface RawMemoryWriter {
         {abstract} write(NativeProcess, int, byte[])
     }
+	
+	LacunaBootstrap --> "1" MemoryWriter
+	LacunaBootstrap --> "1" MemoryReader
+	LacunaBootstrap --> "1" NativeProcessEnumerator
+	LacunaBootstrap --> "1" NativeProcessCollector
     
     class MemoryReaderImpl
     class MemoryWriterImpl
