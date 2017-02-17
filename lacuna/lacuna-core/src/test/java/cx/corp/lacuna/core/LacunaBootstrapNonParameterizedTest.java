@@ -1,7 +1,10 @@
 package cx.corp.lacuna.core;
 
+import com.sun.jna.Platform;
 import cx.corp.lacuna.core.linux.LinuxNativeProcessCollector;
 import cx.corp.lacuna.core.windows.WindowsNativeProcessCollector;
+import org.junit.Assume;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -9,6 +12,12 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class LacunaBootstrapNonParameterizedTest {
+
+    @Before
+    public void setUp() {
+        // forWindows() calls fail without this
+        Assume.assumeTrue(Platform.isWindows());
+    }
 
     @Test
     public void forWindowsAndForLinuxReturnDifferent() {

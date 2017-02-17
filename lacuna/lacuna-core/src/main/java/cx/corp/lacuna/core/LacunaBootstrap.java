@@ -138,6 +138,15 @@ public final class LacunaBootstrap {
     /**
      * Gets a new {@link LacunaBootstrap} instance for the Windows platform.
      * @return a new instance bootstrapped for the Windows platform.
+     *
+     * <p>It is important to note that the Windows bootstrap uses native
+     * libraries to interact with the processes. These native libraries are
+     * not present on other platforms, meaning that this method will throw an
+     * exception if used on non-Windows platforms.
+     *
+     * @throws UnsatisfiedLinkError if the required native libraries are not
+     *                              found, for example when used on non-Windows
+     *                              platforms.
      */
     public static LacunaBootstrap forWindows() {
         Map<String, Object> options = new HashMap<>();
