@@ -9,7 +9,6 @@
     <version>0.1.5-SNAPSHOT</version>
 
     <modules>
-        <module>lacuna-server</module>
         <module>lacuna-core</module>
         <module>lacuna-ui</module>
     </modules>

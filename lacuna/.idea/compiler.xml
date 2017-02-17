@@ -7,7 +7,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="lacuna-core" />
-        <module name="lacuna-server" />
         <module name="lacuna-ui" />
       </profile>
     </annotationProcessing>
