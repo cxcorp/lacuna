@@ -1,0 +1,693 @@
+<html>
+<head>
+<style type='text/css'>
+html, body, div, span, p, blockquote, pre {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+
+body{
+	line-height: 1;
+	color: black;
+	background: white;
+	margin-left: 20px;
+}
+
+.src { 
+	border: 1px solid #dddddd;
+	padding-top: 10px;
+	padding-right: 5px;
+	padding-left: 5px;
+	font-family: Consolas, Courier, monospace;
+}
+
+
+.covered {background-color: #ddffdd}
+.uncovered {background-color: #ffdddd}
+.killed {background-color: #aaffaa}
+.survived {background-color: #ffaaaa}
+.uncertain {background-color: #dde7ef}
+.run_error {background-color: #dde7ef}
+.na {background-color: #eeeeee}
+.timed_out {background-color: #dde7ef}
+.non_viable {background-color: #aaffaa}
+.memory_error {background-color: #dde7ef}
+.not_started {background-color: #dde7ef; color : red}
+.no_coverage {background-color: #ffaaaa}
+
+
+.pop {outline:none; }
+.pop strong {line-height:30px;}
+.pop {text-decoration:none;}
+.pop span { z-index:10;display:none; padding:14px 20px; margin-top:-30px; margin-left:28px; width:800px; line-height:16px; word-wrap:break-word; }
+.pop:hover span{ display:inline; position:absolute; color:#111; border:1px solid #DCA; background:#fffAF0;}
+
+.pop span { border-radius:4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; -moz-box-shadow: 5px 5px 8px #CCC; -webkit-box-shadow: 5px 5px 8px #CCC; box-shadow: 5px 5px 8px #CCC; }
+</style>
+
+</head>
+<body>
+
+
+<h1>WindowsProcessOwnerGetter.java</h1>
+
+<table class="src">
+
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_1'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package cx.corp.lacuna.core.windows;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_2'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_3'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import cx.corp.lacuna.core.windows.winapi.Advapi32;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_4'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import cx.corp.lacuna.core.windows.winapi.CloseHandle;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_5'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_6'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Optional;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_7'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_8'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_9'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_10'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private final ProcessTokenOpener tokenOpener;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_11'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private final TokenUserFinder tokenUserFinder;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_12'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private final TokenOwnerNameFinder tokenOwnerFinder;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_13'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_14'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public WindowsProcessOwnerGetter(ProcessTokenOpener tokenOpener,</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_15'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>                                     TokenUserFinder userFinder,</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_16'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>                                     TokenOwnerNameFinder nameFinder) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_17'/>
+17
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_17'>3</a>
+<span>
+
+1. <init> : negated conditional &rarr; KILLED<br/>
+
+2. <init> : negated conditional &rarr; KILLED<br/>
+
+3. <init> : negated conditional &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (tokenOpener == null || userFinder == null || nameFinder == null) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_18'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            throw new IllegalArgumentException(&#34;Args can&#39;t be null&#34;);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_19'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_20'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        this.tokenOpener = tokenOpener;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_21'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        this.tokenUserFinder = userFinder;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_22'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        this.tokenOwnerFinder = nameFinder;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_23'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_24'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_25'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_26'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public Optional&#60;String&#62; get(ProcessHandle processHandle) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_27'/>
+27
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_27'>1</a>
+<span>
+
+1. get : negated conditional &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (processHandle == null) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_28'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            throw new IllegalArgumentException(&#34;processHandle cannot be null!&#34;);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_29'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_30'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_31'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        try (ProcessToken token = tokenOpener.openToken(processHandle)) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_32'/>
+32
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_32'>1</a>
+<span>
+
+1. get : mutated return of Object value for cx/corp/lacuna/core/windows/WindowsProcessOwnerGetter::get to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return tokenUserFinder.findTokenUser(token).flatMap(tokenOwnerFinder::getUserName);</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_33'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        } catch (TokenOpenException ex) {</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_34'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>            // loggerino</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_35'/>
+35
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_35'>1</a>
+<span>
+
+1. get : mutated return of Object value for cx/corp/lacuna/core/windows/WindowsProcessOwnerGetter::get to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return Optional.empty();</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_36'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_37'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@3911fec8_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_38'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@3911fec8_17'>17</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_17'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b><init><br/><b>Killed by : </b>cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest.ctorThrowsIfTokenOpenerIsNull(cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest)</span></span> negated conditional &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b><init><br/><b>Killed by : </b>cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest.ctorThrowsIfTokenOpenerIsNull(cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest)</span></span> negated conditional &rarr; KILLED</p> <p class='KILLED'><span class='pop'>3.<span><b>3</b><br/><b>Location : </b><init><br/><b>Killed by : </b>cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest.ctorThrowsIfTokenOpenerIsNull(cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest)</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@3911fec8_27'>27</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_27'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>get<br/><b>Killed by : </b>cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest.getReturnsEmptyIfTokenOpenFails(cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest)</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@3911fec8_32'>32</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_32'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>get<br/><b>Killed by : </b>cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest.getReturnsCorrectOwnerName(cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest)</span></span> mutated return of Object value for cx/corp/lacuna/core/windows/WindowsProcessOwnerGetter::get to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@3911fec8_35'>35</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@3911fec8_35'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>get<br/><b>Killed by : </b>cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest.getReturnsEmptyIfTokenOpenFails(cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest)</span></span> mutated return of Object value for cx/corp/lacuna/core/windows/WindowsProcessOwnerGetter::get to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED</p> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+
+<li class='mutator'>INCREMENTS_MUTATOR</li>
+
+<li class='mutator'>VOID_METHOD_CALL_MUTATOR</li>
+
+<li class='mutator'>RETURN_VALS_MUTATOR</li>
+
+<li class='mutator'>MATH_MUTATOR</li>
+
+<li class='mutator'>NEGATE_CONDITIONALS_MUTATOR</li>
+
+<li class='mutator'>INVERT_NEGS_MUTATOR</li>
+
+<li class='mutator'>CONDITIONALS_BOUNDARY_MUTATOR</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest.getReturnsEmptyIfUserNameCannotBeFound(cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest) (0 ms)</li><li>cx.corp.lacuna.core.LacunaBootstrapTest.windowsBootstrapReturnsNonNullMemoryWriter(cx.corp.lacuna.core.LacunaBootstrapTest) (2 ms)</li><li>cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest.ctorThrowsIfTokenOpenerIsNull(cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest) (0 ms)</li><li>cx.corp.lacuna.core.windows.WindowsNativeProcessEnumeratorImplIT.getProcessesFindsCorrectTestTargetPid(cx.corp.lacuna.core.windows.WindowsNativeProcessEnumeratorImplIT) (112 ms)</li><li>cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest.getReturnsEmptyIfTokenUserCannotBeFound(cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest) (0 ms)</li><li>cx.corp.lacuna.core.LacunaBootstrapNonParameterizedTest.forPlatformDetectedReturnsWindowsBootstrapCorrectly(cx.corp.lacuna.core.LacunaBootstrapNonParameterizedTest) (1 ms)</li><li>cx.corp.lacuna.core.LacunaBootstrapNonParameterizedTest.forWindowsAndForLinuxReturnDifferent(cx.corp.lacuna.core.LacunaBootstrapNonParameterizedTest) (1 ms)</li><li>cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest.ctorThrowsIfUserFinderIsNull(cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest) (0 ms)</li><li>cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest.ctorThrowsIfNameFinderIsNull(cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest) (1 ms)</li><li>cx.corp.lacuna.core.LacunaBootstrapTest.windowsBootstrapReturnsNonNullMemoryReader(cx.corp.lacuna.core.LacunaBootstrapTest) (1 ms)</li><li>cx.corp.lacuna.core.LacunaBootstrapTest.windowsBootstrapReturnsNonNullNativeProcessCollector(cx.corp.lacuna.core.LacunaBootstrapTest) (1 ms)</li><li>cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest.getReturnsEmptyIfTokenOpenFails(cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest) (0 ms)</li><li>cx.corp.lacuna.core.LacunaBootstrapTest.windowsBootstrapReturnsNonNullNativeProcessEnumerator(cx.corp.lacuna.core.LacunaBootstrapTest) (1 ms)</li><li>cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest.getReturnsCorrectOwnerName(cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest) (0 ms)</li><li>cx.corp.lacuna.core.windows.WindowsNativeProcessEnumeratorImplIT.getProcessesContainsTestTargetDescription(cx.corp.lacuna.core.windows.WindowsNativeProcessEnumeratorImplIT) (203 ms)</li><li>cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest.getThrowsIfHandleIsNull(cx.corp.lacuna.core.windows.WindowsProcessOwnerGetterTest) (5 ms)</li><li>cx.corp.lacuna.core.LacunaBootstrapNonParameterizedTest.forCurrentPlatformDoesntReturnNull(cx.corp.lacuna.core.LacunaBootstrapNonParameterizedTest) (301 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='http://pitest.org'>PIT</a> 1.1.11
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+.notification_box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #ddd;
+    padding: 0.5em 0.25em;
+    min-height: 2.6em;
+    box-sizing: border-box;
+    margin: 0.25em;
+    border-radius: 0.2em;
+}
+
+.notification_box__icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2.6em;
+    width: 2.6em;
+}
+
+.notification_box__icon__symbol {
+    margin: 0;
+    font-weight: bold;
+    color: #eee;
+}
+
+.notification_box__content {
+    display: flex;
+    align-content: center;
+    margin: 0 0 0 2.6em;
+    padding-left: 0.5em;
+}

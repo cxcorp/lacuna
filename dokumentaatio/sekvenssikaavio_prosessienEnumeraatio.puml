@@ -1,0 +1,46 @@
+@startuml
+
+actor User
+
+participant "LacunaBootstrap" as LacunaBootstrapStatic << Static >>
+
+User -> LacunaBootstrapStatic : forCurrentPlatform()
+activate LacunaBootstrapStatic
+
+LacunaBootstrapStatic -> LacunaBootstrap : new
+activate LacunaBootstrap
+LacunaBootstrapStatic <-- LacunaBootstrap
+deactivate LacunaBootstrap
+User <-- LacunaBootstrapStatic : bootstrap
+deactivate LacunaBootstrapStatic
+
+User -> LacunaBootstrap : getNativeProcessEnumerator()
+activate LacunaBootstrap
+User <-- LacunaBootstrap : enumerator
+deactivate LacunaBootstrap
+
+
+User -> NativeProcessEnumerator : getProcesses()
+activate NativeProcessEnumerator
+
+NativeProcessEnumerator -> PidEnumerator : getPids()
+activate PidEnumerator
+PidEnumerator ->] : (platform specific)
+PidEnumerator <--] : pids
+NativeProcessEnumerator <-- PidEnumerator : pids
+deactivate PidEnumerator
+
+loop pid in pids
+	NativeProcessEnumerator -> NativeProcessCollector : collect(pid)
+	activate NativeProcessCollector
+	NativeProcessCollector ->] : (platform specific)
+	NativeProcessCollector <--] : nativeProcess
+	NativeProcessEnumerator <-- NativeProcessCollector : nativeProcess
+end
+
+deactivate NativeProcessCollector
+
+User <-- NativeProcessEnumerator : processes
+deactivate NativeProcessEnumerator
+
+@enduml
