@@ -12,8 +12,9 @@ package cx.corp.lacuna.core.domain {
 
 package cx.corp.lacuna.core {
 	class LacunaBootstrap {
-		{static} forLinux : LacunaBootstrap
-		{static} forWindows : LacunaBootstrap
+		{static} forLinux() : LacunaBootstrap
+		{static} forWindows() : LacunaBootstrap
+		{static} forCurrentPlatform() : LacunaBootstrap
 		getMemoryReader() : MemoryReader
 		getMemoryWriter() : MemoryWriter
 		getNativeProcessEnumerator() : NativeProcessEnumerator
