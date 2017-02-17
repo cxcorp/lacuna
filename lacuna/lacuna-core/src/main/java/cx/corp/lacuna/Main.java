@@ -4,6 +4,7 @@ import com.sun.jna.FunctionMapper;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Platform;
+import cx.corp.lacuna.core.LacunaBootstrap;
 import cx.corp.lacuna.core.MemoryReader;
 import cx.corp.lacuna.core.MemoryReaderImpl;
 import cx.corp.lacuna.core.MemoryWriter;
@@ -51,14 +52,12 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static NativeProcessEnumerator processEnumerator;
-    private static MemoryReader memoryReader;
-    private static MemoryWriter memoryWriter;
+    private static LacunaBootstrap lacuna;
 
     public static void main(String[] args) throws IOException {
         setupPlatformSpecificStuff();
 
-        List<NativeProcess> processes = processEnumerator.getProcesses();
+        List<NativeProcess> processes = lacuna.getNativeProcessEnumerator().getProcesses();
         for (NativeProcess proc : processes) {
             System.out.printf(
                 "%-5d    %-8s    %s%n",
@@ -113,26 +112,28 @@ public class Main {
                                             boolean bool4,
                                             short short5,
                                             int int6) {
-        memoryWriter.writeInt(process, offset + 0, int1);
-        memoryWriter.writeInt(process, offset + 4, int2);
-        memoryWriter.writeBoolean(process, offset + 8, bool3);
-        memoryWriter.writeBoolean(process, offset + 9, bool4);
-        memoryWriter.writeShort(process, offset + 10, short5);
-        memoryWriter.writeInt(process, offset + 12, int6);
+        MemoryWriter mw = lacuna.getMemoryWriter();
+        mw.writeInt(process, offset + 0, int1);
+        mw.writeInt(process, offset + 4, int2);
+        mw.writeBoolean(process, offset + 8, bool3);
+        mw.writeBoolean(process, offset + 9, bool4);
+        mw.writeShort(process, offset + 10, short5);
+        mw.writeInt(process, offset + 12, int6);
     }
 
     private static void readAndDumpTestTargetData(NativeProcess process, int offset) {
-        byte[] bytes = memoryReader.read(process, offset, 0x10);
+        MemoryReader mr = lacuna.getMemoryReader();
+        byte[] bytes = mr.read(process, offset, 0x10);
         hexDump(bytes);
 
-        System.out.print(memoryReader.readInt(process, offset + 0) + " ");
-        System.out.print(memoryReader.readInt(process, offset + 4) + " ");
-        System.out.print(memoryReader.readBoolean(process, offset + 8) + " ");
-        System.out.print(memoryReader.readBoolean(process, offset + 9) + " ");
-        System.out.print(memoryReader.readShort(process, offset + 10) + " ");
-        int str5Ptr = memoryReader.readInt(process, offset + 12);
+        System.out.print(mr.readInt(process, offset + 0) + " ");
+        System.out.print(mr.readInt(process, offset + 4) + " ");
+        System.out.print(mr.readBoolean(process, offset + 8) + " ");
+        System.out.print(mr.readBoolean(process, offset + 9) + " ");
+        System.out.print(mr.readShort(process, offset + 10) + " ");
+        int str5Ptr = mr.readInt(process, offset + 12);
         System.out.print(str5Ptr);
-        System.out.print(" (" + memoryReader.readStringUTF8(process, str5Ptr, 0x100) + ")");
+        System.out.print(" (" + mr.readStringUTF8(process, str5Ptr, 0x100) + ")");
         System.out.println();
     }
 
@@ -156,56 +157,9 @@ public class Main {
 
     private static void setupPlatformSpecificStuff() {
         if (Platform.isWindows()) {
-            setupForWindows();
+            lacuna = LacunaBootstrap.forWindows();
         } else {
-            setupForLinux();
+            lacuna = LacunaBootstrap.forLinux();
         }
-    }
-
-    private static void setupForWindows() {
-        Map<String, Object> options = new HashMap<>();
-        // Use a mapper so that we can use Java-style function names in the interfaces
-        FunctionMapper nameMapper = new CamelToPascalCaseFunctionMapper();
-        options.put(Library.OPTION_FUNCTION_MAPPER, nameMapper);
-
-        Kernel32 kernel = Native.loadLibrary("Kernel32", Kernel32.class, options);
-        Psapi psapi = Native.loadLibrary("Psapi", Psapi.class, options);
-        Advapi32 advapi = Native.loadLibrary("Advapi32", Advapi32.class, options);
-
-        PidEnumerator enumerator = new WindowsPidEnumerator(psapi);
-        ProcessOpener procOpener = new WindowsProcessOpener(kernel);
-
-        ProcessOwnerGetter ownerGetter = new WindowsProcessOwnerGetter(
-            new ProcessTokenOpener(advapi, kernel),
-            new TokenUserFinder(advapi),
-            new TokenOwnerNameFinder(advapi)
-        );
-        ProcessDescriptionGetter descriptionGetter = new WindowsProcessDescriptionGetter(kernel);
-        NativeProcessCollector collector =
-            new WindowsNativeProcessCollector(procOpener, ownerGetter, descriptionGetter);
-
-        processEnumerator = new NativeProcessEnumeratorImpl(enumerator, collector);
-
-        RawMemoryReader rawMemoryReader = new WindowsRawMemoryReader(procOpener, kernel);
-        memoryReader = new MemoryReaderImpl(rawMemoryReader);
-
-        RawMemoryWriter rawWriter = new WindowsRawMemoryWriter(procOpener, kernel);
-        memoryWriter = new MemoryWriterImpl(rawWriter);
-    }
-
-    private static void setupForLinux() {
-        Path procRoot = LinuxConstants.DEFAULT_PROC_ROOT;
-        PidEnumerator enumerator = new LinuxPidEnumerator(procRoot, LinuxConstants.DEFAULT_PID_MAX);
-        NativeProcessCollector collector = new LinuxNativeProcessCollector(procRoot);
-
-        processEnumerator = new NativeProcessEnumeratorImpl(enumerator, collector);
-
-        FileMemoryProvider memProvider = new FileMemoryProvider(Paths.get("/proc"));
-
-        RawMemoryReader rawMemoryReader = new LinuxRawMemoryReader(memProvider);
-        memoryReader = new MemoryReaderImpl(rawMemoryReader);
-
-        RawMemoryWriter rawMemoryWriter = new LinuxRawMemoryWriter(memProvider);
-        memoryWriter = new MemoryWriterImpl(rawMemoryWriter);
     }
 }
