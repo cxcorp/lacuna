@@ -11,6 +11,7 @@
     <modules>
         <module>lacuna-server</module>
         <module>lacuna-core</module>
+        <module>lacuna-ui</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>

@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lacuna-core" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lacuna-server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lacuna-ui" charset="UTF-8" />
   </component>
 </project>

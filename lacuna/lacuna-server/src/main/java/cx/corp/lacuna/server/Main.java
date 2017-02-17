@@ -6,6 +6,7 @@ import cx.corp.lacuna.core.LacunaBootstrap;
 import cx.corp.lacuna.core.MemoryReader;
 import cx.corp.lacuna.core.NativeProcessCollector;
 import cx.corp.lacuna.core.NativeProcessEnumerator;
+import cx.corp.lacuna.core.domain.NativeProcess;
 
 import static spark.Spark.*;
 

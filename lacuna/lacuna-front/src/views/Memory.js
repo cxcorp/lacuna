@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import BaseView from './BaseView';
 import ProcessInfoContainer from '../components/ProcessInfoContainer';
+import MemoryReaderContainer from '../components/MemoryReaderContainer';
 
 class Memory extends Component {
     render() {
@@ -14,6 +15,7 @@ class Memory extends Component {
         return (
             <BaseView title='Process Memory'>
                 <ProcessInfoContainer pid={this.props.location.query.pid} />
+                <MemoryReaderContainer pid={this.props.location.query.pid} />
             </BaseView>
         );
     }
