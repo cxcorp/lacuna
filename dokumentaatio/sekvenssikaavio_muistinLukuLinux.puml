@@ -1,0 +1,68 @@
+@startuml
+
+actor User
+
+participant "LacunaBootstrap" as LacunaBootstrapStatic << Static >>
+
+User -> LacunaBootstrapStatic : forCurrentPlatform()
+
+LacunaBootstrapStatic -> LacunaBootstrap : new
+activate LacunaBootstrap
+LacunaBootstrapStatic <-- LacunaBootstrap
+deactivate LacunaBootstrap
+User <-- LacunaBootstrapStatic : bootstrap
+deactivate LacunaBootstrapStatic
+
+User -> LacunaBootstrap : getMemoryReader()
+activate LacunaBootstrap
+User <-- LacunaBootstrap : reader
+deactivate LacunaBootstrap
+
+participant "MemoryReader" as MemoryReader << MemoryReaderImpl >>
+User -> MemoryReader : readByte(process, 0xF00F00)
+activate MemoryReader
+
+participant "RawMemoryReader" as RawMemoryReader << LinuxRawMemoryReader >>
+MemoryReader -> RawMemoryReader : read(process, offset, TypeSize.BYTE)
+activate RawMemoryReader
+
+participant "ByteBuffer" as ByteBufferStatic << Static >>
+RawMemoryReader -> ByteBufferStatic : allocate(size)
+activate ByteBufferStatic
+
+participant "ByteBuffer" as ByteBuffer
+ByteBufferStatic -> ByteBuffer
+activate ByteBuffer
+ByteBufferStatic <-- ByteBuffer
+deactivate ByteBuffer
+RawMemoryReader <-- ByteBufferStatic : buffer
+deactivate ByteBufferStatic
+
+participant "ReadableMemoryProvider" as ReadableMemoryProvider << FileMemoryProvider >>
+RawMemoryReader -> ReadableMemoryProvider : openRead(pid)
+activate ReadableMemoryProvider
+ReadableMemoryProvider -> SeekableByteChannel
+activate SeekableByteChannel
+ReadableMemoryProvider <-- SeekableByteChannel : input
+deactivate SeekableByteChannel
+RawMemoryReader <-- ReadableMemoryProvider : input
+deactivate ReadableMemoryProvider
+
+RawMemoryReader -> SeekableByteChannel : position(offset)
+activate SeekableByteChannel
+deactivate SeekableByteChannel
+RawMemoryReader -> SeekableByteChannel : read(buffer)
+activate SeekableByteChannel
+RawMemoryReader <-- SeekableByteChannel : bytesRead
+deactivate SeekableByteChannel
+MemoryReader <-- RawMemoryReader : buffer
+deactivate RawMemoryReader
+
+MemoryReader -> ByteBuffer : get()
+activate ByteBuffer
+MemoryReader <-- ByteBuffer : readByte
+deactivate ByteBuffer
+User <-- MemoryReader : readByte
+deactivate MemoryReader
+
+@enduml
