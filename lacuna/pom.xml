@@ -6,7 +6,7 @@
 
     <groupId>cx.corp</groupId>
     <artifactId>lacuna</artifactId>
-    <version>0.1.4</version>
+    <version>0.1.5-SNAPSHOT</version>
 
     <modules>
         <module>lacuna-server</module>

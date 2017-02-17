@@ -14,6 +14,9 @@ public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
     public WindowsProcessOwnerGetter(ProcessTokenOpener tokenOpener,
                                      TokenUserFinder userFinder,
                                      TokenOwnerNameFinder nameFinder) {
+        if (tokenOpener == null || userFinder == null || nameFinder == null) {
+            throw new IllegalArgumentException("Args can't be null");
+        }
         this.tokenOpener = tokenOpener;
         this.tokenUserFinder = userFinder;
         this.tokenOwnerFinder = nameFinder;
