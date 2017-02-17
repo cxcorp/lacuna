@@ -1,0 +1,32 @@
+/* By Tobias Ahlin, MIT license, https://github.com/tobiasahlin/SpinKit */
+
+.sk-cube-grid {
+  display: inline-block;
+}
+
+.sk-cube-grid .sk-cube {
+  width: 33%;
+  height: 33%;
+  background-color: #333;
+  float: left;
+  animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+}
+.sk-cube-grid .sk-cube1 { animation-delay: 0.2s; }
+.sk-cube-grid .sk-cube2 { animation-delay: 0.3s; }
+.sk-cube-grid .sk-cube3 { animation-delay: 0.4s; }
+.sk-cube-grid .sk-cube4 { animation-delay: 0.1s; }
+.sk-cube-grid .sk-cube5 { animation-delay: 0.2s; }
+.sk-cube-grid .sk-cube6 { animation-delay: 0.3s; }
+.sk-cube-grid .sk-cube7 { animation-delay: 0s;   }
+.sk-cube-grid .sk-cube8 { animation-delay: 0.1s; }
+.sk-cube-grid .sk-cube9 { animation-delay: 0.2s; }
+
+@keyframes sk-cubeGridScaleDelay {
+  0%, 70%, 100% {
+            transform: rotateX(0deg) rotateY(0deg) translateZ(0);
+            filter: blur(0px);
+  } 35% {
+            transform: rotateX(45deg) rotateY(45deg) translateZ(5px);
+            filter: blur(5px);
+  } 
+}
