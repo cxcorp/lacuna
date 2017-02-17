@@ -17,6 +17,8 @@ const ProcessList = ({processes, pidMemoryPathGetter}) => {
     console.groupEnd();
     tableRows.reverse();
     return (
+        <div>
+            <InfoBox>{tableRows.length} processes fetched!</InfoBox>
         <table className='process_list'>
             <colgroup span="3"></colgroup>
             <thead>
@@ -29,7 +31,7 @@ const ProcessList = ({processes, pidMemoryPathGetter}) => {
             <tbody>
                 {tableRows}
             </tbody>
-        </table>
+        </table></div>
     );
 };
 

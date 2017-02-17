@@ -8,12 +8,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="lacuna-core" />
         <module name="lacuna-server" />
+        <module name="lacuna-ui" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="lacuna" target="1.5" />
       <module name="lacuna-core" target="1.8" />
       <module name="lacuna-server" target="1.8" />
+      <module name="lacuna-ui" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
