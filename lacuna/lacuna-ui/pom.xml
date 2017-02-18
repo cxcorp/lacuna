@@ -80,7 +80,8 @@
                 <version>1.1.11</version>
                 <configuration>
                     <excludedClasses>
-                        <excludedClass>cx.corp.lacuna.ui.view.MainWindow</excludedClass>
+						<excludedClass>cx.corp.lacuna.ui.LacunaUI</excludedClass>
+                        <excludedClass>cx.corp.lacuna.ui.view.*</excludedClass>
                     </excludedClasses>
                 </configuration>
             </plugin>

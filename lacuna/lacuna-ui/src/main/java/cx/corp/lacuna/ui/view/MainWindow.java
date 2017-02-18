@@ -1,32 +1,37 @@
 package cx.corp.lacuna.ui.view;
 
+import cx.corp.lacuna.ui.presenter.MainCallbacks;
+
 import javax.swing.*;
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 
-public class MainWindow {
+public class MainWindow implements MainView {
 
     private JFrame frame;
+    private MainCallbacks callbacks;
 
     public MainWindow() {
-        createFrame();
+        createWindow();
     }
 
     public void show() {
         frame.setVisible(true);
     }
 
+    private void createWindow() {
+        createFrame();
+        createMenuBar();
+        createComponents();
+        frame.pack();
+    }
+
     private void createFrame() {
         frame = new JFrame("Lacuna");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        createMenuBar();
-        createComponents();
-
         frame.setPreferredSize(new Dimension(600, 400));
-        frame.pack();
     }
 
     private void createMenuBar() {
@@ -36,12 +41,23 @@ public class MainWindow {
         fileMenu.setMnemonic(KeyEvent.VK_F);
 
         JMenuItem chooseProcessItem = new JMenuItem("Choose process...");
+        chooseProcessItem.addActionListener(e -> {
+            ChooseProcessDialog.showDialogWithCallback(
+                this.frame,
+                callbacks::newActiveProcessSelected
+            );
+        });
         fileMenu.add(chooseProcessItem);
 
         JSeparator separator = new JSeparator();
         fileMenu.add(separator);
 
         JMenuItem exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener(e -> {
+            // Dispatch the same event that pressing on the window chrome's X button
+            // would
+            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+        });
         fileMenu.add(exitItem);
 
         menuBar.add(fileMenu);
@@ -56,5 +72,15 @@ public class MainWindow {
         contents.add(txt, BorderLayout.CENTER);
 
         frame.setContentPane(contents);
+    }
+
+    @Override
+    public void attach(MainCallbacks mainCallbacks) {
+        this.callbacks = mainCallbacks;
+    }
+
+    @Override
+    public void setActiveProcess(int newPid) {
+
     }
 }

@@ -1,8 +1,9 @@
 package cx.corp.lacuna.ui;
 
-import cx.corp.lacuna.core.LacunaBootstrap;
+import cx.corp.lacuna.ui.model.MainModel;
+import cx.corp.lacuna.ui.model.MainModelImpl;
+import cx.corp.lacuna.ui.presenter.MainPresenter;
 import cx.corp.lacuna.ui.view.MainWindow;
-import cx.corp.lacuna.ui.view.ProcessListWindow;
 
 import javax.swing.*;
 
@@ -13,13 +14,10 @@ public class LacunaUI implements Runnable {
 
     @Override
     public void run() {
-        ProcessListWindow w = new ProcessListWindow();
-        w.setProcessList(
-            LacunaBootstrap
-            .forCurrentPlatform()
-            .getNativeProcessEnumerator()
-            .getProcesses()
-        );
-        w.show();
+        MainModel mainModel = new MainModelImpl();
+        MainWindow mainWindow = new MainWindow();
+        MainPresenter presenter = new MainPresenter(mainWindow, mainModel);
+        presenter.initialize();
+        mainWindow.show();
     }
 }

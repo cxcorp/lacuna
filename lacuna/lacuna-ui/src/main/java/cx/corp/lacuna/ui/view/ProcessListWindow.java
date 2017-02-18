@@ -21,8 +21,10 @@ public class ProcessListWindow implements ProcessListView {
     private static final int TABLE_PADDING_Y = 0; // doesn't resize rows
     private static final int COLUMN_PID_INDEX = 0;
 
+    private final Window modalParent;
+
     private ProcessListCallbacks callbacks;
-    private JFrame frame;
+    private JDialog root;
     private JPanel frameContainer;
     private NativeProcessNonEditTableModel tableModel;
     private JTable table;
@@ -30,18 +32,21 @@ public class ProcessListWindow implements ProcessListView {
     private JButton searchButton;
     private JButton searchClearButton;
     private JButton chooseButton;
+    private JButton updateButton;
 
     private Integer chosenProcessId;
     private String searchFilter;
 
-    public ProcessListWindow() {
+    public ProcessListWindow(Window modalParent) {
+        this.modalParent = modalParent;
         chosenProcessId = null;
         searchFilter = "";
         createWindow();
     }
 
     public void show() {
-        frame.setVisible(true);
+        callbacks.updateRequested();
+        root.setVisible(true);
     }
 
     @Override
@@ -63,25 +68,28 @@ public class ProcessListWindow implements ProcessListView {
     private void createWindow() {
         createFrame();
         createComponents();
-        frame.pack();
+        root.pack();
     }
 
     private void createFrame() {
-        frame = new JFrame("Process list");
-        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
+        root = new JDialog(modalParent, "Process list", Dialog.ModalityType.APPLICATION_MODAL);
+        root.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        root.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
     }
 
     private void createComponents() {
         createAndSetContentPane();
         createTable();
         createOtherControls();
+        // Bind things only after all components are created because
+        // some action listeners depend on other components which
+        // might not be initialized yet
         createBindingsAndListeners();
     }
 
     private void createAndSetContentPane() {
         frameContainer = new JPanel(new GridBagLayout());
-        frame.setContentPane(frameContainer);
+        root.setContentPane(frameContainer);
     }
 
     private void createTable() {
@@ -95,7 +103,7 @@ public class ProcessListWindow implements ProcessListView {
         c.gridy = 0;
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
-        c.weighty = 0.9;
+        c.weighty = 0.95;
         c.insets = new Insets(COMPONENT_PADDING, COMPONENT_PADDING, 0, COMPONENT_PADDING);
         JScrollPane scrollPane = new JScrollPane(table);
         frameContainer.add(scrollPane, c);
@@ -117,54 +125,54 @@ public class ProcessListWindow implements ProcessListView {
         table.setRowSorter(sorter);
     }
 
+    // @formatter:off
     private void createOtherControls() {
-        JPanel panel = new JPanel(new GridBagLayout());
+        JPanel controlsPanel = new JPanel(new BorderLayout());
+
+            JPanel searchAndUpdatePanel = new JPanel(new BorderLayout());
+                JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+                    searchField = new JTextField();
+                    searchField.setColumns(20);
+                    searchPanel.add(searchField);
+                    searchButton = new JButton("Search");
+                    searchPanel.add(searchButton);
+                    searchClearButton = new JButton("Clear");
+                    searchPanel.add(searchClearButton);
+                searchAndUpdatePanel.add(searchPanel, BorderLayout.WEST);
+
+                JPanel updatePanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));
+                    updateButton = new JButton("Refresh");
+                    updatePanel.add(updateButton);
+                searchAndUpdatePanel.add(updatePanel);
+            controlsPanel.add(searchAndUpdatePanel, BorderLayout.NORTH);
+
+            JPanel choosePanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+                chooseButton = new JButton("Choose process");
+                chooseButton.setEnabled(false); // disabled until a process is selected
+                choosePanel.add(chooseButton);
+            controlsPanel.add(choosePanel, BorderLayout.SOUTH);
+
         GridBagConstraints c = new GridBagConstraints();
-
-        searchField = new JTextField();
-        c.gridy = 0;
-        c.gridx = 0;
-        c.weightx = 100;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.WEST;
-        panel.add(searchField, c);
-
-        searchButton = new JButton("Search");
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 10;
-        c.gridx = 1;
-        panel.add(searchButton, c);
-
-        searchClearButton = new JButton("Clear");
-        c.weightx = 10;
-        c.gridx = 2;
-        panel.add(searchClearButton, c);
-
-        chooseButton = new JButton("Choose process");
-        chooseButton.setEnabled(false); // disabled until a process is selected
-        c.gridx = 3;
-        c.anchor = GridBagConstraints.EAST;
-        panel.add(chooseButton);
-
-        c = new GridBagConstraints();
         c.gridy = 1;
-        c.weighty = 0.10;
+        c.weighty = 0;
         c.weightx = 1;
         c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(COMPONENT_PADDING, COMPONENT_PADDING, COMPONENT_PADDING, COMPONENT_PADDING);
-        frameContainer.add(panel, c);
+        frameContainer.add(controlsPanel, c);
     }
+    // @formatter:on
 
     private void createBindingsAndListeners() {
-        chooseButtonGetsEnabledWhenRowIsSelected();
+        chooseButtonIsEnabledWhenRowIsSelected();
         rowSelectionUpdatesChosenProcessId();
         searchFieldUpdatesSearchFilter();
         chooseButtonSendsMessageAndClosesWindow();
         searchButtonUpdatesFilter();
         searchClearButtonClearsSearchField();
+        updateButtonRequestsUpdate();
     }
 
-    private void chooseButtonGetsEnabledWhenRowIsSelected() {
+    private void chooseButtonIsEnabledWhenRowIsSelected() {
         table.getSelectionModel().addListSelectionListener(
             e -> chooseButton.setEnabled(true));
     }
@@ -176,7 +184,8 @@ public class ProcessListWindow implements ProcessListView {
                 chosenProcessId = null;
                 return;
             }
-            chosenProcessId = (Integer)table.getModel().getValueAt(row, COLUMN_PID_INDEX);
+            int modelIndex = table.convertRowIndexToModel(row);
+            chosenProcessId = (Integer)table.getModel().getValueAt(modelIndex, COLUMN_PID_INDEX);
         });
     }
 
@@ -189,7 +198,7 @@ public class ProcessListWindow implements ProcessListView {
             if (callbacks != null) {
                 callbacks.processChosen();
             }
-            frame.setVisible(false);
+            root.setVisible(false);
         });
     }
 
@@ -208,6 +217,14 @@ public class ProcessListWindow implements ProcessListView {
             searchField.setText("");
             searchFilter = "";
             updateTableFilter();
+        });
+    }
+
+    private void updateButtonRequestsUpdate() {
+        updateButton.addActionListener(e -> {
+            if (callbacks != null) {
+                callbacks.updateRequested();
+            }
         });
     }
 
