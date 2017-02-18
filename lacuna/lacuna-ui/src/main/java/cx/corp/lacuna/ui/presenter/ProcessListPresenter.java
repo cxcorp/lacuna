@@ -1,4 +1,4 @@
 package cx.corp.lacuna.ui.presenter;
 
-public interface MainWindowPresenter {
+public interface ProcessListPresenter {
 }

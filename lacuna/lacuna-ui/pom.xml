@@ -29,6 +29,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.10.19</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>cx.corp</groupId>
             <artifactId>lacuna-core</artifactId>
             <version>0.1.5-SNAPSHOT</version>
@@ -74,7 +80,7 @@
                 <version>1.1.11</version>
                 <configuration>
                     <excludedClasses>
-                        <excludedClass>cx.corp.lacuna.ui.MainWindow</excludedClass>
+                        <excludedClass>cx.corp.lacuna.ui.view.MainWindow</excludedClass>
                     </excludedClasses>
                 </configuration>
             </plugin>
@@ -86,7 +92,7 @@
                     <transformers>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <manifestEntries>
-                                <Main-Class>cx.corp.lacuna.Main</Main-Class>
+                                <Main-Class>cx.corp.lacuna.ui.LacunaUI</Main-Class>
                             </manifestEntries>
                         </transformer>
                     </transformers>
