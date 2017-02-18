@@ -1,4 +1,4 @@
-package cx.corp.lacuna.ui;
+package cx.corp.lacuna.ui.view;
 
 import javax.swing.*;
 import java.awt.BorderLayout;
@@ -34,12 +34,17 @@ public class MainWindow {
 
         JMenu fileMenu = new JMenu("File");
         fileMenu.setMnemonic(KeyEvent.VK_F);
-        JMenuItem menuItem = new JMenuItem("Choose process...");
-        fileMenu.add(menuItem);
 
+        JMenuItem chooseProcessItem = new JMenuItem("Choose process...");
+        fileMenu.add(chooseProcessItem);
+
+        JSeparator separator = new JSeparator();
+        fileMenu.add(separator);
+
+        JMenuItem exitItem = new JMenuItem("Exit");
+        fileMenu.add(exitItem);
 
         menuBar.add(fileMenu);
-
         frame.setJMenuBar(menuBar);
     }
 

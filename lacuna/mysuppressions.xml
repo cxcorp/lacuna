@@ -6,5 +6,6 @@
 
 <suppressions>
     <suppress files="cx/corp/lacuna/Main.java" checks="[a-zA-Z0-9]*"/>
-    <suppress files="cx/corp/lacuna/ui/*" checks="[a-zA-Z0-9]*"/>
+	<suppress files="cx/corp/lacuna/ui/LacunaUI.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="cx/corp/lacuna/ui/view/*Window.java" checks="[a-zA-Z0-9]*"/>
 </suppressions>
