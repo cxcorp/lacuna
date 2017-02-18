@@ -6,7 +6,11 @@ Program for reading and writing other programs' memory.
 Coursework for [Javalabra-2017-3](https://github.com/javaLabra/Javalabra2017-3).
 
 ## Current state
-Lacuna can currently dump the active process list, as well as read and write a process' memory on both Windows and Linux. A UI prototype exists at a [very rudimentary stage](http://i.imgur.com/tioJtYF.png).
+Lacuna can currently dump the active process list, as well as read and write a process' memory on both Windows and Linux. A UI prototype exists at a very rudimentary stage:
+
+![](http://i.imgur.com/7Op5MD7.png)
+
+Library use example:
 
 ![](http://i.imgur.com/PMrn1BA.png)
 
@@ -23,7 +27,7 @@ Tested platforms:
 * [**Trello**](https://trello.com/b/KGL8icHx/lacuna)
 
 ## Download
-See [**Releases**](https://github.com/cxcorp/lacuna/releases) for ready jars. Run with `java -jar lacuna-<VERSION>.jar`
+See [**Releases**](https://github.com/cxcorp/lacuna/releases) for ready jars. Run with `java -jar lacuna-ui-<VERSION>.jar`
 
 For compilation instructions, see below.
 
@@ -32,9 +36,10 @@ For compilation instructions, see below.
 1. Install [Apache Maven](https://maven.apache.org/install.html). Lacuna uses Maven to manage dependencies and lifecycle scripts.
 2. Clone or download this repository.
 3. Go to the project folder: `cd lacuna/lacuna`
-4. Compile and package the project: `mvn clean package`. This step generates the .jar file in the target/ directory.
-  - You may optionally choose to skip running unit tests: `mvn clean package -DskipTests`
-5. Run Lacuna: `java -jar target/lacuna-<VERSION>.jar`
+4. Compile and package the project: `mvn clean install package`. This step generates the .jar files in each of the modules' target/ directories.
+  - You may optionally choose to skip running unit tests: `mvn clean install package -DskipTests`
+  - Note: the `install` phase is needed so that `lacuna-ui` finds `lacuna-core`.
+5. Run the Lacuna UI: `java -jar lacuna-ui/target/lacuna-ui-<VERSION>.jar`
 
 ## License
 Lacuna is licensed under the MIT License (Expat). See LICENSE.
