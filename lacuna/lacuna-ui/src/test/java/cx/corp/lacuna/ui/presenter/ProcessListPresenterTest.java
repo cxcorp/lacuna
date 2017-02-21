@@ -15,6 +15,8 @@ import javax.swing.plaf.OptionPaneUI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
 import static org.junit.Assert.assertEquals;
@@ -32,7 +34,7 @@ public class ProcessListPresenterTest {
     private ProcessListView view;
 
     @Captor
-    private ArgumentCaptor<Integer> processChosenCaptor;
+    private ArgumentCaptor<NativeProcess> processChosenCaptor;
 
     @Before
     public void setUp() {
@@ -76,13 +78,13 @@ public class ProcessListPresenterTest {
 
     @Test
     public void processChosenDoesntThrowIfViewReturnsEmptyAndNoListenersRegistered() {
-        given(view.getChosenProcessId()).willReturn(Optional.empty());
+        given(view.getChosenProcess()).willReturn(Optional.empty());
         presenter.processChosen();
     }
 
     @Test
     public void processChosenDoesntCallListenerIfViewReturnsEmpty() {
-        given(view.getChosenProcessId()).willReturn(Optional.empty());
+        given(view.getChosenProcess()).willReturn(Optional.empty());
         presenter.addProcessChosenListener(
             i -> fail("Callback was called even through view returned empty!"));
         presenter.processChosen();
@@ -90,14 +92,33 @@ public class ProcessListPresenterTest {
 
     @Test
     public void processChosenCallsOneListenerWithCorrectPid() {
-        given(view.getChosenProcessId()).willReturn(Optional.of(9999));
+        NativeProcess proc = randomNativeProcess();
+        given(view.getChosenProcess()).willReturn(Optional.of(proc));
         ProcessChosenEventListener callback = mock(ProcessChosenEventListener.class);
-        doNothing().when(callback).processChosen(9999);
+        doNothing().when(callback).processChosen(proc);
 
         presenter.addProcessChosenListener(callback);
         presenter.processChosen();
 
         verify(callback).processChosen(processChosenCaptor.capture());
-        assertEquals((Integer)9999, processChosenCaptor.getValue());
+        assertEquals(proc, processChosenCaptor.getValue());
+    }
+
+    private static NativeProcess randomNativeProcess() {
+        Random rng = ThreadLocalRandom.current();
+        NativeProcess proc = new NativeProcessImpl();
+        proc.setPid(1 + rng.nextInt(32000));
+        proc.setOwner(randomString(5, 20));
+        proc.setDescription(randomString(10, 60));
+        return proc;
+    }
+
+    private static String randomString(int minSize, int maxSize) {
+        Random rng = ThreadLocalRandom.current();
+        StringBuilder sb = new StringBuilder(maxSize);
+        for (int i = 0; i < maxSize; i++) {
+            sb.append((char)rng.nextInt(('-' - 'a') + 'a'));
+        }
+        return sb.toString();
     }
 }

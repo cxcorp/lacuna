@@ -1,5 +1,6 @@
 package cx.corp.lacuna.ui.view;
 
+import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.ui.presenter.MainCallbacks;
 
 import javax.swing.*;
@@ -87,7 +88,6 @@ public class MainWindow implements MainView {
     }
 
     @Override
-    public void setActiveProcess(int newPid) {
-
+    public void setActiveProcess(NativeProcess newProcess) {
     }
 }

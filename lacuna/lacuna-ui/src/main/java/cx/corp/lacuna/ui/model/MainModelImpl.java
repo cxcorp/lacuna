@@ -1,16 +1,18 @@
 package cx.corp.lacuna.ui.model;
 
+import cx.corp.lacuna.core.domain.NativeProcess;
+
 public class MainModelImpl implements MainModel {
 
-    private int activeProcess = -1;
+    private NativeProcess activeProcess = null;
 
     @Override
-    public void setActiveProcess(int pid) {
+    public void setActiveProcess(NativeProcess pid) {
         activeProcess = pid;
     }
 
     @Override
-    public int getActiveProcess() {
+    public NativeProcess getActiveProcess() {
         return activeProcess;
     }
 }
