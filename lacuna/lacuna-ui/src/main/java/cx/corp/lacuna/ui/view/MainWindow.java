@@ -10,8 +10,10 @@ import java.awt.event.WindowEvent;
 
 public class MainWindow implements MainView {
 
+    private static final String TITLE = "Lacuna";
     private JFrame frame;
     private MainCallbacks callbacks;
+    private JLabel activeProcessLabel;
 
     public MainWindow() {
         createWindow();
@@ -29,7 +31,7 @@ public class MainWindow implements MainView {
     }
 
     private void createFrame() {
-        frame = new JFrame("Lacuna");
+        frame = new JFrame(TITLE);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(600, 400));
     }
@@ -74,10 +76,9 @@ public class MainWindow implements MainView {
 
     private void createComponents() {
         JPanel contents = new JPanel(new BorderLayout());
-        contents.setOpaque(true);
 
-        JTextArea txt = new JTextArea(5, 30);
-        contents.add(txt, BorderLayout.CENTER);
+        activeProcessLabel = new JLabel("No process selected");
+        contents.add(activeProcessLabel, BorderLayout.NORTH);
 
         frame.setContentPane(contents);
     }
@@ -89,5 +90,7 @@ public class MainWindow implements MainView {
 
     @Override
     public void setActiveProcess(NativeProcess newProcess) {
+        activeProcessLabel.setText(newProcess.toString());
+        frame.setTitle(String.format("%s - %s", newProcess.getDescription(), TITLE));
     }
 }
