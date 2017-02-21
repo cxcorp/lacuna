@@ -82,6 +82,11 @@ public class ProcessListPresenterTest {
         presenter.processChosen();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void addProcessChosenListenerThrowsWhenNullArgPassed() {
+        presenter.addProcessChosenListener(null);
+    }
+
     @Test
     public void processChosenDoesntCallListenerIfViewReturnsEmpty() {
         given(view.getChosenProcess()).willReturn(Optional.empty());

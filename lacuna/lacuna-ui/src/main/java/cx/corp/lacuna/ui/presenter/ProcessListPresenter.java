@@ -38,6 +38,9 @@ public class ProcessListPresenter implements Presenter, ProcessListCallbacks {
     }
 
     public void addProcessChosenListener(ProcessChosenEventListener callback) {
+        if (callback == null) {
+            throw new IllegalArgumentException("Callback cannot be null!");
+        }
         processChosenCallbacks.add(callback);
     }
 }
