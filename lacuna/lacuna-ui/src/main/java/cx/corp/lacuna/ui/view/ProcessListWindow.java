@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,8 +47,16 @@ public class ProcessListWindow implements ProcessListView {
     }
 
     public void show() {
-        callbacks.updateRequested();
-        root.setVisible(true);
+        root.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                if (callbacks != null) {
+                    callbacks.updateRequested();
+                }
+                super.windowOpened(e);
+            }
+        });
+        root.setVisible(true); // dialog, blocks after this call
     }
 
     @Override
