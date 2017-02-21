@@ -124,4 +124,28 @@ public class NativeProcessImplTest {
         NativeProcessImpl b = new NativeProcessImpl(6712, "woof woof", "boii");
         assertNotEquals(a.hashCode(), b.hashCode());
     }
+
+    @Test
+    public void toStringContainsRightPid() {
+        NativeProcessImpl proc1 = new NativeProcessImpl(1234, "ayy", "lmao");
+        NativeProcessImpl proc2 = new NativeProcessImpl(29999, "ayy", "lmao");
+        assertTrue(proc1.toString().contains("1234"));
+        assertTrue(proc2.toString().contains("29999"));
+    }
+
+    @Test
+    public void toStringContainsRightDescription() {
+        NativeProcessImpl proc1 = new NativeProcessImpl(1234, "ayy", "lmao");
+        NativeProcessImpl proc2 = new NativeProcessImpl(1234, "toopppppp kkeeekkkk", "lmao");
+        assertTrue(proc1.toString().contains("ayy"));
+        assertTrue(proc2.toString().contains("toopppppp kkeeekkkk"));
+    }
+
+    @Test
+    public void toStringContainsRightOwner() {
+        NativeProcessImpl proc1 = new NativeProcessImpl(1234, "ayy", "SYSTEM");
+        NativeProcessImpl proc2 = new NativeProcessImpl(1234, "toaster", "Joona");
+        assertTrue(proc1.toString().contains("SYSTEM"));
+        assertTrue(proc2.toString().contains("Joona"));
+    }
 }
