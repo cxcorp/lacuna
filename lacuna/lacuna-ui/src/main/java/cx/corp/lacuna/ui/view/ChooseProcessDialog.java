@@ -6,7 +6,6 @@ import cx.corp.lacuna.ui.presenter.ProcessChosenEventListener;
 import cx.corp.lacuna.ui.presenter.ProcessListPresenter;
 
 import java.awt.*;
-import java.util.function.Consumer;
 
 class ChooseProcessDialog {
 

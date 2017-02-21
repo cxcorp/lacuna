@@ -1,5 +1,6 @@
 package cx.corp.lacuna.ui.presenter;
 
+import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.ui.model.MainModel;
 import cx.corp.lacuna.ui.view.MainView;
 
@@ -22,8 +23,8 @@ public class MainPresenter implements Presenter, MainCallbacks {
     }
 
     @Override
-    public void newActiveProcessSelected(int newPid) {
-        model.setActiveProcess(newPid);
-        view.setActiveProcess(newPid);
+    public void newActiveProcessSelected(NativeProcess newProcess) {
+        model.setActiveProcess(newProcess);
+        view.setActiveProcess(newProcess);
     }
 }

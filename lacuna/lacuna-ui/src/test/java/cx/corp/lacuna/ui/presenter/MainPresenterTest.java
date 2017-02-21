@@ -1,5 +1,7 @@
 package cx.corp.lacuna.ui.presenter;
 
+import cx.corp.lacuna.core.domain.NativeProcess;
+import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import cx.corp.lacuna.ui.model.MainModel;
 import cx.corp.lacuna.ui.model.MainModelImpl;
 import cx.corp.lacuna.ui.view.MainView;
@@ -44,14 +46,16 @@ public class MainPresenterTest {
 
     @Test
     public void newActiveProcessSelectedUpdatesModel() {
-        model.setActiveProcess(-1);
-        presenter.newActiveProcessSelected(1234);
-        assertEquals(1234, model.getActiveProcess());
+        NativeProcess newProcess = new NativeProcessImpl(123, "ayy", "lmao");
+        model.setActiveProcess(null);
+        presenter.newActiveProcessSelected(newProcess);
+        assertEquals(newProcess, model.getActiveProcess());
     }
 
     @Test
     public void newActiveProcessSelectedUpdatesView() {
-        presenter.newActiveProcessSelected(54321);
-        verify(view).setActiveProcess(54321);
+        NativeProcess newProcess = new NativeProcessImpl(123, "ayy", "lmao");
+        presenter.newActiveProcessSelected(newProcess);
+        verify(view).setActiveProcess(newProcess);
     }
 }

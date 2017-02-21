@@ -23,8 +23,8 @@ public class ProcessListPresenter implements Presenter, ProcessListCallbacks {
 
     @Override
     public void processChosen() {
-        view.getChosenProcessId()
-            .ifPresent(pid -> processChosenCallbacks.forEach(c -> c.processChosen(pid)));
+        view.getChosenProcess()
+            .ifPresent(proc -> processChosenCallbacks.forEach(c -> c.processChosen(proc)));
     }
 
     @Override

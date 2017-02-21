@@ -1,6 +1,8 @@
 package cx.corp.lacuna.ui.model;
 
+import cx.corp.lacuna.core.domain.NativeProcess;
+
 public interface MainModel {
-    void setActiveProcess(int pid);
-    int getActiveProcess();
+    void setActiveProcess(NativeProcess pid);
+    NativeProcess getActiveProcess();
 }

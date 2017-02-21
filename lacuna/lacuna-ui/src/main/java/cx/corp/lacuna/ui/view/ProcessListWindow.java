@@ -21,7 +21,7 @@ public class ProcessListWindow implements ProcessListView {
     private static final int COMPONENT_PADDING = 16;
     private static final int TABLE_PADDING_X = 16;
     private static final int TABLE_PADDING_Y = 0; // doesn't resize rows
-    private static final int COLUMN_PID_INDEX = 0;
+    private static final int COLUMN_INDEX_PID = 0;
 
     private final Window modalParent;
 
@@ -36,12 +36,13 @@ public class ProcessListWindow implements ProcessListView {
     private JButton chooseButton;
     private JButton updateButton;
 
-    private Integer chosenProcessId;
+    private List<NativeProcess> processes;
+    private NativeProcess chosenProcess;
     private String searchFilter;
 
     public ProcessListWindow(Window modalParent) {
         this.modalParent = modalParent;
-        chosenProcessId = null;
+        chosenProcess = null;
         searchFilter = "";
         createWindow();
     }
@@ -60,12 +61,13 @@ public class ProcessListWindow implements ProcessListView {
     }
 
     @Override
-    public Optional<Integer> getChosenProcessId() {
-        return Optional.ofNullable(chosenProcessId);
+    public Optional<NativeProcess> getChosenProcess() {
+        return Optional.ofNullable(chosenProcess);
     }
 
     @Override
-    public void setProcessList(Collection<NativeProcess> processes) {
+    public void setProcessList(List<NativeProcess> processes) {
+        this.processes = processes;
         clearTable();
         addRows(processes);
     }
@@ -130,7 +132,7 @@ public class ProcessListWindow implements ProcessListView {
     private void sortPidColumnDescending() {
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(tableModel);
         List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-        sortKeys.add(new RowSorter.SortKey(COLUMN_PID_INDEX, SortOrder.DESCENDING));
+        sortKeys.add(new RowSorter.SortKey(COLUMN_INDEX_PID, SortOrder.DESCENDING));
         sorter.setSortKeys(sortKeys);
         table.setRowSorter(sorter);
     }
@@ -191,11 +193,13 @@ public class ProcessListWindow implements ProcessListView {
         table.getSelectionModel().addListSelectionListener(e -> {
             int row = table.getSelectedRow();
             if (row == -1) {
-                chosenProcessId = null;
+                chosenProcess = null;
                 return;
             }
+            // Model index is the same as the `processes` index, only the view index
+            // is affected by sorting and filtering
             int modelIndex = table.convertRowIndexToModel(row);
-            chosenProcessId = (Integer)table.getModel().getValueAt(modelIndex, COLUMN_PID_INDEX);
+            chosenProcess = processes.get(modelIndex);
         });
     }
 
