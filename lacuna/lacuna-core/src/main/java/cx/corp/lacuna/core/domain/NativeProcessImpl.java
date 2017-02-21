@@ -94,4 +94,13 @@ public class NativeProcessImpl implements NativeProcess {
     public int hashCode() {
         return Objects.hash(pid, description, owner);
     }
+
+    @Override
+    public String toString() {
+        return String.format("{ PID: %d, owner: %s, description: %s }",
+            pid,
+            owner,
+            description
+        );
+    }
 }
