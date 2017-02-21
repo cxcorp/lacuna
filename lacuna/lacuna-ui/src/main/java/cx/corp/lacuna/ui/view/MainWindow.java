@@ -3,8 +3,7 @@ package cx.corp.lacuna.ui.view;
 import cx.corp.lacuna.ui.presenter.MainCallbacks;
 
 import javax.swing.*;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 
@@ -41,6 +40,14 @@ public class MainWindow implements MainView {
         fileMenu.setMnemonic(KeyEvent.VK_F);
 
         JMenuItem chooseProcessItem = new JMenuItem("Choose process...");
+        chooseProcessItem.setMnemonic(KeyEvent.VK_O);
+        chooseProcessItem.setAccelerator( // CTRL+o
+            KeyStroke.getKeyStroke(
+                KeyEvent.VK_O,
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
+                // CTRL on windows, CMD on mac, etc.
+            )
+        );
         chooseProcessItem.addActionListener(e -> {
             ChooseProcessDialog.showDialogWithCallback(
                 this.frame,
