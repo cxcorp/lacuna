@@ -35,6 +35,7 @@ public class ProcessListWindow implements ProcessListView {
     private JButton searchClearButton;
     private JButton chooseButton;
     private JButton updateButton;
+    private JButton cancelButton;
 
     private List<NativeProcess> processes;
     private NativeProcess chosenProcess;
@@ -77,6 +78,7 @@ public class ProcessListWindow implements ProcessListView {
         callbacks = processListCallbacks;
     }
 
+    //<editor-fold desc="UI creation">
     private void createWindow() {
         createFrame();
         createComponents();
@@ -158,11 +160,17 @@ public class ProcessListWindow implements ProcessListView {
                 searchAndUpdatePanel.add(updatePanel);
             controlsPanel.add(searchAndUpdatePanel, BorderLayout.NORTH);
 
-            JPanel choosePanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
-                chooseButton = new JButton("Choose process");
-                chooseButton.setEnabled(false); // disabled until a process is selected
-                choosePanel.add(chooseButton);
-            controlsPanel.add(choosePanel, BorderLayout.SOUTH);
+            JPanel bottomButtonsPanel = new JPanel(new BorderLayout());
+                JPanel choosePanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+                    chooseButton = new JButton("Choose process");
+                    chooseButton.setEnabled(false); // disabled until a process is selected
+                    choosePanel.add(chooseButton);
+                bottomButtonsPanel.add(choosePanel, BorderLayout.WEST);
+                JPanel cancelPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));
+                    cancelButton = new JButton("Cancel");
+                    cancelPanel.add(cancelButton);
+                bottomButtonsPanel.add(cancelPanel, BorderLayout.EAST);
+            controlsPanel.add(bottomButtonsPanel, BorderLayout.SOUTH);
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 1;
@@ -173,15 +181,18 @@ public class ProcessListWindow implements ProcessListView {
         frameContainer.add(controlsPanel, c);
     }
     // @formatter:on
+    //</editor-fold>
 
     private void createBindingsAndListeners() {
         chooseButtonIsEnabledWhenRowIsSelected();
         rowSelectionUpdatesChosenProcessId();
         searchFieldUpdatesSearchFilter();
+        searchFieldEnterKeySearches();
         chooseButtonSendsMessageAndClosesWindow();
         searchButtonUpdatesFilter();
         searchClearButtonClearsSearchField();
         updateButtonRequestsUpdate();
+        cancelButtonClosesDialog();
     }
 
     private void chooseButtonIsEnabledWhenRowIsSelected() {
@@ -216,6 +227,10 @@ public class ProcessListWindow implements ProcessListView {
         });
     }
 
+    private void searchFieldEnterKeySearches() {
+        searchField.addActionListener(e -> searchButton.doClick());
+    }
+
     private void searchButtonUpdatesFilter() {
         searchButton.addActionListener(e -> updateTableFilter());
     }
@@ -240,6 +255,10 @@ public class ProcessListWindow implements ProcessListView {
                 callbacks.updateRequested();
             }
         });
+    }
+
+    private void cancelButtonClosesDialog() {
+        cancelButton.addActionListener(e -> root.setVisible(false));
     }
 
     private void clearTable() {
