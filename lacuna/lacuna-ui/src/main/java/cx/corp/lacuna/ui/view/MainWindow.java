@@ -7,15 +7,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.util.Observable;
 
-public class MainWindow implements MainView {
+public class MainWindow extends Observable implements MainView{
 
     private static final String TITLE = "Lacuna";
-    private JFrame frame;
+    private final ChooseProcessDialog chooseProcessDialog;
     private MainCallbacks callbacks;
-    private JLabel activeProcessLabel;
+    private NativeProcess activeProcess;
 
-    public MainWindow() {
+    private JFrame frame;
+    private JLabel activeProcessLabel;
+    private JPanel memoryPanelParent;
+    private JPanel memoryPanel;
+
+    public MainWindow(ChooseProcessDialog chooseProcDialog) {
+        this.chooseProcessDialog = chooseProcDialog;
         createWindow();
     }
 
@@ -23,6 +30,28 @@ public class MainWindow implements MainView {
         frame.setVisible(true);
     }
 
+    /**
+     * Sets the drawn memory component panel, removing the old panel.
+     * If {@code panel} is {@code null}, just removes the current panel
+     * if it exists.
+     * @param panel Panel to display as the memory component panel, or
+     *              {@code null} if the current panel should be removed.
+     */
+    public void setMemoryPanel(JPanel panel) {
+        if (memoryPanel != null) {
+            removeOldMemoryPanel();
+        }
+        if (panel != null) {
+            memoryPanelParent.add(panel, BorderLayout.CENTER);
+        }
+        memoryPanel = panel;
+    }
+
+    private void removeOldMemoryPanel() {
+        memoryPanelParent.remove(memoryPanel);
+    }
+
+    //<editor-fold desc="UI creation">
     private void createWindow() {
         createFrame();
         createMenuBar();
@@ -52,9 +81,14 @@ public class MainWindow implements MainView {
             )
         );
         chooseProcessItem.addActionListener(e -> {
-            ChooseProcessDialog.showDialogWithCallback(
+            chooseProcessDialog.showDialogWithCallback(
                 this.frame,
-                callbacks::newActiveProcessSelected
+                newProc -> {
+                    setActiveProcess(newProc);
+                    if (callbacks != null) {
+                        callbacks.newActiveProcessSelected();
+                    }
+                }
             );
         });
         fileMenu.add(chooseProcessItem);
@@ -80,8 +114,12 @@ public class MainWindow implements MainView {
         activeProcessLabel = new JLabel("No process selected");
         contents.add(activeProcessLabel, BorderLayout.NORTH);
 
+        memoryPanelParent = new JPanel(new BorderLayout());
+        contents.add(memoryPanelParent, BorderLayout.CENTER);
+
         frame.setContentPane(contents);
     }
+    //</editor-fold>
 
     @Override
     public void attach(MainCallbacks mainCallbacks) {
@@ -90,7 +128,13 @@ public class MainWindow implements MainView {
 
     @Override
     public void setActiveProcess(NativeProcess newProcess) {
+        activeProcess = newProcess;
         activeProcessLabel.setText(newProcess.toString());
         frame.setTitle(String.format("%s - %s", newProcess.getDescription(), TITLE));
+    }
+
+    @Override
+    public NativeProcess getActiveProcess() {
+        return activeProcess;
     }
 }
