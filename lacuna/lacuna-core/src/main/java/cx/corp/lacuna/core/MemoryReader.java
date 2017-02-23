@@ -37,7 +37,7 @@ public interface MemoryReader {
 
     /**
      * Reads a byte from the specified offset and decodes the data using UTF-8.
-     * <p>
+     *
      * <p>Notice that this method only cannot read multi-byte UTF-8 code points.
      * To read more than one byte at a time, see {@link #readStringUTF8(NativeProcess, int, int)}.
      *
@@ -143,7 +143,7 @@ public interface MemoryReader {
      * Reads 8-bit UTF-8 code units from the specified offset until either
      * a null character or the specified limit is met, then constructs a String
      * from the data.
-     * <p>
+     *
      * <p>Notice that UTF-8 is a variable length character encoding, in which
      * Unicode code points higher than U+007F are encoded with two to four 8-bit
      * code units. This method does not synchronize reads to read a full code point,
@@ -166,7 +166,7 @@ public interface MemoryReader {
      * Reads two-byte UTF-16 little-endian code units from the specified offset
      * until either a null character or the specified limit is met, then
      * constructs a String from the data.
-     * <p>
+     *
      * <p>Notice that UTF-16 is a variable length character encoding, in which
      * Unicode code points higher than U+10000 are encoded as two 16-bit surrogate pairs.
      * This method does not synchronize reads to read a full code point, so reads

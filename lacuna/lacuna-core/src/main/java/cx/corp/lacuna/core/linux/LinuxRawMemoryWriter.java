@@ -8,13 +8,25 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 
+/**
+ * {@inheritDoc}
+ *
+ * <p>The {@link LinuxRawMemoryWriter} class reads a process's memory using
+ * a {@link ReadableMemoryProvider}.
+ */
 public class LinuxRawMemoryWriter implements RawMemoryWriter {
 
     private final WritableMemoryProvider memoryProvider;
 
+    /**
+     * Constructs a new {@link LinuxRawMemoryWriter} with the specified
+     * readable memory provider.
+     * @param memoryProvider the memory provider.
+     * @throws NullPointerException if {@code memoryProvider} is null.
+     */
     public LinuxRawMemoryWriter(WritableMemoryProvider memoryProvider) {
         if (memoryProvider == null) {
-            throw new IllegalArgumentException("Memory provider cannot be null!");
+            throw new NullPointerException("Memory provider cannot be null!");
         }
         this.memoryProvider = memoryProvider;
     }

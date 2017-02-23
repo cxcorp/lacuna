@@ -2,6 +2,7 @@ package cx.corp.lacuna.core.windows;
 
 import com.sun.jna.Native;
 import cx.corp.lacuna.core.MemoryAccessException;
+import cx.corp.lacuna.core.MemoryReaderImpl;
 import cx.corp.lacuna.core.RawMemoryWriter;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
@@ -18,6 +19,14 @@ public class WindowsRawMemoryWriter implements RawMemoryWriter {
     private final ProcessOpener processOpener;
     private final WriteProcessMemory memoryWriter;
 
+    /**
+     * Instantiates a new {@link WindowsRawMemoryWriter} instance using the specified
+     * process opener and Kernel32 WindowsAPI proxy.
+     *
+     * @param processOpener The process opener used to open a handle to the target process.
+     * @param memoryWriter The WindowsAPI proxy used for process memory writing.
+     * @cx.useswinapi
+     */
     public WindowsRawMemoryWriter(ProcessOpener processOpener, WriteProcessMemory memoryWriter) {
         if (processOpener == null || memoryWriter == null) {
             throw new IllegalArgumentException("Args can't be null!");

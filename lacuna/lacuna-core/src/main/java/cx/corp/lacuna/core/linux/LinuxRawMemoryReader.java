@@ -9,14 +9,25 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.SeekableByteChannel;
 
-
+/**
+ * {@inheritDoc}
+ *
+ * <p>The {@link LinuxRawMemoryWriter} class reads a process's memory using
+ * a {@link ReadableMemoryProvider}.
+ */
 public class LinuxRawMemoryReader implements RawMemoryReader {
 
     private final ReadableMemoryProvider readableMemoryProvider;
 
+    /**
+     * Constructs a new {@link LinuxRawMemoryReader} with the specified
+     * readable memory provider.
+     * @param readableMemoryProvider the memory provider.
+     * @throws NullPointerException if {@code readableMemoryProvider} is null.
+     */
     public LinuxRawMemoryReader(ReadableMemoryProvider readableMemoryProvider) {
         if (readableMemoryProvider == null) {
-            throw new IllegalArgumentException("Memory provider cannot be null");
+            throw new NullPointerException("Memory provider cannot be null");
         }
         this.readableMemoryProvider = readableMemoryProvider;
     }
@@ -24,7 +35,7 @@ public class LinuxRawMemoryReader implements RawMemoryReader {
     @Override
     public ByteBuffer read(NativeProcess process, int offset, int bytesToRead) {
         if (process == null) {
-            throw new IllegalArgumentException("Process cannot be null!");
+            throw new NullPointerException("Process cannot be null!");
         }
         if (bytesToRead < 1) {
             throw new IllegalArgumentException("Cannot read fewer than 1 byte!");
