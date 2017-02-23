@@ -133,12 +133,12 @@ package cx.corp.lacuna.core.windows {
         note bottom: Only used in integration testing
         interface Advapi32.TokenUser
         
-        WriteProcessMemory <|.. Kernel32
-        CloseHandle <|.. Kernel32
-        OpenProcess <|.. Kernel32
-        QueryFullProcessImageName <|.. Kernel32
-        ReadProcessMemory <|.. Kernel32
-        GetProcessId <|.left. Kernel32
+        WriteProcessMemory <|-- Kernel32
+        CloseHandle <|-- Kernel32
+        OpenProcess <|-- Kernel32
+        QueryFullProcessImageName <|-- Kernel32
+        ReadProcessMemory <|-- Kernel32
+        GetProcessId <|-left- Kernel32
     }
     
     interface ProcessDescriptionGetter {
