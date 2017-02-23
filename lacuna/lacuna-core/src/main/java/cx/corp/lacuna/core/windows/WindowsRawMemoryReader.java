@@ -23,11 +23,12 @@ public class WindowsRawMemoryReader implements RawMemoryReader {
     private final ReadProcessMemory memoryReader;
 
     /**
-     * Instantiates a new {@link MemoryReaderImpl} instance using the specified
-     * process opener and  Kernel32 WindowsAPI proxy.
+     * Instantiates a new {@link WindowsRawMemoryReader} instance using the specified
+     * process opener and Kernel32 WindowsAPI proxy.
      *
      * @param processOpener The process opener used to open a handle to the target process.
      * @param memoryReader The WindowsAPI proxy used for process memory reading.
+     * @cx.useswinapi
      */
     public WindowsRawMemoryReader(ProcessOpener processOpener, ReadProcessMemory memoryReader) {
         if (processOpener == null || memoryReader == null) {
@@ -37,11 +38,24 @@ public class WindowsRawMemoryReader implements RawMemoryReader {
         this.memoryReader = memoryReader;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>This implementation is largely implemented on top of the Windows
+     * API. First, a handle is opened to the target process, then the
+     * memory is read with the Kernel32 {@code ReadProcessMemory} function.
+     * @param process The native process whose memory to read.
+     * @param offset The memory address offset to read from. This value is
+     *               interpreted as an unsigned value, meaning that negative
+     *               values are allowed.
+     * @param bytesToRead The amount of bytes to read.
+     * @return
+     */
     @Override
     public ByteBuffer read(NativeProcess process, int offset, int bytesToRead) {
         //throws ProcessOpenException, MemoryAccessException {
         if (process == null) {
-            throw new IllegalArgumentException("Process cannot be null!");
+            throw new NullPointerException("Process cannot be null!");
         }
         if (bytesToRead < 1) {
             throw new IllegalArgumentException("Cannot read fewer than 1 byte!");

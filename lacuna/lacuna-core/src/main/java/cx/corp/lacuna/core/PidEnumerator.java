@@ -11,5 +11,10 @@ import java.util.List;
  * @see NativeProcessEnumerator
  */
 public interface PidEnumerator {
+    /**
+     * Fetches the process identifiers of all currently running processes.
+     * @return a list of all process identifiers.
+     * @throws ProcessEnumerationException if an error occurred during the enumeration.
+     */
     List<Integer> getPids() throws ProcessEnumerationException;
 }

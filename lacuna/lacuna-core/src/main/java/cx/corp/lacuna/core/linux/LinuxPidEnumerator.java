@@ -18,9 +18,20 @@ public class LinuxPidEnumerator implements PidEnumerator {
     private final Path procRoot;
     private final Path pathToPidMax;
 
+    /**
+     * Constructs a new {@link LinuxPidEnumerator} with the specified process
+     * directory path and memory path. In most cases, {@code procRoot} should
+     * be {@code Paths.get("/proc")} and {@code pathToPidMax} should be
+     * {@code Pats.get("mem")}.
+     * @param procRoot the memory provider.
+     * @param pathToPidMax the path to the memory file, relative to
+     *                     {@code procRoot/:pid/}.
+     * @throws NullPointerException if {@code procRoot} is null or if
+     *                              {@code pathToPidMax} is null.
+     */
     public LinuxPidEnumerator(Path procRoot, Path pathToPidMax) {
         if (procRoot == null || pathToPidMax == null) {
-            throw new IllegalArgumentException("Arguments cannot be null!");
+            throw new NullPointerException("Arguments cannot be null!");
         }
         this.procRoot = procRoot;
         this.pathToPidMax = pathToPidMax;

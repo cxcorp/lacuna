@@ -18,6 +18,7 @@ public interface NativeProcessEnumerator {
      * Retrieves a list of all running processes.
      *
      * @return A list of all running processes.
+     * @throws ProcessEnumerationException if an error occurs during enumeration.
      */
     List<NativeProcess> getProcesses() throws ProcessEnumerationException;
 }

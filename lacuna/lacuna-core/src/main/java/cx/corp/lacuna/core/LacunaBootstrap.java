@@ -185,18 +185,34 @@ public final class LacunaBootstrap {
         );
     }
 
+    /**
+     * Gets the {@link MemoryReader} instance associated with the bootstrapper.
+     * @return the {@link MemoryReader} instance associated with the bootstrapper.
+     */
     public MemoryReader getMemoryReader() {
         return memoryReader;
     }
 
+    /**
+     * Gets the {@link MemoryWriter} instance associated with the bootstrapper.
+     * @return the {@link MemoryWriter} instance associated with the bootstrapper.
+     */
     public MemoryWriter getMemoryWriter() {
         return memoryWriter;
     }
 
+    /**
+     * Gets the {@link NativeProcessEnumerator} instance associated with the bootstrapper.
+     * @return the {@link NativeProcessEnumerator} instance associated with the bootstrapper.
+     */
     public NativeProcessEnumerator getNativeProcessEnumerator() {
         return nativeProcessEnumerator;
     }
 
+    /**
+     * Gets the {@link NativeProcessCollector} instance associated with the bootstrapper.
+     * @return the {@link NativeProcessCollector} instance associated with the bootstrapper.
+     */
     public NativeProcessCollector getNativeProcessCollector() {
         return nativeProcessCollector;
     }

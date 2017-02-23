@@ -10,15 +10,30 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
+
+/**
+ * {@inheritDoc}
+ *
+ * <p>Process information gathering on Linux platforms revolves around the
+ * virtual {@code /proc} filesystem (see {@code man proc(5)}). To get the
+ * process description, the {@code /proc/:pid/cmdline} file is parsed. To
+ * get the owner, the owner of the {@code /proc/:pid} directory is fetched.
+ */
 public class LinuxNativeProcessCollector implements NativeProcessCollector {
 
     private static final String PROC_CMDLINE_PATH = "cmdline";
     private final CmdlineFileParser cmdlineParser;
     private final Path procRoot;
 
+    /**
+     * Constructs a new {@link LinuxNativeProcessCollector} with the specified process
+     * directory path. In most cases, this should be {@code Paths.get("/proc")}.
+     * @param procRoot the parent folder of the processes.
+     * @throws NullPointerException if {@code procRoot} is null.
+     */
     public LinuxNativeProcessCollector(Path procRoot) {
         if (procRoot == null) {
-            throw new IllegalArgumentException("Proc root cannot be null!");
+            throw new NullPointerException("Proc root cannot be null!");
         }
         this.cmdlineParser = new CmdlineFileParser();
         this.procRoot = procRoot;
