@@ -3,7 +3,6 @@ package cx.corp.lacuna.ui.presenter;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import cx.corp.lacuna.ui.model.MainModel;
-import cx.corp.lacuna.ui.model.MainModelImpl;
 import cx.corp.lacuna.ui.view.MainView;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +23,7 @@ public class MainPresenterTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        model = new MainModelImpl();
+        model = new MainModel();
         presenter = new MainPresenter(view, model);
     }
 
@@ -47,15 +46,9 @@ public class MainPresenterTest {
     @Test
     public void newActiveProcessSelectedUpdatesModel() {
         NativeProcess newProcess = new NativeProcessImpl(123, "ayy", "lmao");
+        given(view.getActiveProcess()).willReturn(newProcess);
         model.setActiveProcess(null);
-        presenter.newActiveProcessSelected(newProcess);
+        presenter.newActiveProcessSelected();
         assertEquals(newProcess, model.getActiveProcess());
-    }
-
-    @Test
-    public void newActiveProcessSelectedUpdatesView() {
-        NativeProcess newProcess = new NativeProcessImpl(123, "ayy", "lmao");
-        presenter.newActiveProcessSelected(newProcess);
-        verify(view).setActiveProcess(newProcess);
     }
 }

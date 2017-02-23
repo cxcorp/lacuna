@@ -39,6 +39,11 @@
             <artifactId>lacuna-core</artifactId>
             <version>0.1.5-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.exbin.deltahex</groupId>
+            <artifactId>deltahex-swing</artifactId>
+            <version>0.1.2</version>
+        </dependency>
     </dependencies>
 
     <build>

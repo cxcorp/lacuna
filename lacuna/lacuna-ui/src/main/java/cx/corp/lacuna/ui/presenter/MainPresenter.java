@@ -23,8 +23,8 @@ public class MainPresenter implements Presenter, MainCallbacks {
     }
 
     @Override
-    public void newActiveProcessSelected(NativeProcess newProcess) {
-        model.setActiveProcess(newProcess);
-        view.setActiveProcess(newProcess);
+    public void newActiveProcessSelected() {
+        NativeProcess newProc = view.getActiveProcess();
+        model.setActiveProcess(newProc);
     }
 }
