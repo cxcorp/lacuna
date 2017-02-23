@@ -85,7 +85,7 @@
                 <version>1.1.11</version>
                 <configuration>
                     <excludedClasses>
-                        <excludedClass>cx.corp.lacuna.Main</excludedClass>
+                        <excludedClass>cx.corp.lacuna.ui.LacunaUI</excludedClass>
                         <excludedClass>cx.corp.lacuna.ui.*</excludedClass>
                     </excludedClasses>
                 </configuration>
@@ -98,7 +98,7 @@
                     <transformers>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <manifestEntries>
-                                <Main-Class>cx.corp.lacuna.Main</Main-Class>
+                                <Main-Class>cx.corp.lacuna.ui.LacunaUI</Main-Class>
                             </manifestEntries>
                         </transformer>
                     </transformers>
