@@ -157,6 +157,7 @@ public interface MemoryWriter {
      * @throws MemoryAccessException if writing fails due to, for example, an
      *                               access violation or insufficient rights.
      * @throws NullPointerException  if {@code process} or {@code value} is null.
+     * @throws IllegalArgumentException if {@code value} is empty.
      */
     void writeStringUTF8(NativeProcess process, int offset, String value) throws MemoryAccessException;
 
@@ -175,6 +176,7 @@ public interface MemoryWriter {
      * @throws MemoryAccessException if writing fails due to, for example, an
      *                               access violation or insufficient rights.
      * @throws NullPointerException  if {@code process} or {@code value} is null.
+     * @throws IllegalArgumentException if {@code value} is empty.
      */
     void writeStringUTF16LE(NativeProcess process, int offset, String value) throws MemoryAccessException;
 
@@ -187,6 +189,7 @@ public interface MemoryWriter {
      * @throws MemoryAccessException if writing fails due to, for example, an
      *                               access violation or insufficient rights.
      * @throws NullPointerException  if {@code process} or {@code values} is null.
+     * @throws IllegalArgumentException if {@code values} is empty.
      */
     void write(NativeProcess process, int offset, byte[] values) throws MemoryAccessException;
 }
