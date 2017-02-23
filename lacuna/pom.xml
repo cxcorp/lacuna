@@ -16,4 +16,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <packaging>pom</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>1.1.11</version>
+                <configuration>
+                    <excludedClasses>
+                        <excludedClass>cx.corp.lacuna.ui.LacunaUI</excludedClass>
+                        <excludedClass>cx.corp.lacuna.ui.view.*</excludedClass>
+                    </excludedClasses>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

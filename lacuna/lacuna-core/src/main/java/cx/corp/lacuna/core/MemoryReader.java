@@ -158,6 +158,7 @@ public interface MemoryReader {
      * @throws MemoryAccessException if reading fails due to, for example, an
      *                               access violation or insufficient rights.
      * @throws NullPointerException  if {@code process} is null.
+     * @throws IllegalArgumentException if attempting to read less than one code unit.
      */
     String readStringUTF8(NativeProcess process, int offset, int maxCodeUnitsToRead) throws MemoryAccessException;
 
@@ -180,6 +181,7 @@ public interface MemoryReader {
      * @throws MemoryAccessException if reading fails due to, for example, an
      *                               access violation or insufficient rights.
      * @throws NullPointerException  if {@code process} is null.
+     * @throws IllegalArgumentException if attempting to read less than one code unit.
      */
     String readStringUTF16LE(NativeProcess process, int offset, int maxCodeUnitsToRead) throws MemoryAccessException;
 
@@ -195,6 +197,7 @@ public interface MemoryReader {
      *                               if the read request is only partially
      *                               completed.
      * @throws NullPointerException  if {@code process} is null.
+     * @throws IllegalArgumentException if attempting to read less than one byte.
      */
     byte[] read(NativeProcess process, int offset, int bytesToRead) throws MemoryAccessException;
 }
