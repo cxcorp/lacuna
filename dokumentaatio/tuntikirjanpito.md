@@ -29,4 +29,5 @@ Päivä | Tunnit | Kuvaus
 18.2.2017 | 6h | Swingiprotoilua, prosessilista
 21.2.2016 | 7h | ^, prosessilista valmis
 22.2.2016 | 4h | Muistinäkymän implementointi
-23.2.2017 | 5h | Prosessilistan kiillotusta, muistinäkymä implementoitu
+23.2.2017 | 5h | Prosessilistan kiillotusta, muistinäkymä implementoitu.
+24.2.2017 | 3h | Hex editorin tweakkausta.
