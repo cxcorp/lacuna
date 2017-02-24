@@ -6,6 +6,7 @@ import cx.corp.lacuna.core.MemoryWriter;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import org.apache.commons.lang3.NotImplementedException;
 import org.exbin.utils.binary_data.BinaryData;
+import org.exbin.utils.binary_data.ByteArrayEditableData;
 import org.exbin.utils.binary_data.EditableBinaryData;
 
 import java.io.IOException;
@@ -256,9 +257,15 @@ public class ProcessBinaryData implements EditableBinaryData {
         throw new NotImplementedException("");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public BinaryData copy(long offset, long l1) {
-        throw new NotImplementedException("");
+    public BinaryData copy(long offset, long length) {
+        throwIfCopyingTooManyBytes(length);
+        byte[] data = reader.safeInvokeReturn(
+            r -> r.read(process, toLacunaOffset(offset), (int) length), new byte[0]);
+        return new ByteArrayEditableData(data);
     }
 
     /**
