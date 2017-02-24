@@ -25,7 +25,7 @@ Päivä | Tunnit | Kuvaus
 14.2.2017 | 5h | Uudelleenstrukturointia
 15.2.2017 | 5h | UI-protoilua. Serveriprotoilua.
 16.2.2017 | 12h | UI-suunnittelua, protoilua, tutkimusta.
-17.2.2017 | 9h | Swing UI:n aloitus
+17.2.2017 | 9h | Todetaan, että webbikäli on out of scope ja veisi liikaa aikaa. Webbikäliproto toiselle branchille.S  wing UI:n aloitus
 18.2.2017 | 6h | Swingiprotoilua, prosessilista
 21.2.2016 | 7h | ^, prosessilista valmis
 22.2.2016 | 4h | Muistinäkymän implementointi
