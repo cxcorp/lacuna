@@ -23,6 +23,7 @@ import java.util.function.Function;
 public class ProcessBinaryData implements EditableBinaryData {
 
     private static final byte NULL_BYTE = 0;
+    private static final byte REMOVE_REPLACEMENT = NULL_BYTE;
 
     //private final MemoryReader reader;
     //private final MemoryWriter writer;
@@ -46,7 +47,6 @@ public class ProcessBinaryData implements EditableBinaryData {
 
     /**
      * {@inheritDoc}
-     * @throws MemoryAccessException if memory writing fails. See {@link MemoryWriter#write}.
      * @throws UnsupportedOperationException if attempting to write to offsets higher than
      *                                       {@link Integer#MAX_VALUE}. 64-bit addresses may be
      *                                       supported in a future release.
@@ -72,33 +72,32 @@ public class ProcessBinaryData implements EditableBinaryData {
 
     @Override
     public void insert(long offset, byte[] bytes) {
-        // can't "insert" into process memory
+        replace(offset, bytes);
     }
 
     @Override
-    public void insert(long offset, byte[] bytes, int i, int i1) {
-        // can't "insert" into process memory
+    public void insert(long offset, byte[] bytes, int dataOffset, int length) {
+        replace(offset, bytes, dataOffset, length);
     }
 
     @Override
     public void insert(long offset, BinaryData binaryData) {
-        // can't "insert" into process memory
+        replace(offset, binaryData);
     }
 
     @Override
-    public void insert(long offset, BinaryData binaryData, long l1, long l2) {
-        // can't "insert" into process memory
+    public void insert(long offset, BinaryData binaryData, long dataOffset, long length) {
+        replace(offset, binaryData, dataOffset, length);
     }
 
     @Override
-    public long insert(long l, InputStream inputStream, long l1) throws IOException {
+    public long insert(long l, InputStream inputStream, long length) throws IOException {
         // can't "insert" into process memory
         return 0;
     }
 
     /**
      * {@inheritDoc}
-     * @throws MemoryAccessException if memory writing fails. See {@link MemoryWriter#write}.
      * @throws UnsupportedOperationException if attempting to write more than {@link Integer#MAX_VALUE}
      *                                       bytes, or attempting to write to offsets higher than
      *                                       {@link Integer#MAX_VALUE}. Buffered writes and 64-bit
@@ -119,7 +118,6 @@ public class ProcessBinaryData implements EditableBinaryData {
 
     /**
      * {@inheritDoc}
-     * @throws MemoryAccessException if memory writing fails. See {@link MemoryWriter#write}.
      * @throws UnsupportedOperationException if attempting to write more than {@link Integer#MAX_VALUE}
      *                                       bytes, or attempting to write to offsets higher than
      *                                       {@link Integer#MAX_VALUE}. Buffered writes and 64-bit
@@ -140,7 +138,6 @@ public class ProcessBinaryData implements EditableBinaryData {
 
     /**
      * {@inheritDoc}
-     * @throws MemoryAccessException if memory writing fails. See {@link MemoryWriter#write}.
      * @throws UnsupportedOperationException if attempting to write to offsets higher than
      *                                       {@link Integer#MAX_VALUE}. 64-bit addresses may be
      *                                       supported in a future release.
@@ -157,7 +154,6 @@ public class ProcessBinaryData implements EditableBinaryData {
 
     /**
      * {@inheritDoc}
-     * @throws MemoryAccessException if memory writing fails. See {@link MemoryWriter#write}.
      * @throws UnsupportedOperationException if attempting to write to offsets higher than
      *                                       {@link Integer#MAX_VALUE}. 64-bit addresses may be
      *                                       supported in a future release.
@@ -171,7 +167,6 @@ public class ProcessBinaryData implements EditableBinaryData {
 
     /**
      * {@inheritDoc}
-     * @throws MemoryAccessException if memory writing fails. See {@link MemoryWriter#write}.
      * @throws UnsupportedOperationException if attempting to write more than {@link Integer#MAX_VALUE}
      *                                       bytes, or attempting to write to offsets higher than
      *                                       {@link Integer#MAX_VALUE}. Buffered writes and 64-bit
@@ -186,7 +181,6 @@ public class ProcessBinaryData implements EditableBinaryData {
      * Fills a buffer of length {@code length} with the byte {@code b}, then writes
      * it to the offset {@code offset}.
      * {@inheritDoc}
-     * @throws MemoryAccessException if memory writing fails. See {@link MemoryWriter#write}.
      * @throws UnsupportedOperationException if attempting to write more than {@link Integer#MAX_VALUE}
      *                                       bytes, or attempting to write to offsets higher than
      *                                       {@link Integer#MAX_VALUE}. Buffered writes and 64-bit
@@ -207,7 +201,7 @@ public class ProcessBinaryData implements EditableBinaryData {
 
     @Override
     public void remove(long offset, long length) {
-        // nah, can't do that with memory
+        fillData(offset, length, REMOVE_REPLACEMENT);
     }
 
     @Override
@@ -237,7 +231,6 @@ public class ProcessBinaryData implements EditableBinaryData {
 
     /**
      * {@inheritDoc}
-     * @throws MemoryAccessException if memory reading fails. See {@link MemoryReader#readByte}.
      * @throws UnsupportedOperationException if attempting to read from offsets higher than
      *                                       {@link Integer#MAX_VALUE}. 64-bit addresses may be
      *                                       supported in a future release.
@@ -270,7 +263,6 @@ public class ProcessBinaryData implements EditableBinaryData {
 
     /**
      * {@inheritDoc}
-     * @throws MemoryAccessException if memory reading fails. See {@link MemoryReader#read}.
      * @throws UnsupportedOperationException if attempting to read from offsets higher than
      *                                       {@link Integer#MAX_VALUE}. 64-bit addresses may be
      *                                       supported in a future release.
