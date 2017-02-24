@@ -64,3 +64,16 @@ Käyttäjä
 
 ## Diagrammeja
 ![](https://raw.githubusercontent.com/cxcorp/lacuna/master/dokumentaatio/luokkakaavio.png)
+
+# Rakennekuvaus
+## core
+
+Core-kirjaston ns. entry-luokka on [`LacunaBootstrap`](https://htmlpreview.github.io/?https://github.com/cxcorp/lacuna/blob/master/javadoc/index.html), joka tarjoaa staattiset metodit kirjaston alustamiselle eri alustoille. `LacunaBoostrap`-instanssi tarjoilee muut kirjaston päärajapinnat: `NativeProcessEnumerator` prosessien listaukselle, `NativeProcessCollector` yksittäisen prosessin tietojen hakemiselle, sekä `MemoryWriter` ja `MemoryReader` prosessin muistin luku- ja kirjoitusoperaatioille.
+
+Kirjaston cross-platform-tuki perustuu neljään rajapintaan: `NativeProcessCollector`, `RawMemoryReader`, `RawMemoryWriter` ja `PidEnumerator`. Kukin alusta (`core.linux` ja `core.windows`) tarjoaa implementaatiot kyseisille rajapinnoille. `MemoryReaderImpl` ja `MemoryWriterImpl` kykenevät käsittelemään ns. common data types kääntämällä raa'at tavut kyseisiksi tietotyypeiksi. `NativeProcessEnumeratorImpl` toimii ensin listaamalla kaikki prosessit `PidEnumerator`-rajapinnalla, sitten noutamalla prosessien yksityiskohdat `NativeProcessCollector`-rajapinnalla.
+
+Linux-alustan toiminnallisuus pyörii `/proc` kansion ympärillä, kun taas Windows-alustan toiminnallisuus riippuu täysin Windows API:sta. Windows API-tuki on toteutettu käyttämällä natiivikirjastoja (esim. Kernel32.dll, Advapi32.dll) JNA-kirjaston avulla.
+
+## ui
+
+Tämänhetkinen Swing-käyttöliittymä noudattaa pääosin Model-View-Presenter-patternia. Muistimanipulaatio on omassa Swing-komponentissaan, joka tällä hetkellä tarjoaa vain hex editor -tyyppisen näkymän `DeltaHex`-kirjaston avulla.
