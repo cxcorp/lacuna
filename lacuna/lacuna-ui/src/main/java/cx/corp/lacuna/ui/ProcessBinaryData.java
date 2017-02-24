@@ -111,7 +111,7 @@ public class ProcessBinaryData implements EditableBinaryData {
             return;
         }
 
-        byte[] buffer = new byte[(int)binaryData.getDataSize()]; // plz forgive, no time for buffering
+        byte[] buffer = new byte[(int) binaryData.getDataSize()]; // plz forgive, no time for buffering
         binaryData.copyToArray(0, buffer, 0, buffer.length);
         writer.safeInvoke(w -> w.write(process, toLacunaOffset(offset), buffer));
     }
@@ -132,8 +132,8 @@ public class ProcessBinaryData implements EditableBinaryData {
             return;
         }
 
-        byte[] buffer = new byte[(int)length];
-        replacingData.copyToArray(startFrom, buffer, 0, (int)length);
+        byte[] buffer = new byte[(int) length];
+        replacingData.copyToArray(startFrom, buffer, 0, (int) length);
         writer.safeInvoke(w -> w.write(process, toLacunaOffset(offset), buffer));
     }
 
@@ -199,7 +199,7 @@ public class ProcessBinaryData implements EditableBinaryData {
             return;
         }
 
-        byte[] data = new byte[(int)length];
+        byte[] data = new byte[(int) length];
         Arrays.fill(data, b);
         writer.safeInvoke(w -> w.write(process, toLacunaOffset(offset), data));
     }
@@ -248,7 +248,7 @@ public class ProcessBinaryData implements EditableBinaryData {
             return '?';
         }
 
-        return reader.safeInvokeReturn(r -> r.readByte(process, toLacunaOffset(offset)), (byte)'?');
+        return reader.safeInvokeReturn(r -> r.readByte(process, toLacunaOffset(offset)), (byte) '?');
     }
 
     @Override
@@ -295,7 +295,7 @@ public class ProcessBinaryData implements EditableBinaryData {
     }
 
     private static int toLacunaOffset(long offset) {
-        return (int)offset; // plz forgive
+        return (int) offset; // plz forgive
     }
 
     private static void throwIfOffsetOver32Bit(long offset) {

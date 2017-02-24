@@ -21,11 +21,13 @@ public interface NativeProcess {
 
     /**
      * Gets the process identifier of the process.
+     * @return the PID.
      */
     int getPid();
 
     /**
      * Sets the process identifier of the process.
+     * @param pid the PID.
      */
     void setPid(int pid);
 
@@ -37,13 +39,14 @@ public interface NativeProcess {
      * platforms this value is the image name of the process's executable.
      *
      * <p>If the process cannot be accessed, this value may be null or empty.
-     * @return The description of the process, or {@link #UNKNOWN_DESCRIPTION} if
+     * @return the description of the process, or {@link #UNKNOWN_DESCRIPTION} if
      *         the description is unknown.
      */
     String getDescription();
 
     /**
      * Sets the description of the process.
+     * @param desc the description.
      */
     void setDescription(String desc);
 
@@ -58,6 +61,7 @@ public interface NativeProcess {
 
     /**
      * Sets the name of the process's owner.
+     * @param owner the name of the owner.
      */
     void setOwner(String owner);
 }

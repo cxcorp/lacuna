@@ -29,7 +29,7 @@ public class LacunaUI implements Runnable {
 
         MainModel mainModel = new MainModel();
         mainModel.addObserver((o, arg) -> {
-            MainModel model = (MainModel)o;
+            MainModel model = (MainModel) o;
             memoryProvider.setActiveProcess(model.getActiveProcess());
         });
         MainWindow mainWindow = new MainWindow(new ChooseProcessDialog(settings));
