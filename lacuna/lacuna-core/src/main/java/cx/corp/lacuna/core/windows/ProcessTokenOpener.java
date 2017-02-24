@@ -7,6 +7,10 @@ import cx.corp.lacuna.core.windows.winapi.CloseHandle;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
+/**
+ * {@inheritDoc}
+ * @cx.useswinapi
+ */
 public class ProcessTokenOpener {
 
     private final Advapi32 advapi;

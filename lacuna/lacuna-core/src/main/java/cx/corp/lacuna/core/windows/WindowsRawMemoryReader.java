@@ -14,6 +14,10 @@ import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+/**
+ * {@inheritDoc}
+ * @cx.useswinapi
+ */
 public class WindowsRawMemoryReader implements RawMemoryReader {
 
     private static final int FLAGS_READMEMORY =
@@ -23,7 +27,7 @@ public class WindowsRawMemoryReader implements RawMemoryReader {
     private final ReadProcessMemory memoryReader;
 
     /**
-     * Instantiates a new {@link WindowsRawMemoryReader} instance using the specified
+     * Constructs a new {@code WindowsRawMemoryReader} using the specified
      * process opener and Kernel32 WindowsAPI proxy.
      *
      * @param processOpener The process opener used to open a handle to the target process.
@@ -55,7 +59,7 @@ public class WindowsRawMemoryReader implements RawMemoryReader {
     public ByteBuffer read(NativeProcess process, int offset, int bytesToRead) {
         //throws ProcessOpenException, MemoryAccessException {
         if (process == null) {
-            throw new NullPointerException("Process cannot be null!");
+            throw new IllegalArgumentException("Process cannot be null!");
         }
         if (bytesToRead < 1) {
             throw new IllegalArgumentException("Cannot read fewer than 1 byte!");

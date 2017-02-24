@@ -11,6 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * {@inheritDoc}
+ * @cx.useswinapi
+ */
 public class WindowsPidEnumerator implements PidEnumerator {
 
     private final Psapi psapi;

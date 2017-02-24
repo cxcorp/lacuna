@@ -9,6 +9,10 @@ import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import cx.corp.lacuna.core.windows.winapi.WriteProcessMemory;
 
+/**
+ * {@inheritDoc}
+ * @cx.useswinapi
+ */
 public class WindowsRawMemoryWriter implements RawMemoryWriter {
 
     // flags needed to write to the memory
@@ -20,7 +24,7 @@ public class WindowsRawMemoryWriter implements RawMemoryWriter {
     private final WriteProcessMemory memoryWriter;
 
     /**
-     * Instantiates a new {@link WindowsRawMemoryWriter} instance using the specified
+     * Constructs a new {@code WindowsRawMemoryWriter} using the specified
      * process opener and Kernel32 WindowsAPI proxy.
      *
      * @param processOpener The process opener used to open a handle to the target process.

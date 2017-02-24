@@ -12,7 +12,8 @@ public interface ProcessOwnerGetter {
     /**
      * Gets the owner of the specified process, or {@link Optional#empty()} if getting fails.
      * @param processHandle Handle to the process.
-     * @return The owner of the specified process, or {@link Optional#empty()} if getting fails.
+     * @return the owner of the specified process, or {@link Optional#empty()} if getting fails.
+     * @throws IllegalArgumentException if {@code processHandle} is null.
      */
     Optional<String> get(ProcessHandle processHandle);
 }

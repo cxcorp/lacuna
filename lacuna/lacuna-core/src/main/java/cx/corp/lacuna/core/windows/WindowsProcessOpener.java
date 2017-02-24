@@ -6,6 +6,10 @@ import cx.corp.lacuna.core.windows.winapi.OpenProcess;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
+/**
+ * {@inheritDoc}
+ * @cx.useswinapi
+ */
 public class WindowsProcessOpener implements ProcessOpener {
 
     private final OpenProcess openProcess;

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+    "-//Puppy Crawl//DTD Suppressions 1.1//EN"
+    "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+
+<suppressions>
+    <suppress files="cx/corp/lacuna/Main.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="cx/corp/lacuna/core/windows/winapi/*.java" checks="[a-zA-Z0-9]*"/>
+	<suppress files="cx/corp/lacuna/ui/LacunaUI.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="cx/corp/lacuna/ui/view/*Window.java" checks="[a-zA-Z0-9]*"/>
+</suppressions>
