@@ -1,5 +1,7 @@
 package cx.corp.lacuna.core.windows;
 
+import cx.corp.lacuna.core.ProcessOpenException;
+
 /**
  * Provides functionality for opening a handle to a native process.
  * @see ProcessDescriptionGetter

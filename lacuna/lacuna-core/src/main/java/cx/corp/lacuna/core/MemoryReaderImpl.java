@@ -9,7 +9,6 @@ import java.util.Objects;
 
 /**
  * {@inheritDoc}
- * <p>Refer to the platform specific {@link RawMemoryReader} classes for notes on precautions.
  * @cx.littleendian
  */
 public class MemoryReaderImpl implements MemoryReader {

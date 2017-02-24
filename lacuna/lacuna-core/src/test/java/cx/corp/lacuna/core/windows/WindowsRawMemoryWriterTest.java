@@ -1,6 +1,7 @@
 package cx.corp.lacuna.core.windows;
 
 import cx.corp.lacuna.core.MemoryAccessException;
+import cx.corp.lacuna.core.ProcessOpenException;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import cx.corp.lacuna.core.windows.winapi.WriteProcessMemory;

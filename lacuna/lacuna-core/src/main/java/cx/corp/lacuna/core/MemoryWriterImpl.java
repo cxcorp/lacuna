@@ -12,7 +12,6 @@ import java.util.Objects;
  * <p>This implementation functions by first putting the provided data to a
  * little-endian {@link ByteBuffer}, then writing the buffer's bytes into
  * the native process's memory with a {@link RawMemoryWriter}.
- * <p>Refer to the platform specific {@link RawMemoryWriter} classes for notes on precautions.
  * @cx.littleendian
  */
 public class MemoryWriterImpl implements MemoryWriter {

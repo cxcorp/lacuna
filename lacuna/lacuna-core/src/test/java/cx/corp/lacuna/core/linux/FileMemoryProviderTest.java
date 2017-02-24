@@ -2,6 +2,7 @@ package cx.corp.lacuna.core.linux;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
+import cx.corp.lacuna.core.ProcessOpenException;
 import cx.corp.lacuna.core.TestUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -47,19 +48,19 @@ public class FileMemoryProviderTest {
         new FileMemoryProvider(null);
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = ProcessOpenException.class)
     public void openReadThrowsIfProcRootDoesntExist() throws IOException {
         assertFalse(Files.exists(procRoot));
         provider.openRead(123);
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = ProcessOpenException.class)
     public void openWriteThrowsIfProcRootDoesntExist() throws IOException {
         assertFalse(Files.exists(procRoot));
         provider.openWrite(123);
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = ProcessOpenException.class)
     public void openReadThrowsIfProcessDoesntExist() throws IOException {
         Files.createDirectories(procRoot);
         Integer pid = 3551;
@@ -67,7 +68,7 @@ public class FileMemoryProviderTest {
         provider.openRead(pid);
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = ProcessOpenException.class)
     public void openWriteThrowsIfProcessDoesntExist() throws IOException {
         Files.createDirectories(procRoot);
         Integer pid = 3551;

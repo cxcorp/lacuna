@@ -1,6 +1,7 @@
 package cx.corp.lacuna.core.windows;
 
 import com.sun.jna.Native;
+import cx.corp.lacuna.core.ProcessOpenException;
 import cx.corp.lacuna.core.windows.winapi.CloseHandle;
 import cx.corp.lacuna.core.windows.winapi.OpenProcess;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
