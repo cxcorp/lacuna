@@ -24,7 +24,7 @@ public class WindowsPidEnumeratorTest {
         enumerator = new WindowsPidEnumerator(psapi);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsIfNullPsapiPassed() {
         new WindowsPidEnumerator(null);
     }

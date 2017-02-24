@@ -4,6 +4,7 @@ import com.sun.jna.ptr.IntByReference;
 import cx.corp.lacuna.core.windows.winapi.QueryFullProcessImageName;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -14,18 +15,20 @@ public class WindowsProcessDescriptionGetter implements ProcessDescriptionGetter
 
     private final QueryFullProcessImageName winapi;
 
+    /**
+     * Constructs a new {@code WindowsProcessDescriptionGetter} with the
+     * specified {@code QueryFullProcessImageName} Windows API proxy.
+     * @param winapi the Windows API {@code QueryFullProcessImageName} proxy.
+     * @cx.useswinapi
+     */
     public WindowsProcessDescriptionGetter(QueryFullProcessImageName winapi) {
-        if (winapi == null) {
-            throw new IllegalArgumentException("winapi cannot be null!");
-        }
+        Objects.requireNonNull(winapi, "winapi cannot be null!");
         this.winapi = winapi;
     }
 
     @Override
     public Optional<String> get(ProcessHandle processHandle) {
-        if (processHandle == null) {
-            throw new IllegalArgumentException("processHandle cannot be null!");
-        }
+        Objects.requireNonNull(processHandle, "processHandle cannot be null!");
         return getProcessImageName(processHandle.getNativeHandle());
     }
 

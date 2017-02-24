@@ -6,6 +6,8 @@ import cx.corp.lacuna.core.windows.winapi.OpenProcess;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
+import java.util.Objects;
+
 /**
  * {@inheritDoc}
  * @cx.useswinapi
@@ -15,14 +17,25 @@ public class WindowsProcessOpener implements ProcessOpener {
     private final OpenProcess openProcess;
     private final CloseHandle closeHandle;
 
+    /**
+     * Constructs a new {@code WindowsProcessOpener} with the specified
+     * {@code OpenProcess} and {@code CloseHandle} Windows API proxy. A
+     * {@link cx.corp.lacuna.core.windows.winapi.Kernel32} instance may be
+     * used.
+     * @param processOpenerAndHandleCloser the Windows API {@code OpenProcess}
+     *                                     and {@code CloseHandle} proxy.
+     * @param <T> the type which implements both {@link OpenProcess} and
+     *            {@link CloseHandle}.
+     * @see cx.corp.lacuna.core.windows.winapi.Kernel32
+     * @cx.useswinapi
+     */
     public <T extends OpenProcess & CloseHandle> WindowsProcessOpener(T processOpenerAndHandleCloser) {
         this(processOpenerAndHandleCloser, processOpenerAndHandleCloser);
     }
 
     WindowsProcessOpener(OpenProcess openProcess, CloseHandle closeHandle) {
-        if (openProcess == null || closeHandle == null) {
-            throw new IllegalArgumentException("Arguments cannot be null");
-        }
+        Objects.requireNonNull(openProcess, "openProcess cannot be null!");
+        Objects.requireNonNull(closeHandle, "closeHandle cannot be null!");
         this.openProcess = openProcess;
         this.closeHandle = closeHandle;
     }

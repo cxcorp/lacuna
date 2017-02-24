@@ -7,6 +7,7 @@ import cx.corp.lacuna.core.domain.NativeProcess;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
+import java.util.Objects;
 
 /**
  * {@inheritDoc}
@@ -33,9 +34,8 @@ public class LinuxRawMemoryWriter implements RawMemoryWriter {
 
     @Override
     public void write(NativeProcess process, int offset, byte[] buffer) throws MemoryAccessException {
-        if (process == null || buffer == null) {
-            throw new IllegalArgumentException("Arguments cannot be null!");
-        }
+        Objects.requireNonNull(process, "process cannot be null!");
+        Objects.requireNonNull(buffer, "buffer cannot be null!");
         if (buffer.length < 1) {
             throw new IllegalArgumentException("Cannot write fewer than 1 byte!");
         }

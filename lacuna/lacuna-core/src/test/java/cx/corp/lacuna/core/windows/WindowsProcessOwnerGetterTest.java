@@ -36,7 +36,7 @@ public class WindowsProcessOwnerGetterTest {
         getter = new WindowsProcessOwnerGetter(opener, userFinder, nameFinder);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void ctorThrowsIfTokenOpenerIsNull() {
         new WindowsProcessOwnerGetter(
             null,
@@ -45,7 +45,7 @@ public class WindowsProcessOwnerGetterTest {
         );
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void ctorThrowsIfUserFinderIsNull() {
         new WindowsProcessOwnerGetter(
             opener,
@@ -54,7 +54,7 @@ public class WindowsProcessOwnerGetterTest {
         );
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void ctorThrowsIfNameFinderIsNull() {
         new WindowsProcessOwnerGetter(
             opener,
@@ -63,7 +63,7 @@ public class WindowsProcessOwnerGetterTest {
         );
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void getThrowsIfHandleIsNull() {
         getter.get(null);
     }

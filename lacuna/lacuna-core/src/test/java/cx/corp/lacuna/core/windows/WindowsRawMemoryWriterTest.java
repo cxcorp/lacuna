@@ -34,17 +34,17 @@ public class WindowsRawMemoryWriterTest {
         );
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void ctorThrowsIfOpenerIsNull() {
         new WindowsRawMemoryWriter(null, writeProcessMemory);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void ctorThrowsIfWriterIsNull() {
         new WindowsRawMemoryWriter(opener, null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void writeThrowsIfProcessIsNull() {
         writer.write(null, 0, new byte[]{1});
     }

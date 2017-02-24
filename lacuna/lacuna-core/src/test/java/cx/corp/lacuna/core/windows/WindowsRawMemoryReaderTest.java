@@ -31,18 +31,18 @@ public class WindowsRawMemoryReaderTest {
         process = new NativeProcessImpl();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsIfNullProcessOpenerPassed() {
         apiMemoryReader = (a, b, c, d, e) -> true;
         new WindowsRawMemoryReader(null, apiMemoryReader);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsIfNullKernelPassed() {
         new WindowsRawMemoryReader(processOpener, null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void readThrowsIfProcessIsNull() {
         reader.read(null, 0, 10);
     }

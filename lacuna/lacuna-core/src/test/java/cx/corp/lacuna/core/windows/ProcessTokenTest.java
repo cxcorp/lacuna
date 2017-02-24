@@ -27,13 +27,13 @@ public class ProcessTokenTest {
         opener = new ProcessTokenOpener(advapi, proxyCloser);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsIfAdvapiIsNull() {
         CloseHandle nonNull = handle -> true;
         new ProcessTokenOpener(null, nonNull);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsIfCloseHandleIsNull() {
         new ProcessTokenOpener(advapi, null);
     }

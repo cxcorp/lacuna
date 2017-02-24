@@ -33,12 +33,12 @@ public class NativeProcessEnumeratorImplTest {
         this.enumerator = new NativeProcessEnumeratorImpl(proxyEnumerator, proxyCollector);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsWhenPassedNullPidEnumerator() {
         new NativeProcessEnumeratorImpl(null, collector);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsWhenPassedNullCollector() {
         new NativeProcessEnumeratorImpl(pidEnumerator, null);
     }

@@ -1,5 +1,6 @@
 package cx.corp.lacuna.core.windows;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
@@ -19,9 +20,9 @@ public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
     public WindowsProcessOwnerGetter(ProcessTokenOpener tokenOpener,
                                      TokenUserFinder userFinder,
                                      TokenOwnerNameFinder nameFinder) {
-        if (tokenOpener == null || userFinder == null || nameFinder == null) {
-            throw new IllegalArgumentException("Args can't be null");
-        }
+        Objects.requireNonNull(tokenOpener, "tokenOpener cannot be null!");
+        Objects.requireNonNull(userFinder, "userFinder cannot be null!");
+        Objects.requireNonNull(nameFinder, "nameFinder cannot be null!");
         this.tokenOpener = tokenOpener;
         this.tokenUserFinder = userFinder;
         this.tokenOwnerFinder = nameFinder;
@@ -29,9 +30,7 @@ public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
 
     @Override
     public Optional<String> get(ProcessHandle processHandle) {
-        if (processHandle == null) {
-            throw new IllegalArgumentException("processHandle cannot be null!");
-        }
+        Objects.requireNonNull(processHandle, "processHandle cannot be null!");
 
         try (ProcessToken token = tokenOpener.openToken(processHandle)) {
             return tokenUserFinder.findTokenUser(token).flatMap(tokenOwnerFinder::getUserName);

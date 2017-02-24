@@ -32,17 +32,17 @@ public class WindowsNativeProcessCollectorTest {
         collector = new WindowsNativeProcessCollector(processOpener, ownerProxy, descriptionProxy);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsIfProcessOpenerIsNull() {
         new WindowsNativeProcessCollector(null, ownerGetter, descriptionGetter);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsIfOwnerGetterIsNull() {
         new WindowsNativeProcessCollector(processOpener, null, descriptionGetter);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsIfDescriptionGetterIsNull() {
         new WindowsNativeProcessCollector(processOpener, ownerGetter, null);
     }

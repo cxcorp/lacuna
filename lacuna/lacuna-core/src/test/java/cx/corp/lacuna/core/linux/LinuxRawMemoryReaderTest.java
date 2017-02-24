@@ -53,12 +53,12 @@ public class LinuxRawMemoryReaderTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsIfMemoryProviderIsNull() {
         new LinuxRawMemoryReader(null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void readThrowsWhenReadingFromNullProcess() {
         reader.read(null, 0, 1);
     }
