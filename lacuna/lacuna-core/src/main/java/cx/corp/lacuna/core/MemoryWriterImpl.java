@@ -5,16 +5,28 @@ import cx.corp.lacuna.core.domain.NativeProcess;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
+/**
+ * {@inheritDoc}
+ * <p>This implementation functions by first putting the provided data to a
+ * little-endian {@link ByteBuffer}, then writing the buffer's bytes into
+ * the native process's memory with a {@link RawMemoryWriter}.
+ * <p>Refer to the platform specific {@link RawMemoryWriter} classes for notes on precautions.
+ * @cx.littleendian
+ */
 public class MemoryWriterImpl implements MemoryWriter {
 
     private final RawMemoryWriter writer;
 
+    /**
+     * Constructs a new {@code MemoryWriterImpl} with the specified
+     * raw memory writer.
+     * @param writer the raw memory writer.
+     * @throws NullPointerException if {@code writer} is null.
+     */
     public MemoryWriterImpl(RawMemoryWriter writer) {
-        if (writer == null) {
-            throw new IllegalArgumentException("Writer cannot be null");
-        }
-
+        Objects.requireNonNull(writer, "writer cannot be null!");
         this.writer = writer;
     }
 

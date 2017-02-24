@@ -8,11 +8,12 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.SeekableByteChannel;
+import java.util.Objects;
 
 /**
  * {@inheritDoc}
  *
- * <p>The {@link LinuxRawMemoryWriter} class reads a process's memory using
+ * <p>This implementation reads a process's memory using
  * a {@link ReadableMemoryProvider}.
  */
 public class LinuxRawMemoryReader implements RawMemoryReader {
@@ -20,7 +21,7 @@ public class LinuxRawMemoryReader implements RawMemoryReader {
     private final ReadableMemoryProvider readableMemoryProvider;
 
     /**
-     * Constructs a new {@link LinuxRawMemoryReader} with the specified
+     * Constructs a new {@code LinuxRawMemoryReader} with the specified
      * readable memory provider.
      * @param readableMemoryProvider the memory provider.
      * @throws NullPointerException if {@code readableMemoryProvider} is null.
@@ -34,9 +35,7 @@ public class LinuxRawMemoryReader implements RawMemoryReader {
 
     @Override
     public ByteBuffer read(NativeProcess process, int offset, int bytesToRead) {
-        if (process == null) {
-            throw new NullPointerException("Process cannot be null!");
-        }
+        Objects.requireNonNull(process, "process cannot be null!");
         if (bytesToRead < 1) {
             throw new IllegalArgumentException("Cannot read fewer than 1 byte!");
         }

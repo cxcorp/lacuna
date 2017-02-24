@@ -43,7 +43,7 @@ public class LinuxNativeProcessCollectorTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void ctorThrowsIfProcRootIsNull() {
         new LinuxNativeProcessCollector(null);
     }

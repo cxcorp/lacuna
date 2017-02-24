@@ -13,6 +13,7 @@ import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Objects;
 
 /**
  * {@inheritDoc}
@@ -35,9 +36,8 @@ public class WindowsRawMemoryReader implements RawMemoryReader {
      * @cx.useswinapi
      */
     public WindowsRawMemoryReader(ProcessOpener processOpener, ReadProcessMemory memoryReader) {
-        if (processOpener == null || memoryReader == null) {
-            throw new IllegalArgumentException("Parameters cannot be null!");
-        }
+        Objects.requireNonNull(processOpener, "processOpener cannot be null!");
+        Objects.requireNonNull(memoryReader, "memoryReader cannot be null!");
         this.processOpener = processOpener;
         this.memoryReader = memoryReader;
     }
@@ -48,19 +48,12 @@ public class WindowsRawMemoryReader implements RawMemoryReader {
      * <p>This implementation is largely implemented on top of the Windows
      * API. First, a handle is opened to the target process, then the
      * memory is read with the Kernel32 {@code ReadProcessMemory} function.
-     * @param process The native process whose memory to read.
-     * @param offset The memory address offset to read from. This value is
-     *               interpreted as an unsigned value, meaning that negative
-     *               values are allowed.
-     * @param bytesToRead The amount of bytes to read.
-     * @return
+     * @throws ProcessOpenException if a handle for the specified process
+     *                              cannot be opened.
      */
     @Override
     public ByteBuffer read(NativeProcess process, int offset, int bytesToRead) {
-        //throws ProcessOpenException, MemoryAccessException {
-        if (process == null) {
-            throw new IllegalArgumentException("Process cannot be null!");
-        }
+        Objects.requireNonNull(process, "process cannot be null!");
         if (bytesToRead < 1) {
             throw new IllegalArgumentException("Cannot read fewer than 1 byte!");
         }

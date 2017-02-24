@@ -42,7 +42,7 @@ public class FileMemoryProviderTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsIfProcRootIsNull() {
         new FileMemoryProvider(null);
     }

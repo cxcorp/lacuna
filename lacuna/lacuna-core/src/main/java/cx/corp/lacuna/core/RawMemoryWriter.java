@@ -16,6 +16,7 @@ public interface RawMemoryWriter {
      * @param buffer the data to write.
      * @throws MemoryAccessException if writing fails due to, for eaxmple, an
      *                               access violation or insufficient rights.
+     * @throws NullPointerException if {@code process} or {@code buffer} is null.
      */
     void write(NativeProcess process, int offset, byte[] buffer) throws MemoryAccessException;
 }

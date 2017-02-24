@@ -7,24 +7,41 @@ import cx.corp.lacuna.core.windows.winapi.Advapi32;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
- * {@inheritDoc}
+ * Fetches
+ * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379626(v=vs.85).aspx">
+ * {@code TokenUser} information
+ * </a>
+ * of a {@link ProcessToken} via the Windows API {@link Advapi32} library.
  * @cx.useswinapi
  */
 public class TokenUserFinder {
 
     private final Advapi32 advapi;
 
+    /**
+     * Constructs a new {@code TokenUserFinder} with the specified
+     * Windows API {@code Advapi32} proxy.
+     * @param advapi the Windows API {@code Advapi32} proxy.
+     * @cx.useswinapi
+     */
     public TokenUserFinder(Advapi32 advapi) {
-        if (advapi == null) {
-            throw new IllegalArgumentException("Advapi can't be null");
-        }
+        Objects.requireNonNull(advapi, "advapi cannot be null!");
         this.advapi = advapi;
     }
 
+    /**
+     * Finds the {@code TokenUser} information of the specified process token.
+     * @param token the process token.
+     * @return the {@code TokenUser} information, or {@link Optional#empty()}
+     *         if fetching failed.
+     * @throws NullPointerException if {@code} token is null.
+     */
     public Optional<Advapi32.TokenUser> findTokenUser(ProcessToken token) {
+        Objects.requireNonNull(token, "token cannot be null!");
         return getNeededTokenUserInfoBufferLength(token)
             .flatMap(bufLen -> getTokenUserInfo(token, bufLen));
     }

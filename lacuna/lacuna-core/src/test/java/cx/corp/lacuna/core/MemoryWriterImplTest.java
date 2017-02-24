@@ -38,7 +38,7 @@ public class MemoryWriterImplTest {
             NativeProcess.UNKNOWN_OWNER);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void ctorThrowsIfNullArgPassed() {
         writer = new MemoryWriterImpl(null);
     }

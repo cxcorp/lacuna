@@ -9,6 +9,7 @@ import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -19,10 +20,14 @@ public class WindowsPidEnumerator implements PidEnumerator {
 
     private final Psapi psapi;
 
+    /**
+     * Constructs a new {@code WindowsPidEnumerator} with the specified
+     * Windows API {@code Psapi} proxy.
+     * @param psapi the Windows API {@code Psapi} proxy.
+     * @throws NullPointerException if {@code psapi} is null.
+     */
     public WindowsPidEnumerator(Psapi psapi) {
-        if (psapi == null) {
-            throw new IllegalArgumentException("psapi cannot be null!");
-        }
+        Objects.requireNonNull(psapi, "psapi cannot be null!");
         this.psapi = psapi;
     }
 

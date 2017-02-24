@@ -45,12 +45,12 @@ public class LinuxPidEnumeratorTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void ctorThrowsIfNullProcrootPassed() {
         new LinuxPidEnumerator(null, defaultPidMaxFilePath);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void ctorThrowsIfNullPidMaxPathPassed() {
         new LinuxPidEnumerator(defaultProcRoot, null);
     }

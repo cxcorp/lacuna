@@ -9,6 +9,8 @@ import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;
 import cx.corp.lacuna.core.windows.winapi.SystemErrorCode;
 import cx.corp.lacuna.core.windows.winapi.WriteProcessMemory;
 
+import java.util.Objects;
+
 /**
  * {@inheritDoc}
  * @cx.useswinapi
@@ -29,21 +31,21 @@ public class WindowsRawMemoryWriter implements RawMemoryWriter {
      *
      * @param processOpener The process opener used to open a handle to the target process.
      * @param memoryWriter The WindowsAPI proxy used for process memory writing.
+     * @throws NullPointerException if {@code processOpener} or {@code memoryWriter}
+     *                              is null.
      * @cx.useswinapi
      */
     public WindowsRawMemoryWriter(ProcessOpener processOpener, WriteProcessMemory memoryWriter) {
-        if (processOpener == null || memoryWriter == null) {
-            throw new IllegalArgumentException("Args can't be null!");
-        }
+        Objects.requireNonNull(processOpener, "processOpener cannot be null!");
+        Objects.requireNonNull(memoryWriter, "memoryWriter cannot be null!");
         this.processOpener = processOpener;
         this.memoryWriter = memoryWriter;
     }
 
     @Override
     public void write(NativeProcess process, int offset, byte[] buffer) throws MemoryAccessException {
-        if (process == null || buffer == null) {
-            throw new IllegalArgumentException("Process or buffer is null!");
-        }
+        Objects.requireNonNull(process, "process cannot be null!");
+        Objects.requireNonNull(buffer, "buffer cannot be null!");
         if (buffer.length < 1) {
             throw new IllegalArgumentException("Can't write fewer than 1 byte!");
         }

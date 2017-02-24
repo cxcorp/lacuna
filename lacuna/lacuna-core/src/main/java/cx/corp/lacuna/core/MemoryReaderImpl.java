@@ -5,19 +5,25 @@ import cx.corp.lacuna.core.domain.NativeProcess;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * {@inheritDoc}
  * <p>Refer to the platform specific {@link RawMemoryReader} classes for notes on precautions.
+ * @cx.littleendian
  */
 public class MemoryReaderImpl implements MemoryReader {
 
     private final RawMemoryReader rawMemoryReader;
 
+    /**
+     * Constructs a new {@code MemoryReaderImpl} with the specified raw memory
+     * reader.
+     * @param rawMemoryReader the raw memory reader.
+     * @throws NullPointerException if {@code rawMemoryReader} is null.
+     */
     public MemoryReaderImpl(RawMemoryReader rawMemoryReader) {
-        if (rawMemoryReader == null) {
-            throw new IllegalArgumentException("Argument cannot be null!");
-        }
+        Objects.requireNonNull(rawMemoryReader, "rawMemoryReader cannot be null!");
         this.rawMemoryReader = rawMemoryReader;
     }
 

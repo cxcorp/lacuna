@@ -23,12 +23,12 @@ public class WindowsProcessDescriptionGetterTest {
         handle = new MockProcessHandle(0);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsWhenPassedNullKernel() {
         new WindowsProcessDescriptionGetter(null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void getThrowsWhenPassedNullHandle() {
         getter.get(null);
     }

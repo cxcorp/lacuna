@@ -87,7 +87,7 @@ public class MemoryReaderImplTest {
         reader = new MemoryReaderImpl((a, b, c) -> rawReader.read(a, b, c));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsIfNullArgumentPassed() {
         new MemoryReaderImpl(null);
     }
