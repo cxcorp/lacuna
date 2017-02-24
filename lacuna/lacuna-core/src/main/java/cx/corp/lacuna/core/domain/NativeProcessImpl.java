@@ -4,15 +4,6 @@ import java.util.Objects;
 
 public class NativeProcessImpl implements NativeProcess {
 
-    /**
-     * Represents an unknown owner.
-     */
-    public static final String UNKNOWN_OWNER = "";
-    /**
-     * Represents an unknown description.
-     */
-    public static final String UNKNOWN_DESCRIPTION = "";
-
     private int pid;
     private String description;
     private String owner;
