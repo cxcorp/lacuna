@@ -182,7 +182,7 @@ public class ProcessBinaryData implements EditableBinaryData {
     }
 
     /**
-     * Fills a buffer of length {@code length} with the byte {@byte b}, then writes
+     * Fills a buffer of length {@code length} with the byte {@code b}, then writes
      * it to the offset {@code offset}.
      * {@inheritDoc}
      * @throws MemoryAccessException if memory writing fails. See {@link MemoryWriter#write}.
