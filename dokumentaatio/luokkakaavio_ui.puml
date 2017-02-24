@@ -1,0 +1,96 @@
+@startuml
+
+package cx.corp.lacuna.ui {
+    interface ProcessChosenEventListener {
+        processChosen(NativeProcess) : void
+    }
+}
+
+package cx.corp.lacuna.ui.model {
+    class MainModel
+    class MemoryModel
+    class ProcessListModel
+    class SettingsModel
+}
+
+package cx.corp.lacuna.ui.view {
+    interface View<TCallbacks> {
+        attach(TCallbacks) : void
+    }
+    
+    interface MainView {
+        getActiveProcess() : NativeProcess
+        setActiveProcess(NativeProcess) : void
+    }
+    class MainWindow {
+        show() : void
+        setMemoryPanel(JPanel) : void
+    }
+    class ChooseProcessDialog {
+        {static} showDialogWithCallback(Window, ProcessChosenEventListener) : void
+    }
+    
+    interface MemoryView
+    class MemoryPanel
+    
+    interface ProcessListView
+    class ProcessListWindow
+    class NativeProcessNonEditTableModel
+    class TableColumnResizer
+    class UpdateDocumentListener
+    
+    View <|-- MainView
+    MainView <|.. MainWindow
+    MainWindow ..> ChooseProcessDialog
+    ChooseProcessDialog --> ProcessChosenEventListener
+    View <|-- MemoryView
+    MemoryView <|.. MemoryPanel
+    View <|-- ProcessListView
+    ProcessListView <|.. ProcessListWindow
+    ProcessListWindow *-- NativeProcessNonEditTableModel
+    ProcessListWindow *-- TableColumnResizer
+    ProcessListWindow *-- UpdateDocumentListener
+}
+
+package cx.corp.lacuna.ui.presenter {
+    interface Presenter {
+        initialize() : void
+    }
+    
+    interface MainCallbacks {
+        newActiveProcessSelected() : void
+    }
+    class MainPresenter
+    
+    interface MemoryCallbacks
+    class MemoryPresenter
+    
+    interface ProcessListCallbacks {
+        processChosen();
+        updateRequested();
+    }
+    class ProcessListPresenter {
+        addProcessChosenListener(ProcessChosenEventListener) : void
+    }
+    
+    Presenter <|.. MainPresenter
+    MainCallbacks <|.. MainPresenter
+    Presenter <|.. MemoryPresenter
+    MemoryCallbacks <|.. MemoryPresenter
+    Presenter <|.. ProcessListPresenter
+    ProcessListCallbacks <|.. ProcessListPresenter
+    ProcessListPresenter --> "*" ProcessChosenEventListener
+}
+
+MainPresenter --> "1" MainView
+MainPresenter --> "1" MainModel
+MemoryPresenter --> "1" MemoryView
+MemoryPresenter --> "1" MemoryModel
+ProcessListPresenter --> "1" ProcessListView
+ProcessListPresenter --> "1" ProcessListModel
+
+MainWindow --> "1" MainCallbacks
+MemoryPanel --> "1" MemoryCallbacks
+ProcessListWindow --> "1" ProcessListCallbacks
+
+@enduml
