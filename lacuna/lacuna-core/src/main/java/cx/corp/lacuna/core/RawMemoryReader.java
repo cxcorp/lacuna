@@ -5,18 +5,19 @@ import cx.corp.lacuna.core.domain.NativeProcess;
 import java.nio.ByteBuffer;
 
 /**
- * Provides functionality to read a region of bytes from a native process's memory.
+ * Provides functionality for reading a region of bytes from a native process's
+ * memory.
  */
 public interface RawMemoryReader {
     /**
      * Reads the specified amount of bytes from the specified offset at the native
      * process' memory.
-     * @param process The native process whose memory to read.
-     * @param offset The memory address offset to read from. This value is
+     * @param process the native process whose memory will be read.
+     * @param offset the memory address offset to read from. This value is
      *               interpreted as an unsigned value, meaning that negative
      *               values are allowed.
-     * @param bytesToRead The amount of bytes to read.
-     * @return The read bytes.
+     * @param bytesToRead the amount of bytes to read.
+     * @return the read bytes.
      * @throws MemoryAccessException if reading fails due to, for example, an
      *                               access violation or insufficient rights, or
      *                               if the read request was only partially completed.

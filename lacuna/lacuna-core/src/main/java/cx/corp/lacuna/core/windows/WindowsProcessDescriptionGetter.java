@@ -6,6 +6,10 @@ import cx.corp.lacuna.core.windows.winapi.WinApiConstants;
 
 import java.util.Optional;
 
+/**
+ * {@inheritDoc}
+ * @cx.useswinapi
+ */
 public class WindowsProcessDescriptionGetter implements ProcessDescriptionGetter {
 
     private final QueryFullProcessImageName winapi;

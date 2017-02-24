@@ -1,8 +1,5 @@
 package cx.corp.lacuna.core.windows;
 
-import cx.corp.lacuna.core.windows.winapi.Advapi32;
-import cx.corp.lacuna.core.windows.winapi.CloseHandle;
-
 import java.util.Optional;
 
 public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
@@ -11,6 +8,14 @@ public class WindowsProcessOwnerGetter implements ProcessOwnerGetter {
     private final TokenUserFinder tokenUserFinder;
     private final TokenOwnerNameFinder tokenOwnerFinder;
 
+    /**
+     * Constructs a new {@code WindowsProcessOwnerGetter} with the specified
+     * process token opener, token user finder, and user name finder.
+     * @param tokenOpener the process token opener.
+     * @param userFinder the token user finder.
+     * @param nameFinder the user name finder.
+     * @throws IllegalArgumentException if any of the arguments are null.
+     */
     public WindowsProcessOwnerGetter(ProcessTokenOpener tokenOpener,
                                      TokenUserFinder userFinder,
                                      TokenOwnerNameFinder nameFinder) {
