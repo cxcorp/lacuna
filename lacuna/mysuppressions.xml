@@ -5,7 +5,11 @@
     "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 
 <suppressions>
-    <suppress files="cx/corp/lacuna/Main.java" checks="[a-zA-Z0-9]*"/>
-	<suppress files="cx/corp/lacuna/ui/LacunaUI.java" checks="[a-zA-Z0-9]*"/>
-    <suppress files="cx/corp/lacuna/ui/view/*Window.java" checks="[a-zA-Z0-9]*"/>
+    <!-- Don't check `main` classes -->
+    <suppress files=".+[\\/]cx[\\/]corp[\\/]lacuna[\\/]Main\.java" checks="[a-zA-Z0-9]*"/>
+	<suppress files=".+[\\/]cx[\\/]corp[\\/]lacuna[\\/]ui[\\/]LacunaUI\.java" checks="[a-zA-Z0-9]*"/>
+    <!-- Don't check UI windows -->
+    <suppress files=".+[\\/]cx[\\/]corp[\\/]lacuna[\\/]ui[\\/]view[\\/].+Window.java" checks="[a-zA-Z0-9]*"/>
+    <!-- Don't check Windows API proxy interfaces, they're already documented in Microsoft's documentation -->
+    <suppress files=".+[\\/]cx[\\/]corp[\\/]lacuna[\\/]core[\\/]windows[\\/]winapi[\\/].+\.java" checks="[a-zA-Z0-9]*"/>
 </suppressions>
