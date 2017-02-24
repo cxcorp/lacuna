@@ -1,5 +1,7 @@
 package cx.corp.lacuna.core.windows;
 
+import cx.corp.lacuna.core.ProcessOpenException;
+
 public class MockProcessOpener implements ProcessOpener {
 
     private ProcessHandle openReturnValue;

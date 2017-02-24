@@ -1,6 +1,7 @@
 package cx.corp.lacuna.core.linux;
 
 import cx.corp.lacuna.core.MemoryAccessException;
+import cx.corp.lacuna.core.ProcessOpenException;
 import cx.corp.lacuna.core.RawMemoryReader;
 import cx.corp.lacuna.core.domain.NativeProcess;
 
@@ -59,7 +60,7 @@ public class LinuxRawMemoryReader implements RawMemoryReader {
 
             buffer.flip();
             return buffer;
-        } catch (IOException ex) {
+        } catch (ProcessOpenException | IOException ex) {
             throw new MemoryAccessException("Reading process memory failed, see getCause()!", ex);
         }
     }

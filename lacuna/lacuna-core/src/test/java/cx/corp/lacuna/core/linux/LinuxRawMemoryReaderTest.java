@@ -3,6 +3,7 @@ package cx.corp.lacuna.core.linux;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import cx.corp.lacuna.core.MemoryAccessException;
+import cx.corp.lacuna.core.ProcessOpenException;
 import cx.corp.lacuna.core.TestUtils;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.core.domain.NativeProcessImpl;
@@ -12,11 +13,13 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -33,7 +36,13 @@ public class LinuxRawMemoryReaderTest {
     public void setUp() {
         fs = Jimfs.newFileSystem(Configuration.unix());
         tempFile = fs.getPath("tempfile");
-        readableMemoryProvider = pid -> Files.newByteChannel(tempFile, StandardOpenOption.READ);
+        readableMemoryProvider = pid -> {
+            try {
+                return Files.newByteChannel(tempFile, StandardOpenOption.READ);
+            } catch (IOException e) {
+                throw new ProcessOpenException("ayy", e);
+            }
+        };
         // capture the local readableMemoryProvider via a closure so we can change it in the unit tests
         ReadableMemoryProvider proxyProvider = pid -> readableMemoryProvider.openRead(pid);
         reader = new LinuxRawMemoryReader(proxyProvider);
@@ -81,7 +90,7 @@ public class LinuxRawMemoryReaderTest {
     @Test(expected = MemoryAccessException.class)
     public void readThrowsIfAnExceptionOccursWhenOpeningMemoryProvider() {
         readableMemoryProvider = process -> {
-            throw new IOException();
+            throw new ProcessOpenException("fail");
         };
 
         reader.read(process, 0, 1);

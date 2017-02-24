@@ -1,5 +1,6 @@
 package cx.corp.lacuna.core.windows;
 
+import cx.corp.lacuna.core.ProcessOpenException;
 import cx.corp.lacuna.core.windows.winapi.CloseHandle;
 import cx.corp.lacuna.core.windows.winapi.OpenProcess;
 import cx.corp.lacuna.core.windows.winapi.ProcessAccessFlags;

@@ -1,5 +1,7 @@
 package cx.corp.lacuna.core.linux;
 
+import cx.corp.lacuna.core.ProcessOpenException;
+
 import java.io.IOException;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
@@ -29,27 +31,41 @@ public class FileMemoryProvider implements ReadableMemoryProvider, WritableMemor
     }
 
     /**
-     * Opens the specified process for reading. This method opens a channel
-     * to the virtual {@code /proc/[pid]/mem} file.
-     * @param pid The ID of the process.
-     * @throws IOException if the channel cannot be opened.
+     * {@inheritDoc}
+     * <p>This method opens a channel to the virtual
+     * {@code /proc/[pid]/mem} file.
      */
     @Override
-    public SeekableByteChannel openRead(int pid) throws IOException {
+    public SeekableByteChannel openRead(int pid) throws ProcessOpenException {
         Path memFile = createPathToProcessMemoryFile(pid);
-        return Files.newByteChannel(memFile, StandardOpenOption.READ);
+        try {
+            return Files.newByteChannel(memFile, StandardOpenOption.READ);
+        } catch (IOException ex) {
+            String message = String.format(
+                "Failed to open process %d for reading! See getCause()!",
+                pid
+            );
+            throw new ProcessOpenException(message, ex);
+        }
     }
 
     /**
-     * Opens the specified process for writing. This method opens a channel
-     * to the virtual {@code /proc/[pid]/mem} file.
-     * @param pid The ID of the process.
-     * @throws IOException if the channel cannot be opened.
+     * {@inheritDoc}
+     * <p>This method opens a channel to the virtual
+     * {@code /proc/[pid]/mem} file.
      */
     @Override
-    public SeekableByteChannel openWrite(int pid) throws IOException {
+    public SeekableByteChannel openWrite(int pid) throws ProcessOpenException {
         Path memFile = createPathToProcessMemoryFile(pid);
-        return Files.newByteChannel(memFile, StandardOpenOption.WRITE);
+        try {
+            return Files.newByteChannel(memFile, StandardOpenOption.WRITE);
+        } catch (IOException ex) {
+            String message = String.format(
+                "Failed to open process %d for writing! See getCause()!",
+                pid
+            );
+            throw new ProcessOpenException(message, ex);
+        }
     }
 
     private Path createPathToProcessMemoryFile(int pid) {
