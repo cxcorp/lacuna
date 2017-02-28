@@ -21,6 +21,8 @@ public class MainWindow extends Observable implements MainView{
     private JLabel activeProcessLabel;
     private JPanel memoryPanelParent;
     private JPanel memoryPanel;
+    private JPanel bookmarkPanel;
+    private JPanel bookmarkPanelParent;
 
     public MainWindow(ChooseProcessDialog chooseProcDialog) {
         this.chooseProcessDialog = chooseProcDialog;
@@ -48,8 +50,24 @@ public class MainWindow extends Observable implements MainView{
         memoryPanel = panel;
     }
 
+    public void setBookmarkPanel(JPanel newPanel) {
+        if (this.bookmarkPanel != null) {
+            removeOldBookmarkPanel();
+        }
+        if (newPanel != null) {
+            bookmarkPanelParent.add(newPanel, BorderLayout.CENTER);
+        }
+        this.bookmarkPanel = newPanel;
+    }
+
     private void removeOldMemoryPanel() {
         memoryPanelParent.remove(memoryPanel);
+        memoryPanel = null;
+    }
+
+    private void removeOldBookmarkPanel() {
+        bookmarkPanelParent.remove(bookmarkPanel);
+        bookmarkPanel = null;
     }
 
     //<editor-fold desc="UI creation">
@@ -110,14 +128,27 @@ public class MainWindow extends Observable implements MainView{
     }
 
     private void createComponents() {
-        JPanel contents = new JPanel(new BorderLayout());
+        Box contents = Box.createVerticalBox();
 
         activeProcessLabel = new JLabel("No process selected");
-        contents.add(activeProcessLabel, BorderLayout.NORTH);
+        activeProcessLabel.setMinimumSize(new Dimension(100, 50));
+        contents.add(activeProcessLabel);
 
         memoryPanelParent = new JPanel(new BorderLayout());
-        contents.add(memoryPanelParent, BorderLayout.CENTER);
+        bookmarkPanelParent = new JPanel(new BorderLayout());
+        JScrollPane bookmarkScrollPane = new JScrollPane(bookmarkPanelParent);
 
+        JSplitPane controlsPanel = new JSplitPane(
+            JSplitPane.VERTICAL_SPLIT,
+            memoryPanelParent,
+            bookmarkScrollPane
+        );
+        controlsPanel.setDividerLocation(150);
+        Dimension minSize = new Dimension(100, 50);
+        bookmarkScrollPane.setMinimumSize(minSize);
+        memoryPanelParent.setMinimumSize(minSize);
+
+        contents.add(controlsPanel);
         frame.setContentPane(contents);
     }
     //</editor-fold>
