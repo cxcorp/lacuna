@@ -1,6 +1,8 @@
 package cx.corp.lacuna.ui;
 
 import cx.corp.lacuna.core.LacunaBootstrap;
+import cx.corp.lacuna.core.MemoryAccessException;
+import cx.corp.lacuna.core.ProcessOpenException;
 import cx.corp.lacuna.ui.model.MainModel;
 import cx.corp.lacuna.ui.model.SettingsModel;
 import cx.corp.lacuna.ui.presenter.MainPresenter;
@@ -35,6 +37,21 @@ public class LacunaUI implements Runnable {
         MainWindow mainWindow = new MainWindow(new ChooseProcessDialog(settings));
         mainWindow.setMemoryPanel(memoryComponent.getPanel());
         MainPresenter presenter = new MainPresenter(mainWindow, mainModel);
+
+        memoryProvider.setMemoryAccessExceptionHandler(ProcessOpenException.class, ex -> {
+            mainWindow.setActiveProcess(null);
+            presenter.newActiveProcessSelected(); // sorry no time ¯\_(ツ)_/¯'
+            mainWindow.refresh();
+            JOptionPane.showMessageDialog(
+                memoryComponent.getPanel(),
+                "An error occurred while opening the process!\n" +
+                    "Please check that the target process is still running and " +
+                    "that you have necessary privileges!",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        });
+
         presenter.initialize();
         mainWindow.show();
     }
