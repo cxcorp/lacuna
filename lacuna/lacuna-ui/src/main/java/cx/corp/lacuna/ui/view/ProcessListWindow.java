@@ -109,6 +109,7 @@ public class ProcessListWindow implements ProcessListView {
     private void createTable() {
         createTableModel();
         table = new JTable(tableModel);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setIntercellSpacing(new Dimension(TABLE_PADDING_X, TABLE_PADDING_Y));
         sortPidColumnDescending();
 
