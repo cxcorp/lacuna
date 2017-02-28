@@ -3,6 +3,7 @@ package cx.corp.lacuna.ui;
 import cx.corp.lacuna.core.MemoryAccessException;
 import cx.corp.lacuna.core.MemoryReader;
 import cx.corp.lacuna.core.MemoryWriter;
+import cx.corp.lacuna.core.ProcessOpenException;
 import cx.corp.lacuna.core.domain.NativeProcess;
 import org.apache.commons.lang3.NotImplementedException;
 import org.exbin.utils.binary_data.BinaryData;
@@ -12,11 +13,8 @@ import org.exbin.utils.binary_data.EditableBinaryData;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 // no docs for EditableBinaryData for some reason, accessible here:
 // https://github.com/exbin/exbin-utils-java/blob/46d00e1c832163d957cdea0670c7d783776bb55c/modules/exbin-binary_data/src/main/java/org/exbin/utils/binary_data/EditableBinaryData.java
@@ -32,12 +30,32 @@ public class ProcessBinaryData implements EditableBinaryData {
     private NativeProcess process;
 
     public ProcessBinaryData(MemoryReader reader, MemoryWriter writer) {
-        this.reader = new ExceptionEater<MemoryReader>(reader, MemoryAccessException.class);
-        this.writer = new ExceptionEater<MemoryWriter>(writer, MemoryAccessException.class);
+        this.reader = new ExceptionEater<MemoryReader>(
+            reader,
+            MemoryAccessException.class,
+            ProcessOpenException.class
+        );
+        this.writer = new ExceptionEater<MemoryWriter>(
+            writer,
+            MemoryAccessException.class,
+            ProcessOpenException.class
+        );
+
+        // If we get a `ProcessOpenException`, we can assume that subsequent reads
+        // will fail as well so mark the current process as dead and prevent
+        // subsequent reads!
+        Consumer<Exception> processDeadListener = ex -> this.process = null;
+        this.writer.addHandlerForEatenException(ProcessOpenException.class, processDeadListener);
+        this.reader.addHandlerForEatenException(ProcessOpenException.class, processDeadListener);
     }
 
     public void setActiveProcess(NativeProcess process) {
         this.process = process;
+    }
+
+    public void setMemoryAccessExceptionHandler(Class<? extends Exception> type, Consumer<Exception> handler) {
+        writer.addHandlerForEatenException(type, handler);
+        reader.addHandlerForEatenException(type, handler);
     }
 
     @Override
@@ -307,39 +325,6 @@ public class ProcessBinaryData implements EditableBinaryData {
         // uhh...no, // TODO: buffering
         if (count > Integer.MAX_VALUE) {
             throw new UnsupportedOperationException("Length cannot be higher than Integer.MAX_VALUE!");
-        }
-    }
-
-    private static class ExceptionEater<T> {
-        private final T object;
-        private final List<Class> eatenExceptions;
-
-        private ExceptionEater(T object, Class... eatenExceptions) {
-            this.object = object;
-            this.eatenExceptions = Arrays.<Class>asList(eatenExceptions);
-        }
-
-        private void safeInvoke(Consumer<T> method) {
-            try {
-                method.accept(object);
-            } catch (Exception ex) {
-                System.out.println("SafeInvoke " + object.getClass().getName() + " - " + ex);
-                if (!eatenExceptions.contains(ex.getClass())) {
-                    throw ex;
-                }
-            }
-        }
-
-        private <R> R safeInvokeReturn(Function<T, R> method, R defaultRet) {
-            try {
-                return method.apply(object);
-            } catch(Exception ex) {
-                System.out.println("SafeInvoke " + object.getClass().getName() + " - " + ex);
-                if (!eatenExceptions.contains(ex.getClass())) {
-                    throw ex;
-                }
-                return defaultRet;
-            }
         }
     }
 }

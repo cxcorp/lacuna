@@ -12,6 +12,7 @@ import java.util.Observable;
 public class MainWindow extends Observable implements MainView{
 
     private static final String TITLE = "Lacuna";
+    private static final String NO_PROCESS_SELECTED_TEXT = "No process selected";
     private final ChooseProcessDialog chooseProcessDialog;
     private MainCallbacks callbacks;
     private NativeProcess activeProcess;
@@ -129,12 +130,22 @@ public class MainWindow extends Observable implements MainView{
     @Override
     public void setActiveProcess(NativeProcess newProcess) {
         activeProcess = newProcess;
-        activeProcessLabel.setText(newProcess.toString());
-        frame.setTitle(String.format("%s - %s", newProcess.getDescription(), TITLE));
+        if (newProcess == null) {
+            activeProcessLabel.setText(NO_PROCESS_SELECTED_TEXT);
+            frame.setTitle(TITLE);
+        } else {
+            activeProcessLabel.setText(newProcess.toString());
+            frame.setTitle(String.format("%s - %s", newProcess.getDescription(), TITLE));
+        }
     }
 
     @Override
     public NativeProcess getActiveProcess() {
         return activeProcess;
+    }
+
+    public void refresh() {
+        frame.validate();
+        frame.repaint();
     }
 }
