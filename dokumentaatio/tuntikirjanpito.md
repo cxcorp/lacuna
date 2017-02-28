@@ -31,3 +31,4 @@ Päivä | Tunnit | Kuvaus
 22.2.2016 | 4h | Muistinäkymän implementointi
 23.2.2017 | 5h | Prosessilistan kiillotusta, muistinäkymä implementoitu.
 24.2.2017 | 3h | Hex editorin tweakkausta.
+28.2.2017 | 4h | Bugikorjauksia. Kirjanmerkkinäkymän luontia.
