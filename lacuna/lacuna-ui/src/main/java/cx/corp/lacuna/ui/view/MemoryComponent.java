@@ -1,15 +1,10 @@
 package cx.corp.lacuna.ui.view;
 
-import cx.corp.lacuna.core.LacunaBootstrap;
-import cx.corp.lacuna.core.MemoryAccessException;
-import cx.corp.lacuna.core.domain.NativeProcess;
 import org.exbin.deltahex.swing.CodeArea;
-import org.exbin.utils.binary_data.BinaryData;
 import org.exbin.utils.binary_data.EditableBinaryData;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 public class MemoryComponent {
 
@@ -17,7 +12,6 @@ public class MemoryComponent {
 
     private final EditableBinaryData memoryProvider;
     private CodeArea codeArea;
-    private NativeProcess activeProcess;
     private JPanel panel;
 
     public MemoryComponent(EditableBinaryData memoryProvider) {
@@ -37,12 +31,6 @@ public class MemoryComponent {
     private JPopupMenu createPopupMenu() {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem gotoItem = new JMenuItem("Go to address");
-        gotoItem.setAccelerator(
-            KeyStroke.getKeyStroke(
-                KeyEvent.VK_G,
-                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
-            )
-        );
         gotoItem.addActionListener(e -> {
             String result = JOptionPane.showInputDialog(
                 codeArea,
@@ -60,6 +48,7 @@ public class MemoryComponent {
             } catch (NumberFormatException ex) {
             }
         });
+
         popupMenu.add(gotoItem);
         return popupMenu;
     }
