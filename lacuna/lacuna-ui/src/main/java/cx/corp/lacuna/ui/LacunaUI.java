@@ -51,6 +51,7 @@ public class LacunaUI implements Runnable {
         mainModel.addObserver((o, arg) -> {
             MainModel model = (MainModel) o;
             memoryProvider.setActiveProcess(model.getActiveProcess());
+            memoryComponent.notifyProviderUpdated();
         });
         MainWindow mainWindow = new MainWindow(new ChooseProcessDialog(settings));
         mainWindow.setMemoryPanel(memoryComponent.getPanel());

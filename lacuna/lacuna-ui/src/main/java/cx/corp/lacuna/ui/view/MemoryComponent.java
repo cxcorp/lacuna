@@ -1,5 +1,6 @@
 package cx.corp.lacuna.ui.view;
 
+import org.exbin.deltahex.ScrollBarVisibility;
 import org.exbin.deltahex.swing.CodeArea;
 import org.exbin.utils.binary_data.EditableBinaryData;
 
@@ -19,12 +20,26 @@ public class MemoryComponent {
         createComponent();
     }
 
+    /**
+     * Notifies that the {@code BinaryData} memory provider has been updated,
+     * e.g. a new process has been selected. This method should be called
+     * <em>after</em> the provider has been updated to have the component
+     * recalculate scrollbars etc.
+     */
+    public void notifyProviderUpdated() {
+        // call computePaintData to make the CodeArea recalculate
+        // the vertical scrollbar
+        codeArea.computePaintData();
+    }
+
     private void createComponent() {
         panel = new JPanel(new BorderLayout());
         codeArea = new CodeArea();
         codeArea.setPreferredSize(new Dimension(300, 300));
         codeArea.setData(memoryProvider);
         codeArea.setComponentPopupMenu(createPopupMenu());
+        codeArea.setVerticalScrollBarVisibility(ScrollBarVisibility.ALWAYS);
+        codeArea.setHorizontalScrollBarVisibility(ScrollBarVisibility.IF_NEEDED);
         panel.add(codeArea, BorderLayout.CENTER);
     }
 
