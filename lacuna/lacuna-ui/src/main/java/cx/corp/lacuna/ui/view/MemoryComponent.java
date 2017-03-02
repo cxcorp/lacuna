@@ -1,11 +1,14 @@
 package cx.corp.lacuna.ui.view;
 
+import org.apache.commons.lang3.StringUtils;
+import org.exbin.deltahex.CodeType;
 import org.exbin.deltahex.ScrollBarVisibility;
 import org.exbin.deltahex.swing.CodeArea;
 import org.exbin.utils.binary_data.EditableBinaryData;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class MemoryComponent {
 
@@ -16,8 +19,13 @@ public class MemoryComponent {
     private JPanel panel;
 
     public MemoryComponent(EditableBinaryData memoryProvider) {
+        Objects.requireNonNull(memoryProvider, "memoryProvider cannot be null!");
         this.memoryProvider = memoryProvider;
         createComponent();
+    }
+
+    public JPanel getPanel() {
+        return panel;
     }
 
     /**
@@ -45,7 +53,14 @@ public class MemoryComponent {
 
     private JPopupMenu createPopupMenu() {
         JPopupMenu popupMenu = new JPopupMenu();
-        JMenuItem gotoItem = new JMenuItem("Go to address");
+        popupMenu.add(createGoToAddressMenuItem());
+        popupMenu.add(new JSeparator());
+        popupMenu.add(createChangeBaseMenu());
+        return popupMenu;
+    }
+
+    private JMenuItem createGoToAddressMenuItem() {
+        JMenuItem gotoItem = new JMenuItem("Go To Address");
         gotoItem.addActionListener(e -> {
             String result = JOptionPane.showInputDialog(
                 codeArea,
@@ -58,17 +73,38 @@ public class MemoryComponent {
                 if (offsetLong < 0) {
                     return;
                 }
-                codeArea.setCaretPosition(offsetLong);
+                codeArea.setCaretPosition(offsetLong, 0);
                 codeArea.getScrollPosition().setScrollLinePosition(offsetLong / BYTES_PER_ROW);
             } catch (NumberFormatException ex) {
             }
         });
-
-        popupMenu.add(gotoItem);
-        return popupMenu;
+        return gotoItem;
     }
 
-    public JPanel getPanel() {
-        return panel;
+    private JMenuItem createChangeBaseMenu() {
+        JMenu menu = new JMenu("Change Base");
+        addBaseMenuItems(menu);
+        return menu;
+    }
+
+    private void addBaseMenuItems(JMenu menu) {
+        for (CodeType type : CodeType.values()) {
+            String label = getCapitalizedName(type);
+            JMenuItem item = new JMenuItem(label);
+            onActionChangeCodeAreaCodeType(item);
+            menu.add(item);
+        }
+    }
+
+    private static String getCapitalizedName(CodeType type) {
+        return StringUtils.capitalize(type.name().toLowerCase());
+    }
+
+    private void onActionChangeCodeAreaCodeType(JMenuItem item) {
+        item.addActionListener(e -> {
+            String typeName = e.getActionCommand().toUpperCase();
+            CodeType requestedType = CodeType.valueOf(typeName);
+            codeArea.setCodeType(requestedType);
+        });
     }
 }
