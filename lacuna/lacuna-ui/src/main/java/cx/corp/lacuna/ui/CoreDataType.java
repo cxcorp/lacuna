@@ -2,23 +2,32 @@ package cx.corp.lacuna.ui;
 
 public enum CoreDataType {
 
-    BOOLEAN("boolean"),
-    BYTE("byte"),
-    CHAR_UTF8("char (UTF-8)"),
-    CHAR_UTF16("char (UTF-16LE)"),
-    SHORT("short"),
-    INT("int"),
-    LONG("long"),
-    FLOAT("float"),
-    DOUBLE("double"),
-    STRING_UTF8("string (UTF-8)"),
-    STRING_UTF16("string (UTF-16LE)"),
-    BYTE_ARRAY("array of bytes");
+    BOOLEAN("boolean", false),
+    BYTE("byte", 0),
+    CHAR_UTF8("char (UTF-8)", '\0'),
+    CHAR_UTF16("char (UTF-16LE)", '\0'),
+    SHORT("short", 0),
+    INT("int", 0),
+    LONG("long", 0),
+    FLOAT("float", 0),
+    DOUBLE("double", 0),
+    STRING_UTF8("string (UTF-8)", ""),
+    STRING_UTF16("string (UTF-16LE)", "");
 
     private final String humanReadableName;
+    private final Object defaultValue;
 
-    CoreDataType(String humanReadableName) {
+    CoreDataType(String humanReadableName, Object defaultValue) {
         this.humanReadableName = humanReadableName;
+        this.defaultValue = defaultValue;
+    }
+
+    public String getHumanReadableName() {
+        return humanReadableName;
+    }
+
+    public Object getDefaultValue() {
+        return defaultValue;
     }
 
     @Override
