@@ -1,6 +1,5 @@
 package cx.corp.lacuna.ui.view;
 
-import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;

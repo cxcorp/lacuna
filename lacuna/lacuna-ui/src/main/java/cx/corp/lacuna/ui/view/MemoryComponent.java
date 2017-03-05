@@ -2,10 +2,8 @@ package cx.corp.lacuna.ui.view;
 
 import org.apache.commons.lang3.StringUtils;
 import org.exbin.deltahex.CaretMovedListener;
-import org.exbin.deltahex.CaretPosition;
 import org.exbin.deltahex.CodeType;
 import org.exbin.deltahex.ScrollBarVisibility;
-import org.exbin.deltahex.Section;
 import org.exbin.deltahex.swing.CodeArea;
 import org.exbin.utils.binary_data.EditableBinaryData;
 

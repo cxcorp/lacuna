@@ -11,7 +11,6 @@ import cx.corp.lacuna.ui.view.MainWindow;
 import cx.corp.lacuna.ui.view.MemoryComponent;
 
 import javax.swing.*;
-import java.util.Scanner;
 
 public class LacunaUI implements Runnable {
     public static void main(String... args) {

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>lacuna</artifactId>
         <groupId>cx.corp</groupId>
-        <version>0.2.0</version>
+        <version>0.3.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -37,17 +37,12 @@
         <dependency>
             <groupId>cx.corp</groupId>
             <artifactId>lacuna-core</artifactId>
-            <version>0.1.5-SNAPSHOT</version>
+            <version>0.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.exbin.deltahex</groupId>
             <artifactId>deltahex-swing</artifactId>
             <version>0.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -88,17 +83,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>2.5</version>
-            </plugin>
-            <plugin>
-                <groupId>org.pitest</groupId>
-                <artifactId>pitest-maven</artifactId>
-                <version>1.1.11</version>
-                <configuration>
-                    <excludedClasses>
-						<excludedClass>cx.corp.lacuna.ui.LacunaUI</excludedClass>
-                        <excludedClass>cx.corp.lacuna.ui.view.*</excludedClass>
-                    </excludedClasses>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

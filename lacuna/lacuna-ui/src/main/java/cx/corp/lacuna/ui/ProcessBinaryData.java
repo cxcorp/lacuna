@@ -18,9 +18,8 @@ import java.util.function.Consumer;
 
 // no docs for EditableBinaryData for some reason, accessible here:
 // https://github.com/exbin/exbin-utils-java/blob/46d00e1c832163d957cdea0670c7d783776bb55c/modules/exbin-binary_data/src/main/java/org/exbin/utils/binary_data/EditableBinaryData.java
-public class ProcessBinaryData implements EditableBinaryData {
+class ProcessBinaryData implements EditableBinaryData {
 
-    private static final long MEMORY_ACCESS_TIMEOUT_MS = 500;
     private static final byte NULL_BYTE = 0;
     private static final byte REMOVE_REPLACEMENT = NULL_BYTE;
 
@@ -319,15 +318,15 @@ public class ProcessBinaryData implements EditableBinaryData {
     }
 
     private static void throwIfOffsetOver32Bit(long offset) {
-        if (offset > Integer.MAX_VALUE) {
-            //throw new UnsupportedOperationException("Writing to 64-bit addresses is not supported at this time!");
-        }
+        /*if (offset > Integer.MAX_VALUE) {
+            throw new UnsupportedOperationException("Writing to 64-bit addresses is not supported at this time!");
+        }*/
     }
 
     private static void throwIfCopyingTooManyBytes(long count) {
         // uhh...no, // TODO: buffering
-        if (count > Integer.MAX_VALUE) {
-            //throw new UnsupportedOperationException("Length cannot be higher than Integer.MAX_VALUE!");
-        }
+        /*if (count > Integer.MAX_VALUE) {
+            throw new UnsupportedOperationException("Length cannot be higher than Integer.MAX_VALUE!");
+        }*/
     }
 }
