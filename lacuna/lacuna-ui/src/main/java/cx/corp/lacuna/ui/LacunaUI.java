@@ -1,17 +1,17 @@
 package cx.corp.lacuna.ui;
 
 import cx.corp.lacuna.core.LacunaBootstrap;
-import cx.corp.lacuna.core.MemoryAccessException;
 import cx.corp.lacuna.core.ProcessOpenException;
 import cx.corp.lacuna.ui.model.MainModel;
 import cx.corp.lacuna.ui.model.SettingsModel;
 import cx.corp.lacuna.ui.presenter.MainPresenter;
 import cx.corp.lacuna.ui.view.ChooseProcessDialog;
+import cx.corp.lacuna.ui.view.DataInspectorComponent;
 import cx.corp.lacuna.ui.view.MainWindow;
 import cx.corp.lacuna.ui.view.MemoryComponent;
-import org.exbin.utils.binary_data.EditableBinaryData;
 
 import javax.swing.*;
+import java.util.Scanner;
 
 public class LacunaUI implements Runnable {
     public static void main(String... args) {
@@ -20,6 +20,8 @@ public class LacunaUI implements Runnable {
 
     @Override
     public void run() {
+        setSystemLookAndFeel();
+
         SettingsModel settings = new SettingsModel();
         settings.setBootstrap(LacunaBootstrap.forCurrentPlatform());
 
@@ -29,19 +31,29 @@ public class LacunaUI implements Runnable {
         );
         MemoryComponent memoryComponent = new MemoryComponent(memoryProvider);
 
+        DataInspectorComponent dataInspector = new DataInspectorComponent(
+            settings.getBootstrap().getMemoryReader(),
+            settings.getBootstrap().getMemoryWriter()
+        );
+        memoryComponent.addCaretMovedListener((caretPosition, section) ->
+            dataInspector.setDataOffset((int) caretPosition.getDataPosition()));
         MainModel mainModel = new MainModel();
         mainModel.addObserver((o, arg) -> {
             MainModel model = (MainModel) o;
             memoryProvider.setActiveProcess(model.getActiveProcess());
+            memoryComponent.notifyProviderUpdated();
+            dataInspector.setActiveProcess(model.getActiveProcess());
         });
         MainWindow mainWindow = new MainWindow(new ChooseProcessDialog(settings));
         mainWindow.setMemoryPanel(memoryComponent.getPanel());
+        mainWindow.setDataInspectorPanel(dataInspector.getPanel());
         MainPresenter presenter = new MainPresenter(mainWindow, mainModel);
 
         memoryProvider.setMemoryAccessExceptionHandler(ProcessOpenException.class, ex -> {
+            // ¯\_(ツ)_/¯'
             mainWindow.setActiveProcess(null);
-            presenter.newActiveProcessSelected(); // sorry no time ¯\_(ツ)_/¯'
-            mainWindow.refresh();
+            presenter.newActiveProcessSelected();
+            mainWindow.refresh(); // validate & repaint so that the active process label updates
             JOptionPane.showMessageDialog(
                 memoryComponent.getPanel(),
                 "An error occurred while opening the process!\n" +
@@ -54,5 +66,13 @@ public class LacunaUI implements Runnable {
 
         presenter.initialize();
         mainWindow.show();
+    }
+
+    private void setSystemLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(
+                UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+        }
     }
 }

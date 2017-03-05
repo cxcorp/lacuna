@@ -20,23 +20,23 @@ import java.util.function.Consumer;
 // https://github.com/exbin/exbin-utils-java/blob/46d00e1c832163d957cdea0670c7d783776bb55c/modules/exbin-binary_data/src/main/java/org/exbin/utils/binary_data/EditableBinaryData.java
 public class ProcessBinaryData implements EditableBinaryData {
 
+    private static final long MEMORY_ACCESS_TIMEOUT_MS = 500;
     private static final byte NULL_BYTE = 0;
     private static final byte REMOVE_REPLACEMENT = NULL_BYTE;
 
-    //private final MemoryReader reader;
-    //private final MemoryWriter writer;
-    private final ExceptionEater<MemoryWriter> writer;
-    private final ExceptionEater<MemoryReader> reader;
+    private final ExceptionEaterProxy<MemoryWriter> writer;
+    private final ExceptionEaterProxy<MemoryReader> reader;
     private NativeProcess process;
 
     public ProcessBinaryData(MemoryReader reader, MemoryWriter writer) {
-        this.reader = new ExceptionEater<MemoryReader>(
-            reader,
-            MemoryAccessException.class,
-            ProcessOpenException.class
-        );
-        this.writer = new ExceptionEater<MemoryWriter>(
-            writer,
+        this.reader = createMemoryAccessProxy(reader);
+        this.writer = createMemoryAccessProxy(writer);
+    }
+
+    private <T> ExceptionEaterProxy<T> createMemoryAccessProxy(T object) {
+        InvocationProxy<T> proxy = new PassthroughProxy<>(object);
+        ExceptionEaterProxy<T> eaterProxy = new ExceptionEaterProxy<>(
+            proxy,
             MemoryAccessException.class,
             ProcessOpenException.class
         );
@@ -45,8 +45,9 @@ public class ProcessBinaryData implements EditableBinaryData {
         // will fail as well so mark the current process as dead and prevent
         // subsequent reads!
         Consumer<Exception> processDeadListener = ex -> this.process = null;
-        this.writer.addHandlerForEatenException(ProcessOpenException.class, processDeadListener);
-        this.reader.addHandlerForEatenException(ProcessOpenException.class, processDeadListener);
+        eaterProxy.addEatListener(ProcessOpenException.class, processDeadListener);
+
+        return eaterProxy;
     }
 
     public void setActiveProcess(NativeProcess process) {
@@ -54,8 +55,8 @@ public class ProcessBinaryData implements EditableBinaryData {
     }
 
     public void setMemoryAccessExceptionHandler(Class<? extends Exception> type, Consumer<Exception> handler) {
-        writer.addHandlerForEatenException(type, handler);
-        reader.addHandlerForEatenException(type, handler);
+        writer.addEatListener(type, handler);
+        reader.addEatListener(type, handler);
     }
 
     @Override
@@ -75,7 +76,8 @@ public class ProcessBinaryData implements EditableBinaryData {
         if (process == null) {
             return;
         }
-        writer.safeInvoke(w -> w.writeByte(process, toLacunaOffset(offset), b));
+
+        writer.invoke(w -> w.writeByte(process, toLacunaOffset(offset), b));
     }
 
     @Override
@@ -131,7 +133,7 @@ public class ProcessBinaryData implements EditableBinaryData {
 
         byte[] buffer = new byte[(int) binaryData.getDataSize()]; // plz forgive, no time for buffering
         binaryData.copyToArray(0, buffer, 0, buffer.length);
-        writer.safeInvoke(w -> w.write(process, toLacunaOffset(offset), buffer));
+        writer.invoke(w -> w.write(process, toLacunaOffset(offset), buffer));
     }
 
     /**
@@ -151,7 +153,7 @@ public class ProcessBinaryData implements EditableBinaryData {
 
         byte[] buffer = new byte[(int) length];
         replacingData.copyToArray(startFrom, buffer, 0, (int) length);
-        writer.safeInvoke(w -> w.write(process, toLacunaOffset(offset), buffer));
+        writer.invoke(w -> w.write(process, toLacunaOffset(offset), buffer));
     }
 
     /**
@@ -167,7 +169,7 @@ public class ProcessBinaryData implements EditableBinaryData {
             return;
         }
 
-        writer.safeInvoke(w -> w.write(process, toLacunaOffset(offset), bytes));
+        writer.invoke(w -> w.write(process, toLacunaOffset(offset), bytes));
     }
 
     /**
@@ -180,7 +182,7 @@ public class ProcessBinaryData implements EditableBinaryData {
     public void replace(long offset, byte[] replacingData, int replacingDataOffset, int length) {
         throwIfOffsetOver32Bit(offset);
         byte[] data = Arrays.copyOfRange(replacingData, replacingDataOffset, replacingDataOffset + length);
-        writer.safeInvoke(w -> w.write(process, toLacunaOffset(offset), data));
+        writer.invoke(w -> w.write(process, toLacunaOffset(offset), data));
     }
 
     /**
@@ -212,9 +214,10 @@ public class ProcessBinaryData implements EditableBinaryData {
             return;
         }
 
+        System.out.printf("filldata %d offset, len: %d\n", offset, length);
         byte[] data = new byte[(int) length];
         Arrays.fill(data, b);
-        writer.safeInvoke(w -> w.write(process, toLacunaOffset(offset), data));
+        writer.invoke(w -> w.write(process, toLacunaOffset(offset), data));
     }
 
     @Override
@@ -260,7 +263,7 @@ public class ProcessBinaryData implements EditableBinaryData {
             return '?';
         }
 
-        return reader.safeInvokeReturn(r -> r.readByte(process, toLacunaOffset(offset)), (byte) '?');
+        return reader.invoke(r -> r.readByte(process, toLacunaOffset(offset)), (byte) '?');
     }
 
     @Override
@@ -274,7 +277,7 @@ public class ProcessBinaryData implements EditableBinaryData {
     @Override
     public BinaryData copy(long offset, long length) {
         throwIfCopyingTooManyBytes(length);
-        byte[] data = reader.safeInvokeReturn(
+        byte[] data = reader.invoke(
             r -> r.read(process, toLacunaOffset(offset), (int) length), new byte[0]);
         return new ByteArrayEditableData(data);
     }
@@ -292,7 +295,7 @@ public class ProcessBinaryData implements EditableBinaryData {
             return;
         }
 
-        byte[] readBytes = reader.safeInvokeReturn(r -> r.read(process, toLacunaOffset(startFrom), length), new byte[0]);
+        byte[] readBytes = reader.invoke(r -> r.read(process, toLacunaOffset(startFrom), length), new byte[0]);
         System.arraycopy(readBytes, 0, target, offset, readBytes.length);
     }
 
@@ -317,14 +320,14 @@ public class ProcessBinaryData implements EditableBinaryData {
 
     private static void throwIfOffsetOver32Bit(long offset) {
         if (offset > Integer.MAX_VALUE) {
-            throw new UnsupportedOperationException("Writing to 64-bit addresses is not supported at this time!");
+            //throw new UnsupportedOperationException("Writing to 64-bit addresses is not supported at this time!");
         }
     }
 
     private static void throwIfCopyingTooManyBytes(long count) {
         // uhh...no, // TODO: buffering
         if (count > Integer.MAX_VALUE) {
-            throw new UnsupportedOperationException("Length cannot be higher than Integer.MAX_VALUE!");
+            //throw new UnsupportedOperationException("Length cannot be higher than Integer.MAX_VALUE!");
         }
     }
 }

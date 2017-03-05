@@ -37,7 +37,6 @@ public class ProcessListWindow implements ProcessListView {
     private JButton updateButton;
     private JButton cancelButton;
 
-    private List<NativeProcess> processes;
     private NativeProcess chosenProcess;
     private String searchFilter;
 
@@ -68,7 +67,6 @@ public class ProcessListWindow implements ProcessListView {
 
     @Override
     public void setProcessList(List<NativeProcess> processes) {
-        this.processes = processes;
         clearTable();
         addRows(processes);
     }
@@ -211,7 +209,7 @@ public class ProcessListWindow implements ProcessListView {
             // Model index is the same as the `processes` index, only the view index
             // is affected by sorting and filtering
             int modelIndex = table.convertRowIndexToModel(row);
-            chosenProcess = processes.get(modelIndex);
+            chosenProcess = tableModel.getProcess(modelIndex);
         });
     }
 
@@ -263,7 +261,7 @@ public class ProcessListWindow implements ProcessListView {
     }
 
     private void clearTable() {
-        tableModel.setRowCount(0);
+        tableModel.clearRows();
     }
 
     private void addRows(Collection<NativeProcess> processes) {
