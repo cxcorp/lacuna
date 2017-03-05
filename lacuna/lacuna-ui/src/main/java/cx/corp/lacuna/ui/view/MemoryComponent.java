@@ -1,8 +1,11 @@
 package cx.corp.lacuna.ui.view;
 
 import org.apache.commons.lang3.StringUtils;
+import org.exbin.deltahex.CaretMovedListener;
+import org.exbin.deltahex.CaretPosition;
 import org.exbin.deltahex.CodeType;
 import org.exbin.deltahex.ScrollBarVisibility;
+import org.exbin.deltahex.Section;
 import org.exbin.deltahex.swing.CodeArea;
 import org.exbin.utils.binary_data.EditableBinaryData;
 
@@ -11,8 +14,6 @@ import java.awt.*;
 import java.util.Objects;
 
 public class MemoryComponent {
-
-    private static final long BYTES_PER_ROW = 16;
 
     private final EditableBinaryData memoryProvider;
     private CodeArea codeArea;
@@ -38,6 +39,10 @@ public class MemoryComponent {
         // call computePaintData to make the CodeArea recalculate
         // the vertical scrollbar
         codeArea.computePaintData();
+    }
+
+    public void addCaretMovedListener(CaretMovedListener listener) {
+        codeArea.addCaretMovedListener(listener);
     }
 
     private void createComponent() {
@@ -74,7 +79,7 @@ public class MemoryComponent {
                     return;
                 }
                 codeArea.setCaretPosition(offsetLong, 0);
-                codeArea.getScrollPosition().setScrollLinePosition(offsetLong / BYTES_PER_ROW);
+                codeArea.revealCursor();
             } catch (NumberFormatException ex) {
             }
         });

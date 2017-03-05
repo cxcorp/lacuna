@@ -1,7 +1,5 @@
 package cx.corp.lacuna.ui.model;
 
-import cx.corp.lacuna.ui.CoreDataType;
-
 import java.util.Objects;
 
 public final class Bookmark {

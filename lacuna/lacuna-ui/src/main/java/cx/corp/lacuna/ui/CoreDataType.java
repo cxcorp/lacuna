@@ -22,6 +22,15 @@ public enum CoreDataType {
         this.defaultValue = defaultValue;
     }
 
+    public static CoreDataType fromHumanReadableName(String name) {
+        for (CoreDataType type : values()) {
+            if (type.getHumanReadableName().equals(name)) {
+                return type;
+            }
+        }
+        return null;
+    }
+
     public String getHumanReadableName() {
         return humanReadableName;
     }
