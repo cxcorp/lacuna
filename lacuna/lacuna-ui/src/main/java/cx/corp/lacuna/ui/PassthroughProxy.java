@@ -3,7 +3,7 @@ package cx.corp.lacuna.ui;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class PassthroughProxy<T> implements InvocationProxy<T> {
+class PassthroughProxy<T> implements InvocationProxy<T> {
 
     private final T targetObject;
 

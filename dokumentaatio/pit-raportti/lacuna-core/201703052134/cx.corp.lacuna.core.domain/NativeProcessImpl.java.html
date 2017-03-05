@@ -1,0 +1,1491 @@
+<html>
+<head>
+<style type='text/css'>
+html, body, div, span, p, blockquote, pre {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+
+body{
+	line-height: 1;
+	color: black;
+	background: white;
+	margin-left: 20px;
+}
+
+.src { 
+	border: 1px solid #dddddd;
+	padding-top: 10px;
+	padding-right: 5px;
+	padding-left: 5px;
+	font-family: Consolas, Courier, monospace;
+}
+
+
+.covered {background-color: #ddffdd}
+.uncovered {background-color: #ffdddd}
+.killed {background-color: #aaffaa}
+.survived {background-color: #ffaaaa}
+.uncertain {background-color: #dde7ef}
+.run_error {background-color: #dde7ef}
+.na {background-color: #eeeeee}
+.timed_out {background-color: #dde7ef}
+.non_viable {background-color: #aaffaa}
+.memory_error {background-color: #dde7ef}
+.not_started {background-color: #dde7ef; color : red}
+.no_coverage {background-color: #ffaaaa}
+
+
+.pop {outline:none; }
+.pop strong {line-height:30px;}
+.pop {text-decoration:none;}
+.pop span { z-index:10;display:none; padding:14px 20px; margin-top:-30px; margin-left:28px; width:800px; line-height:16px; word-wrap:break-word; }
+.pop:hover span{ display:inline; position:absolute; color:#111; border:1px solid #DCA; background:#fffAF0;}
+
+.pop span { border-radius:4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; -moz-box-shadow: 5px 5px 8px #CCC; -webkit-box-shadow: 5px 5px 8px #CCC; box-shadow: 5px 5px 8px #CCC; }
+</style>
+
+</head>
+<body>
+
+
+<h1>NativeProcessImpl.java</h1>
+
+<table class="src">
+
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_1'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package cx.corp.lacuna.core.domain;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_2'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_3'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Objects;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_4'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_5'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>public class NativeProcessImpl implements NativeProcess {</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_6'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_7'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private int pid;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_8'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private String description;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_9'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private String owner;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_10'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_11'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_12'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Constructs a new {@code NativeProcessImpl}.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_13'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_14'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    public NativeProcessImpl() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_15'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_16'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_17'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_18'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Constructs a new {@code NativeProcessImpl} with the specified process</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_19'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * identifier, description, and owner.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_20'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param pid the process identifier.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_21'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param description the process description.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_22'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param owner the process owner.</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_23'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_24'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    public NativeProcessImpl(int pid, String description, String owner) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_25'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        this.pid = pid;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_26'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        this.description = description;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_27'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        this.owner = owner;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_28'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_29'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_30'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_31'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public int getPid() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_32'/>
+32
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_32'>1</a>
+<span>
+
+1. getPid : replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return pid;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_33'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_34'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_35'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_36'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public void setPid(int pid) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_37'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        this.pid = pid;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_38'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_39'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_40'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_41'/>
+41
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_41'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public String getDescription() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_42'/>
+42
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_42'>1</a>
+<span>
+
+1. getDescription : mutated return of Object value for cx/corp/lacuna/core/domain/NativeProcessImpl::getDescription to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return description;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_43'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_44'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_45'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_46'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public void setDescription(String description) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_47'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        this.description = description;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_48'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_49'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_50'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_51'/>
+51
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_51'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public String getOwner() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_52'/>
+52
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_52'>1</a>
+<span>
+
+1. getOwner : mutated return of Object value for cx/corp/lacuna/core/domain/NativeProcessImpl::getOwner to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return owner;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_53'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_54'/>
+54
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_54'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_55'/>
+55
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_55'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_56'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public void setOwner(String owner) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_57'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        this.owner = owner;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_58'/>
+58
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_58'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_59'/>
+59
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_59'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_60'/>
+60
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_60'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_61'/>
+61
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_61'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public boolean equals(Object o) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_62'/>
+62
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_62'>1</a>
+<span>
+
+1. equals : negated conditional &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (this == o) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_63'/>
+63
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_63'>1</a>
+<span>
+
+1. equals : replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return true;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_64'/>
+64
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_64'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_65'/>
+65
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_65'>2</a>
+<span>
+
+1. equals : negated conditional &rarr; KILLED<br/>
+
+2. equals : negated conditional &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (o == null || getClass() != o.getClass()) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_66'/>
+66
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_66'>1</a>
+<span>
+
+1. equals : replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return false;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_67'/>
+67
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_67'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_68'/>
+68
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_68'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        NativeProcessImpl process = (NativeProcessImpl) o;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_69'/>
+69
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_69'>2</a>
+<span>
+
+1. equals : negated conditional &rarr; KILLED<br/>
+
+2. equals : replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return pid == process.pid &#38;&#38;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_70'/>
+70
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_70'>1</a>
+<span>
+
+1. equals : negated conditional &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            Objects.equals(description, process.description) &#38;&#38;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_71'/>
+71
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_71'>1</a>
+<span>
+
+1. equals : negated conditional &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            Objects.equals(owner, process.owner);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_72'/>
+72
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_72'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_73'/>
+73
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_73'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_74'/>
+74
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_74'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_75'/>
+75
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_75'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public int hashCode() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_76'/>
+76
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_76'>1</a>
+<span>
+
+1. hashCode : replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return Objects.hash(pid, description, owner);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_77'/>
+77
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_77'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_78'/>
+78
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_78'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_79'/>
+79
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_79'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_80'/>
+80
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_80'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public String toString() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_81'/>
+81
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_81'>1</a>
+<span>
+
+1. toString : mutated return of Object value for cx/corp/lacuna/core/domain/NativeProcessImpl::toString to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED<br/>
+
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return String.format(&#34;{ PID: %d, owner: %s, description: %s }&#34;,</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_82'/>
+82
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_82'></a>
+<span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            pid,</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_83'/>
+83
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_83'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>            owner,</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_84'/>
+84
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_84'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>            description</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_85'/>
+85
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_85'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        );</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_86'/>
+86
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_86'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@458b4487_87'/>
+87
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_87'></a>
+<span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@458b4487_32'>32</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_32'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getPid<br/><b>Killed by : </b>cx.corp.lacuna.core.domain.NativeProcessImplTest.setPidIsCorrect(cx.corp.lacuna.core.domain.NativeProcessImplTest)</span></span> replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@458b4487_42'>42</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_42'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getDescription<br/><b>Killed by : </b>cx.corp.lacuna.core.domain.NativeProcessImplTest.descriptionIsCorrect(cx.corp.lacuna.core.domain.NativeProcessImplTest)</span></span> mutated return of Object value for cx/corp/lacuna/core/domain/NativeProcessImpl::getDescription to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@458b4487_52'>52</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_52'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getOwner<br/><b>Killed by : </b>cx.corp.lacuna.core.domain.NativeProcessImplTest.setOwnerIsCorrect(cx.corp.lacuna.core.domain.NativeProcessImplTest)</span></span> mutated return of Object value for cx/corp/lacuna/core/domain/NativeProcessImpl::getOwner to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@458b4487_62'>62</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_62'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>cx.corp.lacuna.core.domain.NativeProcessImplTest.equalsReturnsFalseIfDescriptionIsDifferent(cx.corp.lacuna.core.domain.NativeProcessImplTest)</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@458b4487_63'>63</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_63'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>cx.corp.lacuna.core.domain.NativeProcessImplTest.equalsFindsSameObjectsEqual(cx.corp.lacuna.core.domain.NativeProcessImplTest)</span></span> replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@458b4487_65'>65</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_65'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>cx.corp.lacuna.core.domain.NativeProcessImplTest.equalsReturnsFalseIfDescriptionIsDifferent(cx.corp.lacuna.core.domain.NativeProcessImplTest)</span></span> negated conditional &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>cx.corp.lacuna.core.domain.NativeProcessImplTest.equalsReturnsFalseIfDescriptionIsDifferent(cx.corp.lacuna.core.domain.NativeProcessImplTest)</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@458b4487_66'>66</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_66'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>cx.corp.lacuna.core.domain.NativeProcessImplTest.equalsFindsNullNotEqual(cx.corp.lacuna.core.domain.NativeProcessImplTest)</span></span> replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@458b4487_69'>69</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_69'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>cx.corp.lacuna.core.domain.NativeProcessImplTest.equalsReturnsFalseIfDescriptionIsDifferent(cx.corp.lacuna.core.domain.NativeProcessImplTest)</span></span> negated conditional &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>cx.corp.lacuna.core.domain.NativeProcessImplTest.equalsReturnsFalseIfDescriptionIsDifferent(cx.corp.lacuna.core.domain.NativeProcessImplTest)</span></span> replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@458b4487_70'>70</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_70'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>cx.corp.lacuna.core.domain.NativeProcessImplTest.equalsReturnsFalseIfDescriptionIsDifferent(cx.corp.lacuna.core.domain.NativeProcessImplTest)</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@458b4487_71'>71</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_71'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>cx.corp.lacuna.core.domain.NativeProcessImplTest.equalsReturnsFalseIfDescriptionIsDifferent(cx.corp.lacuna.core.domain.NativeProcessImplTest)</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@458b4487_76'>76</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_76'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>hashCode<br/><b>Killed by : </b>cx.corp.lacuna.core.domain.NativeProcessImplTest.hashCodeDiffersWhenDescriptionDiffers(cx.corp.lacuna.core.domain.NativeProcessImplTest)</span></span> replaced return of integer sized value with (x == 0 ? 1 : 0) &rarr; KILLED</p> 
+</td>
+</tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@458b4487_81'>81</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@458b4487_81'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>toString<br/><b>Killed by : </b>cx.corp.lacuna.core.domain.NativeProcessImplTest.toStringContainsRightDescription(cx.corp.lacuna.core.domain.NativeProcessImplTest)</span></span> mutated return of Object value for cx/corp/lacuna/core/domain/NativeProcessImpl::toString to ( if (x != null) null else throw new RuntimeException ) &rarr; KILLED</p> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+
+<li class='mutator'>INCREMENTS_MUTATOR</li>
+
+<li class='mutator'>VOID_METHOD_CALL_MUTATOR</li>
+
+<li class='mutator'>RETURN_VALS_MUTATOR</li>
+
+<li class='mutator'>MATH_MUTATOR</li>
+
+<li class='mutator'>NEGATE_CONDITIONALS_MUTATOR</li>
+
+<li class='mutator'>INVERT_NEGS_MUTATOR</li>
+
+<li class='mutator'>CONDITIONALS_BOUNDARY_MUTATOR</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>cx.corp.lacuna.core.domain.NativeProcessImplTest.hashCodeIsSameForObjectsWithSamePropertyValues(cx.corp.lacuna.core.domain.NativeProcessImplTest) (1 ms)</li><li>cx.corp.lacuna.core.MemoryReaderImplTest.readLongReadsRightProcess(cx.corp.lacuna.core.MemoryReaderImplTest) (2 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.setOwnerIsCorrect(cx.corp.lacuna.core.domain.NativeProcessImplTest) (0 ms)</li><li>cx.corp.lacuna.core.windows.WindowsNativeProcessCollectorTest.collectGetsCorrectPidEvenIfProcessCannotBeOpenedForDetails(cx.corp.lacuna.core.windows.WindowsNativeProcessCollectorTest) (1 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.equalsReturnsFalseIfPidIsDifferent(cx.corp.lacuna.core.domain.NativeProcessImplTest) (0 ms)</li><li>cx.corp.lacuna.core.linux.LinuxNativeProcessCollectorTest.collectReturnsCorrectOwner(cx.corp.lacuna.core.linux.LinuxNativeProcessCollectorTest) (4 ms)</li><li>cx.corp.lacuna.core.windows.WindowsNativeProcessCollectorTest.collectGetsUnknownOwnerIfProcessCannotBeOpened(cx.corp.lacuna.core.windows.WindowsNativeProcessCollectorTest) (0 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.toStringContainsRightDescription(cx.corp.lacuna.core.domain.NativeProcessImplTest) (1 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.equalsReturnsFalseIfDescriptionIsDifferent(cx.corp.lacuna.core.domain.NativeProcessImplTest) (0 ms)</li><li>cx.corp.lacuna.core.MemoryReaderImplTest.readStringUTF16LEReadsRightProcess(cx.corp.lacuna.core.MemoryReaderImplTest) (4 ms)</li><li>cx.corp.lacuna.core.windows.WindowsNativeProcessCollectorTest.collectGetsUnknownDescriptionIfProcessCannotBeOpened(cx.corp.lacuna.core.windows.WindowsNativeProcessCollectorTest) (0 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.descriptionIsCorrect(cx.corp.lacuna.core.domain.NativeProcessImplTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.LinuxNativeProcessCollectorTest.collectReturnsUnknownDescriptionIfProcessCannotBeAccessed(cx.corp.lacuna.core.linux.LinuxNativeProcessCollectorTest) (9 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.setPidIsCorrect(cx.corp.lacuna.core.domain.NativeProcessImplTest) (3 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.hashCodeDiffersWhenDescriptionDiffers(cx.corp.lacuna.core.domain.NativeProcessImplTest) (0 ms)</li><li>cx.corp.lacuna.core.windows.WindowsNativeProcessEnumeratorImplIT.getProcessesFindsCorrectTestTargetPid(cx.corp.lacuna.core.windows.WindowsNativeProcessEnumeratorImplIT) (82 ms)</li><li>cx.corp.lacuna.core.linux.LinuxNativeProcessCollectorTest.collectReturnsEmptyDescriptionIfCmdLineIsEmpty(cx.corp.lacuna.core.linux.LinuxNativeProcessCollectorTest) (20 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.equalsReturnsFalseIfOwnerIsDifferent(cx.corp.lacuna.core.domain.NativeProcessImplTest) (5 ms)</li><li>cx.corp.lacuna.core.MemoryReaderImplTest.readByteReadsRightProcess(cx.corp.lacuna.core.MemoryReaderImplTest) (3 ms)</li><li>cx.corp.lacuna.core.windows.WindowsRawMemoryReaderTest.readThrowsIfUnexpectedSystemErrorOccurs(cx.corp.lacuna.core.windows.WindowsRawMemoryReaderTest) (1 ms)</li><li>cx.corp.lacuna.core.MemoryReaderImplTest.readFloatReadsRightProcess(cx.corp.lacuna.core.MemoryReaderImplTest) (3 ms)</li><li>cx.corp.lacuna.core.windows.WindowsRawMemoryWriterTest.writeWritesToRightOffset(cx.corp.lacuna.core.windows.WindowsRawMemoryWriterTest) (1 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.equalsFindsNullNotEqual(cx.corp.lacuna.core.domain.NativeProcessImplTest) (2 ms)</li><li>cx.corp.lacuna.core.MemoryReaderImplTest.readBooleanReadsRightProcess(cx.corp.lacuna.core.MemoryReaderImplTest) (3 ms)</li><li>cx.corp.lacuna.core.windows.WindowsMemoryReaderIT.correctValuesAreReadFromTestTargetMemory(cx.corp.lacuna.core.windows.WindowsMemoryReaderIT) (80 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.equalsFindsSameObjectsEqual(cx.corp.lacuna.core.domain.NativeProcessImplTest) (1 ms)</li><li>cx.corp.lacuna.core.MemoryReaderImplTest.readCharUTF8ReadsRightProcess(cx.corp.lacuna.core.MemoryReaderImplTest) (4 ms)</li><li>cx.corp.lacuna.core.windows.WindowsRawMemoryWriterTest.writeWritesOneByteCorrectly(cx.corp.lacuna.core.windows.WindowsRawMemoryWriterTest) (2 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.hashCodeIsSameForSameObject(cx.corp.lacuna.core.domain.NativeProcessImplTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.LinuxRawMemoryReaderTest.readThrowsIfAnExceptionOccursWhenOpeningMemoryProvider(cx.corp.lacuna.core.linux.LinuxRawMemoryReaderTest) (1 ms)</li><li>cx.corp.lacuna.core.MemoryReaderImplTest.readCharUTF16LEReadsRightProcess(cx.corp.lacuna.core.MemoryReaderImplTest) (3 ms)</li><li>cx.corp.lacuna.core.windows.WindowsNativeProcessCollectorTest.collectGetsUnknownDescriptionIfDescriptionGetterReturnsEmpty(cx.corp.lacuna.core.windows.WindowsNativeProcessCollectorTest) (2 ms)</li><li>cx.corp.lacuna.core.windows.WindowsNativeProcessCollectorTest.collectGetsOwnerFromOwnerGetterCorrectly(cx.corp.lacuna.core.windows.WindowsNativeProcessCollectorTest) (1 ms)</li><li>cx.corp.lacuna.core.MemoryReaderImplTest.readShortReadsRightProcess(cx.corp.lacuna.core.MemoryReaderImplTest) (3 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.toStringContainsRightOwner(cx.corp.lacuna.core.domain.NativeProcessImplTest) (2 ms)</li><li>cx.corp.lacuna.core.windows.WindowsRawMemoryWriterTest.writeThrowsIfWriteProcessMemoryFails(cx.corp.lacuna.core.windows.WindowsRawMemoryWriterTest) (0 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.toStringContainsRightPid(cx.corp.lacuna.core.domain.NativeProcessImplTest) (4 ms)</li><li>cx.corp.lacuna.core.NativeProcessEnumeratorImplTest.getsCorrectProcessDescriptions(cx.corp.lacuna.core.NativeProcessEnumeratorImplTest) (5 ms)</li><li>cx.corp.lacuna.core.linux.LinuxRawMemoryReaderTest.readCorrectlyReadsOneByteFromStart(cx.corp.lacuna.core.linux.LinuxRawMemoryReaderTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.LinuxRawMemoryReaderTest.readThrowsWhenReadingFromOutOfBoundsOffset(cx.corp.lacuna.core.linux.LinuxRawMemoryReaderTest) (1 ms)</li><li>cx.corp.lacuna.core.windows.WindowsNativeProcessEnumeratorImplIT.getProcessesContainsTestTargetDescription(cx.corp.lacuna.core.windows.WindowsNativeProcessEnumeratorImplIT) (133 ms)</li><li>cx.corp.lacuna.core.linux.LinuxRawMemoryReaderTest.readCorrectlyReadsSegmentOfBytesAtOffset(cx.corp.lacuna.core.linux.LinuxRawMemoryReaderTest) (1 ms)</li><li>cx.corp.lacuna.core.windows.WindowsRawMemoryWriterTest.writeThrowsIfProcessCannotBeOpened(cx.corp.lacuna.core.windows.WindowsRawMemoryWriterTest) (0 ms)</li><li>cx.corp.lacuna.core.MemoryReaderImplTest.readDoubleReadsRightProcess(cx.corp.lacuna.core.MemoryReaderImplTest) (2 ms)</li><li>cx.corp.lacuna.core.linux.LinuxNativeProcessCollectorTest.collectReturnsUnknownOwnerIfProcessCannotBeAccessed(cx.corp.lacuna.core.linux.LinuxNativeProcessCollectorTest) (6 ms)</li><li>cx.corp.lacuna.core.windows.WindowsNativeProcessCollectorTest.collectGetsCorrectDescriptionFromDescriptionGetter(cx.corp.lacuna.core.windows.WindowsNativeProcessCollectorTest) (4 ms)</li><li>cx.corp.lacuna.core.MemoryReaderImplTest.readStringUTF8ReadsRightProcess(cx.corp.lacuna.core.MemoryReaderImplTest) (3 ms)</li><li>cx.corp.lacuna.core.windows.WindowsRawMemoryReaderTest.readThrowsIfProcessCannotBeOpened(cx.corp.lacuna.core.windows.WindowsRawMemoryReaderTest) (1 ms)</li><li>cx.corp.lacuna.core.windows.WindowsRawMemoryWriterTest.writeUsesCorrectHandleWhenWriting(cx.corp.lacuna.core.windows.WindowsRawMemoryWriterTest) (1 ms)</li><li>cx.corp.lacuna.core.NativeProcessEnumeratorImplTest.getsCorrectPids(cx.corp.lacuna.core.NativeProcessEnumeratorImplTest) (32 ms)</li><li>cx.corp.lacuna.core.NativeProcessEnumeratorImplTest.getsCorrectProcessOwners(cx.corp.lacuna.core.NativeProcessEnumeratorImplTest) (4 ms)</li><li>cx.corp.lacuna.core.MemoryReaderImplTest.readIntReadsRightProcess(cx.corp.lacuna.core.MemoryReaderImplTest) (2 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.hashCodeDiffersWhenOwnerDiffers(cx.corp.lacuna.core.domain.NativeProcessImplTest) (1 ms)</li><li>cx.corp.lacuna.core.windows.WindowsRawMemoryWriterTest.writeUsesCorrectAmountOfBytes(cx.corp.lacuna.core.windows.WindowsRawMemoryWriterTest) (0 ms)</li><li>cx.corp.lacuna.core.windows.WindowsNativeProcessCollectorTest.collectGetsUnknownOwnerIfOwnerGetterReturnsEmpty(cx.corp.lacuna.core.windows.WindowsNativeProcessCollectorTest) (2 ms)</li><li>cx.corp.lacuna.core.windows.WindowsRawMemoryWriterTest.writeWritesCorrectBytes(cx.corp.lacuna.core.windows.WindowsRawMemoryWriterTest) (1 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.hashCodeDiffersWhenPidDiffers(cx.corp.lacuna.core.domain.NativeProcessImplTest) (0 ms)</li><li>cx.corp.lacuna.core.windows.WindowsRawMemoryReaderTest.readThrowsIfReadingFails(cx.corp.lacuna.core.windows.WindowsRawMemoryReaderTest) (6 ms)</li><li>cx.corp.lacuna.core.linux.LinuxRawMemoryReaderTest.readThrowsIfReadCanOnlyBeCompletedPartially(cx.corp.lacuna.core.linux.LinuxRawMemoryReaderTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.LinuxRawMemoryReaderTest.readCorrectlyReadsLastByte(cx.corp.lacuna.core.linux.LinuxRawMemoryReaderTest) (2 ms)</li><li>cx.corp.lacuna.core.windows.WindowsRawMemoryReaderTest.readReadsCorrectByteArray(cx.corp.lacuna.core.windows.WindowsRawMemoryReaderTest) (3 ms)</li><li>cx.corp.lacuna.core.linux.LinuxNativeProcessCollectorTest.collectReturnsCorrectCommandLineAsDescription(cx.corp.lacuna.core.linux.LinuxNativeProcessCollectorTest) (34 ms)</li><li>cx.corp.lacuna.core.domain.NativeProcessImplTest.equalsFindsProcsWithSamePropertyValuesEqual(cx.corp.lacuna.core.domain.NativeProcessImplTest) (1 ms)</li><li>cx.corp.lacuna.core.linux.LinuxNativeProcessCollectorTest.collectReturnsCorrectPidEvenIfProcessCannotBeAccessed(cx.corp.lacuna.core.linux.LinuxNativeProcessCollectorTest) (8 ms)</li><li>cx.corp.lacuna.core.linux.LinuxRawMemoryReaderTest.readCorrectlyReadsAllBytesFromStartToEnd(cx.corp.lacuna.core.linux.LinuxRawMemoryReaderTest) (5 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='http://pitest.org'>PIT</a> 1.1.11
+
+</body>
+</html>

@@ -6,15 +6,11 @@ import cx.corp.lacuna.core.domain.NativeProcess;
 import cx.corp.lacuna.ui.CoreDataType;
 
 import javax.swing.*;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 

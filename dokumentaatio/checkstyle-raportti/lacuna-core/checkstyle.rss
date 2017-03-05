@@ -25,7 +25,7 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2017</copyright>
     <item>
-      <title>File: 58,
+      <title>File: 57,
              Errors: 8,
              Warnings: 0,
              Infos: 0
@@ -187,20 +187,6 @@ under the License.
                           <tr>
                 <td>
                   <a href="${project.url}/checkstyle.html#cx.corp.lacuna.core.windows.winapi.Kernel32.java">cx/corp/lacuna/core/windows/winapi/Kernel32.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.Main.java">cx/corp/lacuna/Main.java</a>
                 </td>
                 <td>
                   0

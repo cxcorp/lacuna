@@ -6,7 +6,7 @@
 
     <groupId>cx.corp</groupId>
     <artifactId>lacuna</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
 
     <modules>
         <module>lacuna-core</module>
@@ -25,8 +25,7 @@
                 <version>1.1.11</version>
                 <configuration>
                     <excludedClasses>
-                        <excludedClass>cx.corp.lacuna.ui.LacunaUI</excludedClass>
-                        <excludedClass>cx.corp.lacuna.ui.view.*</excludedClass>
+                        <excludedClass>cx.corp.lacuna.ui.*</excludedClass>
                     </excludedClasses>
                 </configuration>
             </plugin>

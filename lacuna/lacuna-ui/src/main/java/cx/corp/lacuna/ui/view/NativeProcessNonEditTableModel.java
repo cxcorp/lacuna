@@ -6,7 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NativeProcessNonEditTableModel extends DefaultTableModel {
+class NativeProcessNonEditTableModel extends DefaultTableModel {
 
     private static final Class<?>[] NATIVEPROCESS_FIELD_TYPES = {Integer.class, String.class, String.class};
     private final List<NativeProcess> processes = new ArrayList<>();

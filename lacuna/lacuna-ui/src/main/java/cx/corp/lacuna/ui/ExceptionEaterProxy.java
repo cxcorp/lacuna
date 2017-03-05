@@ -38,7 +38,7 @@ class ExceptionEaterProxy<T> implements InvocationProxy<T> {
         Objects.requireNonNull(method);
         try {
             return decoratedProxy.invoke(method, defaultRet);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             if (!eatenExceptions.contains(ex.getClass())) {
                 throw ex;
             }

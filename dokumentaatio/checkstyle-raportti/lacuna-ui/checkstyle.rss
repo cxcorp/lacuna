@@ -25,8 +25,8 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2017</copyright>
     <item>
-      <title>File: 22,
-             Errors: 22,
+      <title>File: 26,
+             Errors: 25,
              Warnings: 0,
              Infos: 0
       </title>
@@ -83,48 +83,6 @@ under the License.
                   0
                 </td>
                 <td>
-                  1
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.ProcessBinaryData.java">cx/corp/lacuna/ui/ProcessBinaryData.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  3
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.ProcessListView.java">cx/corp/lacuna/ui/view/ProcessListView.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  2
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.ProcessListWindow.java">cx/corp/lacuna/ui/view/ProcessListWindow.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
                   0
                 </td>
               </tr>
@@ -144,20 +102,6 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.MainWindow.java">cx/corp/lacuna/ui/view/MainWindow.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.model.MainModel.java">cx/corp/lacuna/ui/model/MainModel.java</a>
                 </td>
                 <td>
@@ -172,7 +116,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.model.ProcessListModel.java">cx/corp/lacuna/ui/model/ProcessListModel.java</a>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.InvocationProxy.java">cx/corp/lacuna/ui/InvocationProxy.java</a>
                 </td>
                 <td>
                   0
@@ -181,21 +125,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  1
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.MemoryComponent.java">cx/corp/lacuna/ui/view/MemoryComponent.java</a>
-                </td>
-                <td>
                   0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
                 </td>
               </tr>
                           <tr>
@@ -214,48 +144,6 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.presenter.Presenter.java">cx/corp/lacuna/ui/presenter/Presenter.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.ChangePlatformDialog.java">cx/corp/lacuna/ui/view/ChangePlatformDialog.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.MainView.java">cx/corp/lacuna/ui/view/MainView.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  2
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.TableColumnResizer.java">cx/corp/lacuna/ui/view/TableColumnResizer.java</a>
                 </td>
                 <td>
@@ -266,34 +154,6 @@ under the License.
                 </td>
                 <td>
                   0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.ChooseProcessDialog.java">cx/corp/lacuna/ui/view/ChooseProcessDialog.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  2
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.presenter.ProcessChosenEventListener.java">cx/corp/lacuna/ui/presenter/ProcessChosenEventListener.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
                 </td>
               </tr>
                           <tr>
@@ -341,6 +201,202 @@ under the License.
                           <tr>
                 <td>
                   <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.NativeProcessNonEditTableModel.java">cx/corp/lacuna/ui/view/NativeProcessNonEditTableModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.DataInspectorComponent.java">cx/corp/lacuna/ui/view/DataInspectorComponent.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  5
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.ProcessBinaryData.java">cx/corp/lacuna/ui/ProcessBinaryData.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.ProcessListView.java">cx/corp/lacuna/ui/view/ProcessListView.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.ProcessListWindow.java">cx/corp/lacuna/ui/view/ProcessListWindow.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.ExceptionEaterProxy.java">cx/corp/lacuna/ui/ExceptionEaterProxy.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.PassthroughProxy.java">cx/corp/lacuna/ui/PassthroughProxy.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.CoreDataType.java">cx/corp/lacuna/ui/CoreDataType.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.MainWindow.java">cx/corp/lacuna/ui/view/MainWindow.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.model.ProcessListModel.java">cx/corp/lacuna/ui/model/ProcessListModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.MemoryComponent.java">cx/corp/lacuna/ui/view/MemoryComponent.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.presenter.Presenter.java">cx/corp/lacuna/ui/presenter/Presenter.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.MainView.java">cx/corp/lacuna/ui/view/MainView.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.view.ChooseProcessDialog.java">cx/corp/lacuna/ui/view/ChooseProcessDialog.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#cx.corp.lacuna.ui.presenter.ProcessChosenEventListener.java">cx/corp/lacuna/ui/presenter/ProcessChosenEventListener.java</a>
                 </td>
                 <td>
                   0
