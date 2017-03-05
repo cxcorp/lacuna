@@ -7,8 +7,18 @@ import java.util.Objects;
 public final class Bookmark {
     private String name;
     private int offset;
-    private CoreDataType type;
-    private Object value;
+
+    public Bookmark() {
+    }
+
+    public Bookmark(String name, int offset) {
+        this.name = name;
+        this.offset = offset;
+    }
+
+    public static Bookmark empty() {
+        return new Bookmark(null, 0);
+    }
 
     public String getName() {
         return name;
@@ -26,20 +36,9 @@ public final class Bookmark {
         this.offset = offset;
     }
 
-    public CoreDataType getType() {
-        return type;
-    }
-
-    public void setType(CoreDataType type) {
-        this.type = type;
-    }
-
-    public Object getValue() {
-        return value;
-    }
-
-    public void setValue(Object value) {
-        this.value = value;
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, offset);
     }
 
     @Override
@@ -52,12 +51,6 @@ public final class Bookmark {
         }
         Bookmark bookmark = (Bookmark) o;
         return offset == bookmark.offset
-            && Objects.equals(name, bookmark.name)
-            && type == bookmark.type;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, offset, type);
+            && Objects.equals(name, bookmark.name);
     }
 }
