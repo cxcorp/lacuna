@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.util.Observable;
 
-public class MainWindow extends Observable implements MainView{
+public class MainWindow extends Observable implements MainView {
 
     private static final String TITLE = "Lacuna";
     private static final String NO_PROCESS_SELECTED_TEXT = "No process selected";
@@ -19,10 +19,12 @@ public class MainWindow extends Observable implements MainView{
 
     private JFrame frame;
     private JLabel activeProcessLabel;
-    private JPanel memoryPanelParent;
     private JPanel memoryPanel;
+    private JPanel memoryPanelParent;
     private JPanel bookmarkPanel;
     private JPanel bookmarkPanelParent;
+    private JPanel dataInspectorPanel;
+    private JPanel dataInspectorPanelParent;
 
     public MainWindow(ChooseProcessDialog chooseProcDialog) {
         this.chooseProcessDialog = chooseProcDialog;
@@ -35,29 +37,40 @@ public class MainWindow extends Observable implements MainView{
 
     /**
      * Sets the drawn memory component panel, removing the old panel.
-     * If {@code panel} is {@code null}, just removes the current panel
+     * If {@code newPanel} is {@code null}, just removes the current panel
      * if it exists.
-     * @param panel Panel to display as the memory component panel, or
-     *              {@code null} if the current panel should be removed.
+     *
+     * @param newPanel Panel to display as the memory component panel, or
+     *                 {@code null} if the current panel should be removed.
      */
-    public void setMemoryPanel(JPanel panel) {
+    public void setMemoryPanel(JPanel newPanel) {
         if (memoryPanel != null) {
             removeOldMemoryPanel();
         }
-        if (panel != null) {
-            memoryPanelParent.add(panel, BorderLayout.CENTER);
+        if (newPanel != null) {
+            memoryPanelParent.add(newPanel, BorderLayout.CENTER);
         }
-        memoryPanel = panel;
+        memoryPanel = newPanel;
     }
 
     public void setBookmarkPanel(JPanel newPanel) {
-        if (this.bookmarkPanel != null) {
+        if (bookmarkPanel != null) {
             removeOldBookmarkPanel();
         }
         if (newPanel != null) {
             bookmarkPanelParent.add(newPanel, BorderLayout.CENTER);
         }
-        this.bookmarkPanel = newPanel;
+        bookmarkPanel = newPanel;
+    }
+
+    public void setDataInspectorPanel(JPanel newPanel) {
+        if (dataInspectorPanel != null) {
+            removeOldDataInspectorPanel();
+        }
+        if (newPanel != null) {
+            dataInspectorPanelParent.add(newPanel, BorderLayout.CENTER);
+        }
+        dataInspectorPanel = newPanel;
     }
 
     private void removeOldMemoryPanel() {
@@ -68,6 +81,11 @@ public class MainWindow extends Observable implements MainView{
     private void removeOldBookmarkPanel() {
         bookmarkPanelParent.remove(bookmarkPanel);
         bookmarkPanel = null;
+    }
+
+    private void removeOldDataInspectorPanel() {
+        dataInspectorPanelParent.remove(dataInspectorPanel);
+        dataInspectorPanel = null;
     }
 
     //<editor-fold desc="UI creation">
@@ -128,27 +146,46 @@ public class MainWindow extends Observable implements MainView{
     }
 
     private void createComponents() {
-        Box contents = Box.createVerticalBox();
+        //Box contents = Box.createVerticalBox();
+        JPanel contents = new JPanel(new BorderLayout());
 
         activeProcessLabel = new JLabel("No process selected");
         activeProcessLabel.setMinimumSize(new Dimension(100, 50));
-        contents.add(activeProcessLabel);
+        activeProcessLabel.setOpaque(true);
+        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        labelPanel.add(activeProcessLabel);
+        contents.add(labelPanel, BorderLayout.NORTH);
 
         memoryPanelParent = new JPanel(new BorderLayout());
         bookmarkPanelParent = new JPanel(new BorderLayout());
-        JScrollPane bookmarkScrollPane = new JScrollPane(bookmarkPanelParent);
 
-        JSplitPane controlsPanel = new JSplitPane(
+        JSplitPane controlsSplitPane = new JSplitPane(
             JSplitPane.VERTICAL_SPLIT,
             memoryPanelParent,
-            bookmarkScrollPane
+            bookmarkPanelParent
         );
-        controlsPanel.setDividerLocation(150);
+        controlsSplitPane.setDividerLocation(200);
         Dimension minSize = new Dimension(100, 50);
-        bookmarkScrollPane.setMinimumSize(minSize);
+        bookmarkPanelParent.setMinimumSize(minSize);
         memoryPanelParent.setMinimumSize(minSize);
+        controlsSplitPane.setResizeWeight(0.8);
 
-        contents.add(controlsPanel);
+        dataInspectorPanelParent = new JPanel(new BorderLayout());
+        dataInspectorPanelParent.setMinimumSize(new Dimension(100, 0));
+        dataInspectorPanelParent.setPreferredSize(new Dimension(230, 0));
+        dataInspectorPanelParent.setMaximumSize(new Dimension(250, 0));
+
+        JSplitPane dataInspectorSplitPane = new JSplitPane(
+            JSplitPane.HORIZONTAL_SPLIT,
+            controlsSplitPane,
+            dataInspectorPanelParent
+        );
+        dataInspectorSplitPane.setResizeWeight(0.9);
+        dataInspectorSplitPane.setDividerLocation(0.9d);
+        dataInspectorSplitPane.setOpaque(true);
+        dataInspectorSplitPane.setBackground(Color.magenta);
+
+        contents.add(dataInspectorSplitPane, BorderLayout.CENTER);
         frame.setContentPane(contents);
     }
     //</editor-fold>
@@ -156,6 +193,11 @@ public class MainWindow extends Observable implements MainView{
     @Override
     public void attach(MainCallbacks mainCallbacks) {
         this.callbacks = mainCallbacks;
+    }
+
+    public void refresh() {
+        frame.validate();
+        frame.repaint();
     }
 
     @Override
@@ -173,10 +215,5 @@ public class MainWindow extends Observable implements MainView{
     @Override
     public NativeProcess getActiveProcess() {
         return activeProcess;
-    }
-
-    public void refresh() {
-        frame.validate();
-        frame.repaint();
     }
 }

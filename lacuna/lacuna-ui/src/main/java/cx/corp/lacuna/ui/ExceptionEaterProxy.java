@@ -1,7 +1,5 @@
 package cx.corp.lacuna.ui;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,22 +11,22 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-class ExceptionEater<T> {
-    private final T object;
+class ExceptionEaterProxy<T> implements InvocationProxy<T> {
+    private final InvocationProxy<T> decoratedProxy;
     private final Set<Class> eatenExceptions;
     private Map<Class, List<Consumer<Exception>>> exceptionHandlers = new HashMap<>();
 
-    ExceptionEater(T object, Class... eatenExceptions) {
-        this.object = object;
+    ExceptionEaterProxy(InvocationProxy<T> proxy, Class... eatenExceptions) {
+        this.decoratedProxy = proxy;
         this.eatenExceptions = new HashSet<>(Arrays.<Class>asList(eatenExceptions));
     }
 
-    void safeInvoke(Consumer<T> method) {
+    @Override
+    public void invoke(Consumer<T> method) {
         Objects.requireNonNull(method);
         try {
-            method.accept(object);
+            decoratedProxy.invoke(method);
         } catch (Exception ex) {
-            log(ex);
             if (!eatenExceptions.contains(ex.getClass())) {
                 throw ex;
             }
@@ -36,12 +34,11 @@ class ExceptionEater<T> {
         }
     }
 
-    <R> R safeInvokeReturn(Function<T, R> method, R defaultRet) {
+    public <R> R invoke(Function<T, R> method, R defaultRet) {
         Objects.requireNonNull(method);
         try {
-            return method.apply(object);
+            return decoratedProxy.invoke(method, defaultRet);
         } catch(Exception ex) {
-            log(ex);
             if (!eatenExceptions.contains(ex.getClass())) {
                 throw ex;
             }
@@ -50,7 +47,7 @@ class ExceptionEater<T> {
         }
     }
 
-    void addHandlerForEatenException(Class<? extends Exception> type, Consumer<Exception> handler) {
+    public void addEatListener(Class<? extends Exception> type, Consumer<Exception> handler) {
         Objects.requireNonNull(type);
         Objects.requireNonNull(handler);
         if (!isExceptionEaten(type)) {
@@ -70,15 +67,5 @@ class ExceptionEater<T> {
         if (handlers != null) {
             handlers.forEach(h -> h.accept(ex));
         }
-    }
-
-    private void log(Exception ex) {
-        StringWriter errors = new StringWriter();
-        errors.append("[SafeInvoke] ")
-            .append(this.object.getClass().toString())
-            .append(": ");
-        ex.printStackTrace(new PrintWriter(errors));
-        System.out.println(errors.toString());
-        System.out.flush();
     }
 }
