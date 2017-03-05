@@ -7,9 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
-import java.util.Observable;
 
-public class MainWindow extends Observable implements MainView {
+public class MainWindow implements MainView {
 
     private static final String TITLE = "Lacuna";
     private static final String NO_PROCESS_SELECTED_TEXT = "No process selected";
@@ -21,8 +20,6 @@ public class MainWindow extends Observable implements MainView {
     private JLabel activeProcessLabel;
     private JPanel memoryPanel;
     private JPanel memoryPanelParent;
-    private JPanel bookmarkPanel;
-    private JPanel bookmarkPanelParent;
     private JPanel dataInspectorPanel;
     private JPanel dataInspectorPanelParent;
 
@@ -53,16 +50,6 @@ public class MainWindow extends Observable implements MainView {
         memoryPanel = newPanel;
     }
 
-    public void setBookmarkPanel(JPanel newPanel) {
-        if (bookmarkPanel != null) {
-            removeOldBookmarkPanel();
-        }
-        if (newPanel != null) {
-            bookmarkPanelParent.add(newPanel, BorderLayout.CENTER);
-        }
-        bookmarkPanel = newPanel;
-    }
-
     public void setDataInspectorPanel(JPanel newPanel) {
         if (dataInspectorPanel != null) {
             removeOldDataInspectorPanel();
@@ -76,11 +63,6 @@ public class MainWindow extends Observable implements MainView {
     private void removeOldMemoryPanel() {
         memoryPanelParent.remove(memoryPanel);
         memoryPanel = null;
-    }
-
-    private void removeOldBookmarkPanel() {
-        bookmarkPanelParent.remove(bookmarkPanel);
-        bookmarkPanel = null;
     }
 
     private void removeOldDataInspectorPanel() {
@@ -146,7 +128,6 @@ public class MainWindow extends Observable implements MainView {
     }
 
     private void createComponents() {
-        //Box contents = Box.createVerticalBox();
         JPanel contents = new JPanel(new BorderLayout());
 
         activeProcessLabel = new JLabel("No process selected");
@@ -157,18 +138,6 @@ public class MainWindow extends Observable implements MainView {
         contents.add(labelPanel, BorderLayout.NORTH);
 
         memoryPanelParent = new JPanel(new BorderLayout());
-        bookmarkPanelParent = new JPanel(new BorderLayout());
-
-        JSplitPane controlsSplitPane = new JSplitPane(
-            JSplitPane.VERTICAL_SPLIT,
-            memoryPanelParent,
-            bookmarkPanelParent
-        );
-        controlsSplitPane.setDividerLocation(200);
-        Dimension minSize = new Dimension(100, 50);
-        bookmarkPanelParent.setMinimumSize(minSize);
-        memoryPanelParent.setMinimumSize(minSize);
-        controlsSplitPane.setResizeWeight(0.8);
 
         dataInspectorPanelParent = new JPanel(new BorderLayout());
         dataInspectorPanelParent.setMinimumSize(new Dimension(100, 0));
@@ -177,7 +146,7 @@ public class MainWindow extends Observable implements MainView {
 
         JSplitPane dataInspectorSplitPane = new JSplitPane(
             JSplitPane.HORIZONTAL_SPLIT,
-            controlsSplitPane,
+            memoryPanelParent,
             dataInspectorPanelParent
         );
         dataInspectorSplitPane.setResizeWeight(0.9);

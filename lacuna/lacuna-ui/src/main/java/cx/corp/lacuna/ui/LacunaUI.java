@@ -31,17 +31,6 @@ public class LacunaUI implements Runnable {
         );
         MemoryComponent memoryComponent = new MemoryComponent(memoryProvider);
 
-        /*BookmarkPersistence bookmarkPersistence = new BookmarkPersistence(
-            new GsonBuilder().setPrettyPrinting().create(),
-            Paths.get("bookmarks.json")
-        );
-        BookmarkModel bookmarkModel = new BookmarkModel(bookmarkPersistence);
-        BookmarkComponent bookmarkComponent = new BookmarkComponent(
-            bookmarkModel,
-            settings.getBootstrap().getMemoryReader(),
-            settings.getBootstrap().getMemoryWriter()
-        );*/
-
         DataInspectorComponent dataInspector = new DataInspectorComponent(
             settings.getBootstrap().getMemoryReader(),
             settings.getBootstrap().getMemoryWriter()
@@ -58,7 +47,6 @@ public class LacunaUI implements Runnable {
         MainWindow mainWindow = new MainWindow(new ChooseProcessDialog(settings));
         mainWindow.setMemoryPanel(memoryComponent.getPanel());
         mainWindow.setDataInspectorPanel(dataInspector.getPanel());
-        //mainWindow.setBookmarkPanel(bookmarkComponent.getPanel());
         MainPresenter presenter = new MainPresenter(mainWindow, mainModel);
 
         memoryProvider.setMemoryAccessExceptionHandler(ProcessOpenException.class, ex -> {
