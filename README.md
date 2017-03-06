@@ -8,7 +8,7 @@ Coursework for [Javalabra-2017-3](https://github.com/javaLabra/Javalabra2017-3).
 ## Current state
 The Lacuna library (`lacuna-core`) is mostly feature-complete. It has classes for enumerating processes, and reading and writing a process's memory on both Windows and Linux. Common primitive datatypes are supported in addition to raw bytes. The library is quite inefficient currently, as it opens and closes a process handle on _each read or write_ ([#14](https://github.com/cxcorp/lacuna/issues/14)), and throws exceptions to signify failed reads ([#12](https://github.com/cxcorp/lacuna/issues/12)).
 
-The GUI (`lacuna-ui`) can currently enumerate the processes, and read and write raw bytes with a hex editor component. Common primitive datatypes are not supported yet. A feature for saving and loading bookmarks is on its way.
+The GUI (`lacuna-ui`) can currently enumerate the processes, and read and write raw bytes with a hex editor component. Common data types can be written with a data inspector gadget.
 
 ![](http://i.imgur.com/7nx3zf8.png)
 ![](http://i.imgur.com/ESrx0Us.png)
@@ -18,7 +18,7 @@ Tested platforms:
   - Microsoft Windows 8.1 Pro (Build 9600)
   - Microsoft Windows 10 Pro N (Build 14393)
 * Linux:
-  - Core only: Ubuntu 16.04.1 LTS (Kernel 4.4.0-59-generic x86_64 GNU/Linux)
+  - Ubuntu 16.04.1 LTS (Kernel 4.4.0-59-generic x86_64 GNU/Linux)
   
 ## Links
 * [**Javadoc**](https://htmlpreview.github.io/?https://github.com/cxcorp/lacuna/blob/master/javadoc/index.html)
