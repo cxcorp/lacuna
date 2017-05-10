@@ -6,6 +6,7 @@ import cx.corp.lacuna.core.domain.NativeProcessImpl;
 import cx.corp.lacuna.core.macos.darwinapi.DarwinApiBootstrapper;
 import cx.corp.lacuna.core.macos.darwinapi.DarwinConstants;
 import cx.corp.lacuna.core.macos.darwinapi.Libc;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -45,7 +46,9 @@ public class MacNativeProcessCollector implements NativeProcessCollector {
         }
 
         Libc.Passwd passwd = libc.getpwuid(info.uid);
-        return passwd == null ? Optional.empty() : Optional.of(passwd.name);
+        return passwd == null || isNullOrEmptyOrZeroLen(passwd.name)
+            ? Optional.empty()
+            : Optional.of(passwd.name);
     }
 
     private Optional<String> getDescription(int pid) {
@@ -54,16 +57,26 @@ public class MacNativeProcessCollector implements NativeProcessCollector {
 
         if (bytesWritten > 0) {
             // no clue if it's utf-8
-            return Optional.of(new String(buffer, StandardCharsets.UTF_8));
+            String name = new String(buffer, 0, bytesWritten, StandardCharsets.UTF_8);
+            return Optional.of(name);
         }
 
-        // no privileges for proc_name, try the comm description instead
+        // bytesWritten <= 0; no privileges for proc_name,
+        // try the comm description instead
         Libc.ProcBsdShortInfo info = getProcessInfo(pid);
         if (info == null) {
             return Optional.empty();
         }
 
-        return Optional.of(new String(info.comm, StandardCharsets.UTF_8));
+        // comm is max 16 bytes long but we don't know the string's
+        // length, find the length
+        int firstNull = ArrayUtils.indexOf(info.comm, (byte)'\0');
+        if (firstNull <= 0) {
+            // comm was empty as well :(
+            return Optional.empty();
+        }
+        String comm = new String(info.comm, 0, firstNull, StandardCharsets.UTF_8);
+        return Optional.of(comm);
     }
 
     private Libc.ProcBsdShortInfo getProcessInfo(int pid) {
@@ -77,5 +90,9 @@ public class MacNativeProcessCollector implements NativeProcessCollector {
         );
 
         return bytesWritten < info.size() ? null : info;
+    }
+
+    private static boolean isNullOrEmptyOrZeroLen(String str) {
+        return str == null || str.length() == 0 || str.charAt(0) == '\0';
     }
 }
