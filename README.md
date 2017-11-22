@@ -6,7 +6,7 @@ Program for reading and writing other programs' memory.
 Coursework for [Javalabra-2017-3](https://github.com/javaLabra/Javalabra2017-3).
 
 #### Note to reader
-This project was/is a course project. It is feature complete, but it is not very efficient. **The main point of interest** for you may be that the library contains good examples for using JNA to enumerate processes and manipulating process memory on both Windows and Linux. Be wary of lots of premature abstraction.
+This project was/is a course project. It is feature complete, but it is not very efficient. **The main point of interest** for you may be that the library contains good examples for using JNA to enumerate processes and manipulating process memory on both Windows and Linux. Be wary of lots of premature abstraction. Notice also that the library [makes assumptions](https://github.com/cxcorp/lacuna/blob/master/lacuna/lacuna-core/src/main/java/cx/corp/lacuna/core/TypeSize.java) about the sizes of the primitives.
 
 ## Current state
 The Lacuna library (`lacuna-core`) contains classes for enumerating processes, and reading and writing a process's memory on both Windows and Linux. Common primitive datatypes are supported in addition to raw bytes. The library is quite inefficient currently, as it opens and closes a process handle on _each read or write_ ([#14](https://github.com/cxcorp/lacuna/issues/14)), and throws exceptions to signify failed reads ([#12](https://github.com/cxcorp/lacuna/issues/12)).
