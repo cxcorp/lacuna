@@ -13,7 +13,7 @@ The Lacuna library (`lacuna-core`) contains classes for enumerating processes, a
 
 The GUI (`lacuna-ui`) can currently enumerate the processes, and read and write raw bytes with a hex editor component. Common data types can be written with a data inspector gadget.
 
-![](http://i.imgur.com/7nx3zf8.png)
+![](https://i.imgur.com/EKywFmZ.png)
 ![](http://i.imgur.com/ESrx0Us.png)
 
 Tested platforms:
