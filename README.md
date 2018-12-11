@@ -2,8 +2,7 @@
 
 [![Travis Build Status](https://travis-ci.org/cxcorp/lacuna.svg?branch=master&updatecachepls=2)](https://travis-ci.org/cxcorp/lacuna)
 
-Program for reading and writing other programs' memory.
-Coursework for [Javalabra-2017-3](https://github.com/javaLabra/Javalabra2017-3).
+Lacuna is Java a process memory manipulation library and UI for Windows and Linux.
 
 #### Note to reader
 This project was started as a course project. It is feature complete, but it is not very efficient. **The main point of interest** for you may be that the library contains good examples for using JNA to enumerate processes and manipulating process memory on both Windows and Linux. Be wary of lots of premature abstraction. Notice also that the library [makes assumptions](https://github.com/cxcorp/lacuna/blob/master/lacuna/lacuna-core/src/main/java/cx/corp/lacuna/core/TypeSize.java) about the sizes of the primitives.
