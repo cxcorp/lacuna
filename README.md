@@ -38,8 +38,8 @@ For compilation instructions, see below.
 2. Clone or download this repository.
 3. Go to the project folder: `cd lacuna/lacuna`
 4. Compile and package the project: `mvn clean install package`. This step generates the .jar files in each of the modules' target/ directories.
-  - You may optionally choose to skip running unit tests: `mvn clean install package -DskipTests`
-  - Note: the `install` phase is needed so that `lacuna-ui` finds `lacuna-core`.
+    - You may optionally choose to skip running unit tests: `mvn clean install package -DskipTests`
+    - Note: the `install` phase is needed so that `lacuna-ui` finds `lacuna-core`.
 5. Run the Lacuna UI: `java -jar lacuna-ui/target/lacuna-ui-<VERSION>.jar`
 
 ## License
