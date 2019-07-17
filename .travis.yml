@@ -1,6 +1,14 @@
 language: java
-jdk:
-  - oraclejdk8
+matrix:
+  include:
+    - os: linux
+      jdk: oraclejdk8
+      addons:
+        apt:
+          packages:
+            - oracle-java8-installer
+    - os: osx
+      osx_image: xcode8
 
 # actual code is inside lacuna/lacuna
 before_install: cd lacuna
@@ -8,12 +16,7 @@ before_install: cd lacuna
 # verify runs both unit and integration tests
 script: mvn clean && mvn verify -B
 
-# OracleJDK 8 and JavaFX projects may need to update to the latest available version from a repository.
 sudo: false
-addons:
-  apt:
-    packages:
-      - oracle-java8-installer
 
 cache:
   directories:
